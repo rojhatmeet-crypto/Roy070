@@ -3,95 +3,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Roy070</title>
+  <title>I&amp;M Elektra</title>
+  <meta name="description" content="I&M Elektra — uw elektricien voor storingen, groepenkasten, verlichting en meer.">
 
   <!-- App mode (standalone) op iPhone -->
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Roy070">
-  <meta name="theme-color" content="#111827">
+  <meta name="apple-mobile-web-app-title" content="I&M Elektra">
+  <meta name="theme-color" content="#0a1a33">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" href="icons/icon-192.png">
 
   <style>
     :root {
       color-scheme: dark;
+      --navy: #0a1a33;
+      --navy-2: #10294f;
+      --blue: #123f7a;
+      --amber: #fbbf24;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      height: 100%;
-    }
+    html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(180deg, #111827 0%, #1e3a8a 100%);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+      background: var(--navy);
+      color: var(--text);
       min-height: 100vh;
       min-height: 100dvh;
-      /* ruimte voor de notch / home-indicator in app mode */
-      padding: calc(env(safe-area-inset-top) + 24px) 24px calc(env(safe-area-inset-bottom) + 24px);
     }
-    .logo {
-      width: 96px;
-      height: 96px;
-      border-radius: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: calc(env(safe-area-inset-top) + 14px) 20px 14px;
+      background: rgba(10, 26, 51, .92);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
     }
-    h1 { font-size: 2rem; margin-bottom: 8px; }
-    p.sub { color: #cbd5e1; margin-bottom: 28px; }
-    .badge {
-      display: none;
-      background: #16a34a;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 999px;
+    header img { width: 34px; height: 34px; border-radius: 8px; }
+    header .name { font-weight: 700; font-size: 1.1rem; letter-spacing: .02em; }
+    header .name span { color: var(--amber); }
+
+    .hero {
+      background: linear-gradient(180deg, var(--navy) 0%, var(--blue) 120%);
+      text-align: center;
+      padding: 56px 24px 48px;
+    }
+    .hero h1 { font-size: 2rem; line-height: 1.2; margin-bottom: 12px; }
+    .hero h1 em { color: var(--amber); font-style: normal; }
+    .hero p { color: var(--muted); max-width: 480px; margin: 0 auto 28px; line-height: 1.6; }
+
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 12px;
       font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
     }
+    .btn-primary { background: var(--amber); color: #1a1a06; }
+    .btn-ghost {
+      background: rgba(255, 255, 255, .08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, .18);
+    }
+    .cta-note { margin-top: 14px; font-size: .8rem; color: var(--muted); }
+
+    section { padding: 44px 20px; max-width: 720px; margin: 0 auto; }
+    section h2 { font-size: 1.4rem; margin-bottom: 20px; }
+    section h2::after {
+      content: "";
+      display: block;
+      width: 44px;
+      height: 3px;
+      background: var(--amber);
+      border-radius: 2px;
+      margin-top: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--navy-2);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 14px;
+      padding: 18px 16px;
+    }
+    .card .emoji { font-size: 1.5rem; display: block; margin-bottom: 8px; }
+    .card h3 { font-size: .95rem; margin-bottom: 4px; }
+    .card p { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+    ul.usp { list-style: none; }
+    ul.usp li {
+      padding: 10px 0 10px 30px;
+      position: relative;
+      color: #cbd5e1;
+      line-height: 1.5;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+    ul.usp li::before {
+      content: "⚡";
+      position: absolute;
+      left: 0;
+    }
+
     .install {
       display: none;
-      background: rgba(255, 255, 255, .08);
-      border: 1px solid rgba(255, 255, 255, .15);
+      background: var(--navy-2);
+      border: 1px solid rgba(251, 191, 36, .35);
       border-radius: 16px;
       padding: 20px;
-      max-width: 420px;
-      text-align: left;
-      line-height: 1.6;
+      line-height: 1.7;
     }
     .install h2 { font-size: 1.05rem; margin-bottom: 10px; }
+    .install h2::after { display: none; }
     .install ol { padding-left: 20px; }
-    .install li { margin-bottom: 6px; }
-    .icon-share {
-      display: inline-block;
-      transform: translateY(2px);
-    }
-    body.standalone .badge { display: inline-block; }
     body:not(.standalone) .install { display: block; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      padding: 24px 20px calc(env(safe-area-inset-bottom) + 24px);
+      border-top: 1px solid rgba(255, 255, 255, .06);
+    }
   </style>
 </head>
 <body>
-  <img class="logo" src="icons/icon-192.png" alt="Roy070 logo">
-  <h1>Roy070</h1>
-  <p class="sub">Welkom bij Roy070</p>
+  <header>
+    <img src="icons/icon-192.png" alt="I&M Elektra logo">
+    <div class="name">I<span>&amp;</span>M Elektra</div>
+  </header>
 
-  <span class="badge">✓ App mode actief</span>
-
-  <div class="install">
-    <h2>📲 Installeer als app op je iPhone</h2>
-    <ol>
-      <li>Open deze site in <strong>Safari</strong></li>
-      <li>Tik op de <strong>Deel-knop</strong> <span class="icon-share">⎋</span> onderaan</li>
-      <li>Kies <strong>"Zet op beginscherm"</strong></li>
-      <li>Tik op <strong>"Voeg toe"</strong></li>
-    </ol>
-    <p>Daarna opent Roy070 fullscreen als app, zonder Safari-balken.</p>
+  <div class="hero">
+    <h1>Storing of klus?<br><em>Wij regelen het.</em></h1>
+    <p>I&amp;M Elektra is uw elektricien voor woningen en bedrijven — van storing tot complete installatie. Snel, netjes en voor een eerlijke prijs.</p>
+    <div class="cta">
+      <!-- PLACEHOLDER: vervang door echt telefoonnummer, bijv. tel:+31612345678 -->
+      <a class="btn btn-primary" href="tel:+31600000000">📞 Bellen</a>
+      <!-- PLACEHOLDER: vervang door echt WhatsApp-nummer, bijv. https://wa.me/31612345678 -->
+      <a class="btn btn-ghost" href="https://wa.me/31600000000">💬 WhatsApp</a>
+    </div>
+    <p class="cta-note">Contactgegevens worden nog ingevuld.</p>
   </div>
+
+  <section>
+    <h2>Onze diensten</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="emoji">🔌</span>
+        <h3>Groepenkast</h3>
+        <p>Vervangen of uitbreiden van uw groepenkast.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🛠️</span>
+        <h3>Storingen</h3>
+        <p>Opsporen en verhelpen van elektrastoringen.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">💡</span>
+        <h3>Verlichting</h3>
+        <p>Binnen- en buitenverlichting, spots en dimmers.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">⚡</span>
+        <h3>Bedrading</h3>
+        <p>Stopcontacten, schakelaars en nieuwe leidingen.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🚗</span>
+        <h3>Laadpaal</h3>
+        <p>Aanleg van laadpunten voor uw elektrische auto.</p>
+      </div>
+      <div class="card">
+        <span class="emoji">🏠</span>
+        <h3>Verbouwing</h3>
+        <p>Complete elektra bij renovatie of nieuwbouw.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Waarom I&amp;M Elektra?</h2>
+    <ul class="usp">
+      <li>Snel ter plaatse in de regio Den Haag</li>
+      <li>Duidelijke prijsafspraken vooraf</li>
+      <li>Nette afwerking, we laten alles schoon achter</li>
+      <li>Ook voor spoedklussen bereikbaar</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="install">
+      <h2>📲 Zet I&amp;M Elektra als app op je iPhone</h2>
+      <ol>
+        <li>Open deze site in <strong>Safari</strong></li>
+        <li>Tik op de <strong>Deel-knop</strong> onderaan</li>
+        <li>Kies <strong>"Zet op beginscherm"</strong></li>
+        <li>Tik op <strong>"Voeg toe"</strong></li>
+      </ol>
+      <p>Daarna opent I&amp;M Elektra fullscreen als app, zonder Safari-balken.</p>
+    </div>
+  </section>
+
+  <footer>© 2026 I&amp;M Elektra</footer>
 
   <script>
     // Detecteer of de site als app (standalone) is geopend
