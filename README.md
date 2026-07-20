@@ -1,7 +1,8 @@
-# Roy070 — iPhone app mode (PWA)
+# I&M Elektra — website + iPhone app mode (PWA)
 
-Deze repo bevat alles om de site als **app** op een iPhone te laten draaien:
-fullscreen, zonder Safari-balken, met een eigen icoon op het beginscherm.
+De website van **I&M Elektra**, gebouwd als PWA zodat hij op een iPhone als
+**app** draait: fullscreen, zonder Safari-balken, met eigen icoon op het
+beginscherm.
 
 ## 🌐 Live site
 
@@ -18,37 +19,28 @@ De site draait op GitHub Pages (gratis, vaste URL, automatisch HTTPS).
 
 De site opent daarna fullscreen als app.
 
+## ✏️ Nog invullen
+
+De contactknoppen bevatten **placeholder-nummers**. Vervang in `index.html`:
+
+- `tel:+31600000000` → echt telefoonnummer
+- `https://wa.me/31600000000` → echt WhatsApp-nummer (met landcode, zonder +)
+
 ## Bestanden
 
 | Bestand | Doel |
 |---|---|
-| `index.html` | Startpagina met alle iPhone app-mode tags + installatie-uitleg |
+| `index.html` | De I&M Elektra website + alle iPhone app-mode tags |
 | `manifest.webmanifest` | Web app manifest (`display: standalone`) |
 | `sw.js` | Service worker (offline/cache) |
-| `icons/apple-touch-icon.png` | Icoon dat iPhone op het beginscherm zet (180×180) |
-| `icons/icon-192.png`, `icons/icon-512.png` | Manifest-iconen |
+| `icons/` | Bliksem-logo als app-icoon (incl. 180×180 apple-touch-icon) |
 | `.github/workflows/deploy-pages.yml` | Zet elke push automatisch live op GitHub Pages |
 
-Let op: alle paden in `index.html`, `manifest.webmanifest` en `sw.js` zijn
-**relatief** (dus `icons/...` in plaats van `/icons/...`), omdat de site op
-GitHub Pages onder het subpad `/Roy070/` draait.
+Let op: alle paden zijn **relatief** (dus `icons/...` in plaats van
+`/icons/...`), omdat de site op GitHub Pages onder het subpad `/Roy070/`
+draait.
 
 ## 🔄 Site aanpassen
 
 Push je wijzigingen naar deze repo — de workflow zet ze automatisch live op
 de `gh-pages` branch. Na 1 à 2 minuten staat de nieuwe versie online.
-
-## Heb je al een eigen site? Voeg dan dit toe aan je `<head>`
-
-```html
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Roy070">
-<meta name="theme-color" content="#111827">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-```
-
-En zet `manifest.webmanifest`, `sw.js` en de map `icons/` naast je `index.html`.

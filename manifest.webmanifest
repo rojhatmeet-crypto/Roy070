@@ -1,13 +1,13 @@
 {
-  "name": "Roy070",
-  "short_name": "Roy070",
-  "description": "Roy070 web app",
+  "name": "I&M Elektra",
+  "short_name": "I&M Elektra",
+  "description": "I&M Elektra — uw elektricien voor storingen, groepenkasten, verlichting en meer.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#111827",
-  "theme_color": "#111827",
+  "background_color": "#0a1a33",
+  "theme_color": "#0a1a33",
   "icons": [
     {
       "src": "./icons/icon-192.png",
