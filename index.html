@@ -6,13 +6,14 @@
   <title>Roy070</title>
 
   <!-- App mode (standalone) op iPhone -->
-  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="manifest" href="manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Roy070">
   <meta name="theme-color" content="#111827">
-  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/icon-192.png">
 
   <style>
     :root {
@@ -75,7 +76,7 @@
   </style>
 </head>
 <body>
-  <img class="logo" src="/icons/icon-192.png" alt="Roy070 logo">
+  <img class="logo" src="icons/icon-192.png" alt="Roy070 logo">
   <h1>Roy070</h1>
   <p class="sub">Welkom bij Roy070</p>
 
@@ -101,7 +102,7 @@
     if (standalone) document.body.classList.add("standalone");
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch(() => {});
+      navigator.serviceWorker.register("sw.js").catch(() => {});
     }
   </script>
 </body>
