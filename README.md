@@ -19,6 +19,14 @@ De site draait op GitHub Pages (gratis, vaste URL, automatisch HTTPS).
 
 De site opent daarna fullscreen als app.
 
+## 🎮 Volt — het spelletje
+
+Op **https://rojhatmeet-crypto.github.io/Roy070/game/** staat Volt: een
+arcade-spelletje waarin je als vonkje door een stroomcircuit vliegt. Tik om
+te zappen, ontwijk de weerstanden, verzamel bliksems (+2) en verbeter je
+record. Ook installeerbaar als eigen app (paars bliksem-icoon) via
+Safari → Deel → "Zet op beginscherm".
+
 ## ✏️ Nog invullen
 
 De contactknoppen bevatten **placeholder-nummers**. Vervang in `index.html`:
