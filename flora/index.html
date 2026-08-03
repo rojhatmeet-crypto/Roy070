@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <!-- ART:HEAD -->
+  <title>Flora Orderpicker 🌷</title>
+  <!-- /ART:HEAD -->
+  <meta name="description" content="Flora Orderpicker — Roya's veilinggame. Haal de bloemenkarren op, koppel je treintje en lever bij de juiste dock vóór de veilingklok afloopt.">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flora">
+  <meta name="theme-color" content="#1b262c">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/icon-192.png">
+
+  <!-- ART:CORE -->
+  <style>
+    :root {
+      --bg: #1b262c;
+      --paneel: #22313a;
+      --paneel-2: #2b3c46;
+      --lijn: rgba(255, 255, 255, .12);
+      --tekst: #f2f4ef;
+      --dim: #9fb2ba;
+      --amber: #ffc93c;
+      --oranje: #ff5c39;
+      --groen: #35c26b;
+      --rood: #ff5c48;
+      --font: ui-rounded, "SF Pro Rounded", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--tekst);
+      font-family: var(--font);
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+    #app {
+      height: 100%;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding: calc(env(safe-area-inset-top) + 8px) calc(env(safe-area-inset-right) + 8px)
+               calc(env(safe-area-inset-bottom) + 8px) calc(env(safe-area-inset-left) + 8px);
+      gap: 8px;
+    }
+
+    /* ── HUD ─────────────────────────────── */
+    #hud { display: flex; gap: 8px; align-items: stretch; }
+    .kaart {
+      background: var(--paneel);
+      border: 1px solid var(--lijn);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .lbl {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    #orderCard { flex: 1; min-width: 0; position: relative; overflow: hidden; }
+    #orderCard::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: repeating-linear-gradient(-45deg, var(--amber) 0 9px, #262f35 9px 18px);
+    }
+    #chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--paneel-2);
+      border: 1px solid var(--lijn);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .chip.done { background: rgba(53, 194, 107, .18); border-color: rgba(53, 194, 107, .55); }
+    .chip.done .n { color: var(--groen); }
+    .chip .n { color: var(--dim); font-size: 12px; }
+    #dockChip {
+      color: #14212a;
+      border: none;
+      font-weight: 800;
+    }
+    #dockChip.klaar { animation: pols 0.8s ease-in-out infinite; }
+    @keyframes pols { 50% { transform: scale(1.12); } }
+
+    #klokWrap { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    #klok { width: 74px; height: 74px; display: block; }
+    #klokWrap .lbl { font-size: 8px; }
+
+    #stats { display: flex; align-items: center; gap: 10px; }
+    #stats .kol { text-align: right; }
+    #scoreV { font-size: 22px; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    #lvlV { font-size: 12px; font-weight: 700; color: var(--amber); }
+    #livesV { font-size: 13px; letter-spacing: 1px; }
+    .iknop {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      border: 1px solid var(--lijn);
+      background: var(--paneel-2);
+      color: var(--tekst);
+      font-size: 16px;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+    .iknop:active { transform: translateY(1px); }
+    .iknop:focus-visible, .knop:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+    #knoppen { display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+
+    /* ── Speelveld ───────────────────────── */
+    #veld {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #141c21;
+      border: 1px solid var(--lijn);
+    }
+    #game { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+
+    /* ── Overlays ────────────────────────── */
+    .ov {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(14, 20, 24, .84);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 20;
+      padding: 14px;
+      overflow: auto;
+    }
+    .ov[hidden] { display: none; }
+    .paneel {
+      width: 100%;
+      max-width: 460px;
+      max-height: calc(100dvh - 40px);
+      overflow: auto;
+      background: var(--paneel);
+      border: 1px solid var(--lijn);
+      border-radius: 16px;
+      padding: 22px 20px;
+      text-align: center;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
+    }
+    .logoRij { font-size: 40px; line-height: 1; }
+    h1.titel {
+      font-size: clamp(24px, 6vw, 34px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      line-height: 1.05;
+      margin-top: 8px;
+      text-wrap: balance;
+    }
+    h1.titel span { color: var(--amber); }
+    .sub { color: var(--dim); font-size: 14px; margin-top: 6px; }
+    .stripes {
+      height: 6px;
+      border-radius: 3px;
+      margin: 16px auto;
+      max-width: 250px;
+      background: repeating-linear-gradient(-45deg, var(--amber) 0 10px, #262f35 10px 20px);
+    }
+    .stappen { display: flex; flex-direction: column; gap: 10px; text-align: left; margin: 0 auto 16px; max-width: 340px; }
+    .stap { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; }
+    .stap .ico { font-size: 20px; flex: 0 0 26px; text-align: center; }
+    .stap b { color: var(--amber); }
+    .besturing { font-size: 12.5px; color: var(--dim); margin-bottom: 16px; line-height: 1.6; }
+    .besturing b { color: var(--tekst); }
+    .record { font-size: 13px; font-weight: 700; color: var(--amber); margin-bottom: 14px; }
+    .knop {
+      display: inline-block;
+      background: var(--amber);
+      color: #201a06;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 0 #b8860b;
+      padding: 14px 26px;
+      font-size: 17px;
+      font-weight: 800;
+      font-family: var(--font);
+      cursor: pointer;
+    }
+    .knop:active { transform: translateY(3px); box-shadow: 0 1px 0 #b8860b; }
+    .eindStats { display: flex; justify-content: center; gap: 18px; margin: 14px 0 18px; }
+    .eindStats .es { min-width: 70px; }
+    .eindStats .es .v { font-size: 24px; font-weight: 900; font-variant-numeric: tabular-nums; }
+    .eindStats .es .k { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+    #nieuwRecord { color: var(--groen); font-weight: 800; margin-bottom: 10px; }
+
+    /* ── Toasts ──────────────────────────── */
+    #toast {
+      position: absolute;
+      top: 12px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20, 30, 36, .92);
+      border: 1px solid var(--lijn);
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-weight: 800;
+      font-size: 14px;
+      z-index: 15;
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #toast.aan { opacity: 1; }
+    #bigToast {
+      position: absolute;
+      top: 42%; left: 50%;
+      transform: translate(-50%, -50%) scale(.6);
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-shadow: 0 3px 14px rgba(0, 0, 0, .65);
+      z-index: 15;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .25s cubic-bezier(.2, 1.6, .4, 1);
+      text-align: center;
+      white-space: nowrap;
+    }
+    #bigToast.aan { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    #hintDraai {
+      position: absolute;
+      bottom: 10px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(20, 30, 36, .9);
+      border: 1px solid var(--lijn);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--dim);
+      z-index: 15;
+      display: none;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    @media (orientation: portrait) and (pointer: coarse) {
+      #hintDraai.toon { display: block; }
+    }
+
+    /* ── Compact op smalle schermen ──────── */
+    @media (max-width: 620px) {
+      #app { padding-top: calc(env(safe-area-inset-top) + 5px); gap: 6px; }
+      .kaart { padding: 6px 8px; }
+      #klok { width: 60px; height: 60px; }
+      #scoreV { font-size: 18px; }
+      .chip { font-size: 11.5px; padding: 2px 8px; }
+      .iknop { width: 30px; height: 30px; font-size: 13px; border-radius: 8px; }
+      #stats { gap: 6px; }
+      #klokWrap .lbl { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+
+  <!-- /ART:CORE -->
+</head>
+<body>
+  <!-- ART:BODY -->
+  <div id="app">
+    <div id="hud">
+      <div id="orderCard" class="kaart">
+        <div class="lbl" id="orderLbl">Bestelling</div>
+        <div id="chips"></div>
+      </div>
+      <div id="klokWrap" class="kaart">
+        <canvas id="klok" width="74" height="74"></canvas>
+        <div class="lbl">Veilingklok</div>
+      </div>
+      <div id="stats" class="kaart">
+        <div class="kol">
+          <div id="scoreV">0</div>
+          <div id="lvlV">LVL 1</div>
+          <div id="livesV">❤️❤️❤️</div>
+        </div>
+        <div id="knoppen">
+          <button class="iknop" id="btnMute" aria-label="Geluid aan of uit">🔊</button>
+          <button class="iknop" id="btnPause" aria-label="Pauze">⏸</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="veld">
+      <canvas id="game"></canvas>
+      <div id="toast"></div>
+      <div id="bigToast"></div>
+      <div id="hintDraai">📱 Tip: draai je telefoon voor het beste zicht</div>
+
+      <div class="ov" id="ovStart">
+        <div class="paneel">
+          <div class="logoRij">🌷🚜🌻</div>
+          <h1 class="titel">Flora <span>Orderpicker</span></h1>
+          <div class="sub">Roya's veilinggame — pluk, koppel &amp; lever!</div>
+          <div class="stripes"></div>
+          <div class="stappen">
+            <div class="stap"><div class="ico">🛒</div><div>Rij tegen de <b>bloemenkarren</b> uit de bestelling — ze haken vanzelf aan je treintje.</div></div>
+            <div class="stap"><div class="ico">⏱️</div><div>Wees sneller dan de <b>veilingklok</b>: hoe hoger de klok nog staat, hoe meer bonus.</div></div>
+            <div class="stap"><div class="ico">🚚</div><div>Breng je treintje naar de <b>juiste dock</b>. Pas op voor de heftruck!</div></div>
+          </div>
+          <div class="besturing">
+            📱 <b>Sleep</b> met je duim over de vloer &nbsp;·&nbsp; ⌨️ of stuur met <b>pijltjes / WASD</b>
+          </div>
+          <div class="record" id="hsStart" hidden></div>
+          <button class="knop" id="btnStart">🚦 Start je dienst</button>
+        </div>
+      </div>
+
+      <div class="ov" id="ovOver" hidden>
+        <div class="paneel">
+          <div class="logoRij">💐</div>
+          <h1 class="titel" id="overKop">Einde dienst!</h1>
+          <div class="sub" id="overSub">Goed gewerkt, Roya! De veiling draait door…</div>
+          <div class="stripes"></div>
+          <div id="nieuwRecord" hidden>🎉 Nieuw record!</div>
+          <div class="eindStats">
+            <div class="es"><div class="v" id="eScore">0</div><div class="k">Punten</div></div>
+            <div class="es"><div class="v" id="eOrders">0</div><div class="k">Orders</div></div>
+            <div class="es"><div class="v" id="eLevel">1</div><div class="k">Level</div></div>
+          </div>
+          <div class="record" id="hsOver"></div>
+          <button class="knop" id="btnAgain">🔁 Nog een dienst</button>
+        </div>
+      </div>
+
+      <div class="ov" id="ovPauze" hidden>
+        <div class="paneel">
+          <div class="logoRij">☕</div>
+          <h1 class="titel">Pauze</h1>
+          <div class="sub">Even koffie bij de kantine.</div>
+          <div class="stripes"></div>
+          <button class="knop" id="btnVerder">▶️ Verder werken</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  'use strict';
+  /* ═══ Flora Orderpicker — Roya's veilinggame ═══ */
+
+  // ── Helpers ──────────────────────────────────
+  const TAU = Math.PI * 2;
+  const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+  const dist = (ax, ay, bx, by) => Math.hypot(bx - ax, by - ay);
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const choice = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function lerpAng(a, b, t) {
+    let d = ((b - a + Math.PI) % TAU + TAU) % TAU - Math.PI;
+    return a + d * clamp(t, 0, 1);
+  }
+  function rr(c, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  // ── DOM ──────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+  const veld = $('veld'), cv = $('game'), ctx = cv.getContext('2d');
+  const klokCv = $('klok'), kctx = klokCv.getContext('2d');
+  const elChips = $('chips'), elOrderLbl = $('orderLbl');
+  const elScore = $('scoreV'), elLvl = $('lvlV'), elLives = $('livesV');
+  const elToast = $('toast'), elBig = $('bigToast');
+  const EMOJIFONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+
+  // ── Wereld & layout ──────────────────────────
+  const W = 960, H = 640, WALL = 14, DOCK_Y2 = 88;
+  const FLOWERS = {
+    roos:  { naam: 'Rozen',        emoji: '🌹', kleur: '#e11d48' },
+    tulp:  { naam: 'Tulpen',       emoji: '🌷', kleur: '#ec4899' },
+    zon:   { naam: 'Zonnebloemen', emoji: '🌻', kleur: '#eab308' },
+    lelie: { naam: 'Lelies',       emoji: '🌺', kleur: '#a855f7' },
+    chrys: { naam: 'Chrysanten',   emoji: '🌼', kleur: '#fb923c' }
+  };
+  const TYPES = Object.keys(FLOWERS);
+  const DOCKS = [
+    { id: 'A', kleur: '#35c26b', x1: 70,  x2: 290 },
+    { id: 'B', kleur: '#4cc3f7', x1: 370, x2: 590 },
+    { id: 'C', kleur: '#ffb14a', x1: 670, x2: 890 }
+  ];
+  const RACKS = [
+    { x: 70,  y: 210, w: 350, h: 36 },
+    { x: 540, y: 210, w: 350, h: 36 },
+    { x: 70,  y: 400, w: 350, h: 36 },
+    { x: 540, y: 400, w: 350, h: 36 }
+  ];
+  const SOLIDS = [
+    { x: 0, y: 0, w: W, h: WALL },
+    { x: 0, y: H - WALL, w: W, h: WALL },
+    { x: 0, y: 0, w: WALL, h: H },
+    { x: W - WALL, y: 0, w: WALL, h: H }
+  ];
+  [[WALL, 70], [290, 370], [590, 670], [890, W - WALL]].forEach(([a, b]) =>
+    SOLIDS.push({ x: a, y: WALL, w: b - a, h: DOCK_Y2 - WALL }));
+  RACKS.forEach((r) => SOLIDS.push(r));
+  const SLOTS = [];
+  RACKS.forEach((rk) => {
+    for (let i = 0; i < 5; i++) {
+      const x = rk.x + 35 + i * 70;
+      SLOTS.push({ x, y: rk.y - 26 }, { x, y: rk.y + rk.h + 26 });
+    }
+  });
+  const GAP = 44;          // afstand tussen karren in het treintje
+  const KAR_R = 15;
+
+  // ── Audio ────────────────────────────────────
+  let AC = null, noiseBuf = null;
+  let muted = lsGet('floraMute') === '1';
+  function ensureAudio() {
+    if (AC) { if (AC.state === 'suspended') AC.resume(); return; }
+    try {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      noiseBuf = AC.createBuffer(1, AC.sampleRate * 0.2, AC.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    } catch (e) { AC = null; }
+  }
+  function bleep(freq, dur, type, vol, slide, delay) {
+    if (!AC || muted) return;
+    const t0 = AC.currentTime + (delay || 0);
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type || 'square';
+    o.frequency.setValueAtTime(freq, t0);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, freq + slide), t0 + dur);
+    g.gain.setValueAtTime(vol || 0.12, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+    o.connect(g); g.connect(AC.destination);
+    o.start(t0); o.stop(t0 + dur + 0.02);
+  }
+  function ruis(vol, dur) {
+    if (!AC || muted) return;
+    const s = AC.createBufferSource(), g = AC.createGain();
+    s.buffer = noiseBuf;
+    g.gain.setValueAtTime(vol, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + dur);
+    s.connect(g); g.connect(AC.destination);
+    s.start();
+  }
+  const snd = {
+    hook()    { bleep(660, .07, 'triangle', .18); bleep(920, .09, 'triangle', .18, 0, .06); },
+    nee()     { bleep(200, .09, 'square', .05); },
+    deliver() { [523, 659, 784, 1047].forEach((f, i) => bleep(f, .14, 'triangle', .16, 0, i * .08)); },
+    fail()    { bleep(320, .5, 'sawtooth', .14, -190); },
+    crash()   { ruis(.22, .18); bleep(95, .2, 'square', .18, -40); },
+    level()   { [523, 659, 784, 880, 1047].forEach((f, i) => bleep(f, .1, 'square', .1, 0, i * .06)); },
+    tick()    { bleep(1100, .03, 'square', .05); },
+    klik()    { bleep(500, .05, 'triangle', .1); }
+  };
+
+  // ── Spelstatus ───────────────────────────────
+  let scene = 'start';      // start | spel | over
+  let paused = false;
+  let score = 0, level = 1, lives = 3, ordersDone = 0;
+  let hs = parseInt(lsGet('floraHigh') || '0', 10) || 0;
+  let order = null, orderDelay = 0;
+  let carts = [], train = [], forklifts = [];
+  let floats = [], petals = [];
+  let shake = 0, tijd = 0;
+  const player = { x: 480, y: 560, ang: -Math.PI / 2, r: 16, speed: 240, stun: 0, invuln: 0 };
+  let trail = [];
+
+  // ── Orders & karren ──────────────────────────
+  function karrenVoorLevel(l) { return [2, 3, 3, 4, 4, 5, 5, 6][Math.min(l - 1, 7)]; }
+  function typesVoorLevel(l) { return Math.min(2 + Math.floor(l / 2), 5); }
+
+  function spawnOrder() {
+    const nKar = karrenVoorLevel(level);
+    const beschikbaar = TYPES.slice(0, typesVoorLevel(level));
+    const kTypes = Math.max(1, Math.min(3, beschikbaar.length, nKar, 1 + Math.floor(Math.random() * 3)));
+    const gekozen = shuffle(beschikbaar.slice()).slice(0, kTypes);
+    const nodig = {};
+    gekozen.forEach((t) => { nodig[t] = 1; });
+    for (let i = kTypes; i < nKar; i++) nodig[choice(gekozen)]++;
+    const sec = clamp(16 + 9 * nKar - 1.5 * (level - 1), 20, 70);
+    order = {
+      nodig,
+      geplukt: Object.fromEntries(gekozen.map((t) => [t, 0])),
+      dock: choice(DOCKS),
+      klok: 100,
+      rate: 100 / sec,
+      totaal: nKar
+    };
+    spawnCarts();
+    hudOrder();
+    hudKlok();
+  }
+
+  function spawnCarts() {
+    carts = [];
+    train = [];
+    const vrijeSlots = shuffle(SLOTS.slice());
+    let si = 0;
+    for (const t of Object.keys(order.nodig)) {
+      for (let i = 0; i < order.nodig[t]; i++) {
+        const s = vrijeSlots[si++];
+        carts.push(maakKar(t, s));
+      }
+    }
+    const nDis = Math.min(3 + level, 8, vrijeSlots.length - si);
+    for (let i = 0; i < nDis; i++) {
+      const s = vrijeSlots[si++];
+      carts.push(maakKar(choice(TYPES), s));
+    }
+  }
+  function maakKar(type, slot) {
+    return { type, x: slot.x, y: slot.y, ang: rand(-.2, .2), state: 'vrij', bump: 0, zei: 0, age: 0, fade: 0 };
+  }
+  function vrijeSlot() {
+    const bezet = carts.filter((c) => c.state === 'vrij');
+    const kandidaten = SLOTS.filter((s) => !bezet.some((c) => dist(c.x, c.y, s.x, s.y) < 20));
+    return kandidaten.length ? choice(kandidaten) : choice(SLOTS);
+  }
+  function orderCompleet() {
+    return order && Object.keys(order.nodig).every((t) => order.geplukt[t] >= order.nodig[t]);
+  }
+
+  function spawnForklifts() {
+    forklifts = [];
+    if (level >= 2) forklifts.push({ as: 'h', vast: 322, a: 90, b: 870, t: rand(200, 700), dir: 1, speed: 85 + 10 * level, x: 0, y: 322, ang: 0 });
+    if (level >= 4) forklifts.push({ as: 'v', vast: 480, a: 130, b: 500, t: rand(150, 480), dir: -1, speed: 70 + 9 * level, x: 480, y: 0, ang: 0 });
+  }
+
+  // ── Spelverloop ──────────────────────────────
+  function startGame() {
+    ensureAudio();
+    score = 0; level = 1; lives = 3; ordersDone = 0;
+    player.x = 480; player.y = 560; player.ang = -Math.PI / 2;
+    player.stun = 0; player.invuln = 0;
+    trail = [{ x: player.x, y: player.y }];
+    floats = []; petals = []; shake = 0; orderDelay = 0;
+    spawnForklifts();
+    spawnOrder();
+    hudStats();
+    $('ovStart').hidden = true;
+    $('ovOver').hidden = true;
+    $('ovPauze').hidden = true;
+    paused = false;
+    scene = 'spel';
+    $('hintDraai').classList.add('toon');
+    setTimeout(() => $('hintDraai').classList.remove('toon'), 4200);
+  }
+
+  function deliver() {
+    const bonus = Math.max(0, Math.round(order.klok));
+    const pts = 40 * order.totaal + bonus;
+    score += pts;
+    ordersDone++;
+    snd.deliver();
+    const dc = order.dock;
+    petalBurst((dc.x1 + dc.x2) / 2, 60);
+    floatText(player.x, player.y - 26, '+' + pts, '#ffe08a');
+    train.forEach((c) => { c.state = 'af'; c.age = 0; });
+    train = [];
+    toast('💐 Geleverd! +' + pts + ' punten');
+    if (ordersDone % 3 === 0) {
+      level++;
+      spawnForklifts();
+      snd.level();
+      setTimeout(() => bigToast('Level ' + level + '! 🚀'), 700);
+    }
+    order = null;
+    orderDelay = 1.0;
+    hudStats();
+    hudOrder();
+  }
+
+  function orderMislukt() {
+    lives--;
+    snd.fail();
+    shake = .4;
+    bigToast('Te laat! 😖');
+    train = [];
+    order = null;
+    hudStats();
+    hudOrder();
+    if (lives <= 0) { setTimeout(gameOver, 900); }
+    else { orderDelay = 1.4; }
+  }
+
+  function gameOver() {
+    scene = 'over';
+    const nieuw = score > hs;
+    if (nieuw) { hs = score; lsSet('floraHigh', String(hs)); }
+    $('overKop').textContent = nieuw ? 'Topdienst!' : 'Einde dienst!';
+    $('overSub').textContent = nieuw
+      ? 'Wauw Roya, jij bent de snelste orderpicker van de veiling! 🏆'
+      : 'Goed gewerkt, Roya! De veiling draait door…';
+    $('nieuwRecord').hidden = !nieuw;
+    $('eScore').textContent = score;
+    $('eOrders').textContent = ordersDone;
+    $('eLevel').textContent = level;
+    $('hsOver').textContent = '🏆 Record: ' + hs;
+    $('ovOver').hidden = false;
+  }
+
+  // ── HUD ──────────────────────────────────────
+  function hudStats() {
+    elScore.textContent = score;
+    elLvl.textContent = 'LVL ' + level;
+    elLives.textContent = '❤️'.repeat(Math.max(0, lives)) + '🤍'.repeat(Math.max(0, 3 - lives));
+  }
+  function hudOrder() {
+    if (!order) {
+      elOrderLbl.textContent = orderDelay > 0 && lives > 0 ? 'Nieuwe bestelling komt eraan…' : 'Bestelling';
+      elChips.innerHTML = '';
+      return;
+    }
+    elOrderLbl.textContent = 'Bestelling';
+    let html = '';
+    for (const t of Object.keys(order.nodig)) {
+      const f = FLOWERS[t];
+      const klaar = order.geplukt[t] >= order.nodig[t];
+      html += '<span class="chip' + (klaar ? ' done' : '') + '">' + f.emoji + ' ' + f.naam +
+        ' <span class="n">' + order.geplukt[t] + '/' + order.nodig[t] + '</span>' + (klaar ? ' ✓' : '') + '</span>';
+    }
+    html += '<span class="chip" id="dockChip" style="background:' + order.dock.kleur + '">→ DOCK ' + order.dock.id + '</span>';
+    elChips.innerHTML = html;
+    if (orderCompleet()) $('dockChip').classList.add('klaar');
+  }
+  let toastTimer = 0;
+  function toast(txt) {
+    elToast.textContent = txt;
+    elToast.classList.add('aan');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => elToast.classList.remove('aan'), 1900);
+  }
+  let bigTimer = 0;
+  function bigToast(txt) {
+    elBig.textContent = txt;
+    elBig.classList.add('aan');
+    clearTimeout(bigTimer);
+    bigTimer = setTimeout(() => elBig.classList.remove('aan'), 1500);
+  }
+  function floatText(x, y, txt, kleur) {
+    floats.push({ x, y, txt, kleur: kleur || '#fff', age: 0 });
+  }
+  function petalBurst(x, y) {
+    const kleuren = ['#e11d48', '#ec4899', '#eab308', '#a855f7', '#fb923c', '#f2f4ef'];
+    for (let i = 0; i < 26; i++) {
+      petals.push({
+        x, y,
+        vx: rand(-90, 90), vy: rand(-160, -20),
+        rot: rand(0, TAU), vr: rand(-4, 4),
+        kleur: choice(kleuren), age: 0, max: rand(.9, 1.7), size: rand(3, 5.5)
+      });
+    }
+  }
+
+  // ── Veilingklok (HUD-canvas) ─────────────────
+  function hudKlok() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const cssW = klokCv.clientWidth || 74;
+    if (klokCv.width !== Math.round(cssW * dpr)) {
+      klokCv.width = klokCv.height = Math.round(cssW * dpr);
+    }
+    const s = klokCv.width, c = s / 2, r = s / 2 - 2 * dpr;
+    kctx.setTransform(1, 0, 0, 1, 0, 0);
+    kctx.clearRect(0, 0, s, s);
+    kctx.beginPath(); kctx.arc(c, c, r, 0, TAU);
+    kctx.fillStyle = '#1a252c'; kctx.fill();
+    kctx.lineWidth = 1.5 * dpr; kctx.strokeStyle = 'rgba(255,255,255,.16)'; kctx.stroke();
+    // streepjes
+    for (let i = 0; i < 20; i++) {
+      const a = -Math.PI / 2 + (i / 20) * TAU;
+      const lang = i % 5 === 0;
+      kctx.beginPath();
+      kctx.moveTo(c + Math.cos(a) * (r - (lang ? 7 : 4) * dpr), c + Math.sin(a) * (r - (lang ? 7 : 4) * dpr));
+      kctx.lineTo(c + Math.cos(a) * (r - 1.5 * dpr), c + Math.sin(a) * (r - 1.5 * dpr));
+      kctx.strokeStyle = 'rgba(255,255,255,' + (lang ? .5 : .22) + ')';
+      kctx.lineWidth = (lang ? 1.6 : 1) * dpr;
+      kctx.stroke();
+    }
+    const f = order ? clamp(order.klok / 100, 0, 1) : 0;
+    if (order) {
+      const kleur = f > .5 ? '#35c26b' : f > .25 ? '#ffc93c' : '#ff5c48';
+      const wijzer = -Math.PI / 2 + (1 - f) * TAU;
+      // resterende boog
+      kctx.beginPath();
+      kctx.arc(c, c, r - 4.5 * dpr, wijzer, -Math.PI / 2 + TAU);
+      kctx.strokeStyle = kleur; kctx.lineWidth = 3.2 * dpr; kctx.lineCap = 'round';
+      kctx.stroke();
+      // wijzer
+      kctx.beginPath();
+      kctx.moveTo(c, c);
+      kctx.lineTo(c + Math.cos(wijzer) * (r - 6 * dpr), c + Math.sin(wijzer) * (r - 6 * dpr));
+      kctx.strokeStyle = '#f2f4ef'; kctx.lineWidth = 1.6 * dpr; kctx.stroke();
+      kctx.beginPath(); kctx.arc(c, c, 2.2 * dpr, 0, TAU); kctx.fillStyle = '#f2f4ef'; kctx.fill();
+      // getal
+      kctx.textAlign = 'center';
+      kctx.fillStyle = kleur;
+      kctx.font = '800 ' + 15 * dpr + 'px ' + getComputedStyle(document.body).fontFamily;
+      kctx.fillText(String(Math.max(0, Math.ceil(order.klok))), c, c + r * .62);
+    } else {
+      kctx.textAlign = 'center';
+      kctx.font = 22 * dpr + 'px ' + EMOJIFONT;
+      kctx.fillStyle = '#35c26b';
+      kctx.fillText(scene === 'spel' ? '✅' : '🌷', c, c + 8 * dpr);
+    }
+  }
+
+  // ── Invoer ───────────────────────────────────
+  const keys = new Set();
+  window.addEventListener('keydown', (e) => {
+    const k = e.key.toLowerCase();
+    if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(k)) e.preventDefault();
+    if (k === 'p' || k === 'escape') { togglePauze(); return; }
+    keys.add(k);
+  });
+  window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
+
+  let joy = null;   // { id, ox, oy, dx, dy } in schermpixels
+  let view = { scale: 1, offX: 0, offY: 0, dpr: 1 };
+  veld.addEventListener('pointerdown', (e) => {
+    if (scene !== 'spel' || paused) return;
+    if (e.target.closest('.iknop')) return;
+    joy = { id: e.pointerId, ox: e.clientX, oy: e.clientY, dx: 0, dy: 0 };
+    try { veld.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  veld.addEventListener('pointermove', (e) => {
+    if (!joy || e.pointerId !== joy.id) return;
+    joy.dx = e.clientX - joy.ox;
+    joy.dy = e.clientY - joy.oy;
+    const m = Math.hypot(joy.dx, joy.dy), MAX = 58;
+    if (m > MAX) { joy.dx *= MAX / m; joy.dy *= MAX / m; }
+  });
+  const joyEnd = (e) => { if (joy && e.pointerId === joy.id) joy = null; };
+  veld.addEventListener('pointerup', joyEnd);
+  veld.addEventListener('pointercancel', joyEnd);
+
+  function inputDir() {
+    if (joy) {
+      const m = Math.hypot(joy.dx, joy.dy);
+      if (m < 8) return { x: 0, y: 0 };
+      return { x: joy.dx / 58, y: joy.dy / 58 };
+    }
+    let x = 0, y = 0;
+    if (keys.has('arrowleft') || keys.has('a')) x -= 1;
+    if (keys.has('arrowright') || keys.has('d')) x += 1;
+    if (keys.has('arrowup') || keys.has('w')) y -= 1;
+    if (keys.has('arrowdown') || keys.has('s')) y += 1;
+    const m = Math.hypot(x, y);
+    if (m > 1) { x /= m; y /= m; }
+    return { x, y };
+  }
+
+  function togglePauze() {
+    if (scene !== 'spel') return;
+    paused = !paused;
+    $('ovPauze').hidden = !paused;
+    snd.klik();
+  }
+  $('btnPause').addEventListener('click', togglePauze);
+  $('btnVerder').addEventListener('click', togglePauze);
+  $('btnMute').addEventListener('click', () => {
+    muted = !muted;
+    lsSet('floraMute', muted ? '1' : '0');
+    $('btnMute').textContent = muted ? '🔇' : '🔊';
+    if (!muted) { ensureAudio(); snd.klik(); }
+  });
+  $('btnMute').textContent = muted ? '🔇' : '🔊';
+  $('btnStart').addEventListener('click', startGame);
+  $('btnAgain').addEventListener('click', startGame);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && scene === 'spel' && !paused) togglePauze();
+  });
+
+  // ── Physics ──────────────────────────────────
+  function botsRects(px, py, r) {
+    for (const s of SOLIDS) {
+      const cx = clamp(px, s.x, s.x + s.w), cy = clamp(py, s.y, s.y + s.h);
+      const dx = px - cx, dy = py - cy, d2 = dx * dx + dy * dy;
+      if (d2 < r * r) {
+        if (d2 === 0) { py = s.y - r; continue; }
+        const d = Math.sqrt(d2), duw = (r - d) / d;
+        px += dx * duw; py += dy * duw;
+      }
+    }
+    return [px, py];
+  }
+  function pointAtDist(d) {
+    let acc = 0;
+    for (let i = 0; i < trail.length - 1; i++) {
+      const a = trail[i], b = trail[i + 1];
+      const seg = dist(a.x, a.y, b.x, b.y);
+      if (acc + seg >= d && seg > 0) {
+        const t = (d - acc) / seg;
+        return {
+          x: a.x + (b.x - a.x) * t,
+          y: a.y + (b.y - a.y) * t,
+          ang: Math.atan2(a.y - b.y, a.x - b.x)
+        };
+      }
+      acc += seg;
+    }
+    const last = trail[trail.length - 1] || player;
+    return { x: last.x, y: last.y, ang: player.ang };
+  }
+
+  // ── Update ───────────────────────────────────
+  let prevKlok = 100;
+  function update(dt) {
+    tijd += dt;
+    // besturing
+    const dir = inputDir();
+    if (player.stun > 0) { player.stun -= dt; }
+    else if (dir.x || dir.y) {
+      const m = Math.hypot(dir.x, dir.y);
+      const sp = player.speed * Math.min(1, m);
+      player.x += (dir.x / (m || 1)) * sp * dt;
+      player.y += (dir.y / (m || 1)) * sp * dt;
+      player.ang = lerpAng(player.ang, Math.atan2(dir.y, dir.x), 14 * dt);
+    }
+    player.x = clamp(player.x, WALL + player.r, W - WALL - player.r);
+    player.y = clamp(player.y, WALL + player.r, H - WALL - player.r);
+    [player.x, player.y] = botsRects(player.x, player.y, player.r);
+    if (player.invuln > 0) player.invuln -= dt;
+
+    // spoor bijhouden
+    const kop = trail[0];
+    if (!kop || dist(kop.x, kop.y, player.x, player.y) > 2.5) {
+      trail.unshift({ x: player.x, y: player.y });
+      let tot = 0;
+      for (let i = 0; i < trail.length - 1; i++) {
+        tot += dist(trail[i].x, trail[i].y, trail[i + 1].x, trail[i + 1].y);
+        if (tot > 8 * GAP) { trail.length = i + 2; break; }
+      }
+    }
+
+    // karren
+    for (const c of carts) {
+      if (c.bump > 0) c.bump -= dt;
+      if (c.zei > 0) c.zei -= dt;
+      if (c.state === 'af') { c.age += dt; continue; }
+      if (c.state === 'vrij' && order && orderDelay <= 0) {
+        const d = dist(player.x, player.y, c.x, c.y);
+        if (d < player.r + KAR_R + 4) {
+          const nodig = order.nodig[c.type] != null && order.geplukt[c.type] < order.nodig[c.type];
+          if (nodig) {
+            c.state = 'gehaakt';
+            train.push(c);
+            order.geplukt[c.type]++;
+            snd.hook();
+            floatText(c.x, c.y - 20, FLOWERS[c.type].emoji + ' aangehaakt!', '#c9f2d9');
+            hudOrder();
+            if (orderCompleet()) { toast('Alles compleet! Naar dock ' + order.dock.id + ' →'); snd.klik(); }
+          } else {
+            // niet nodig: duw speler terug
+            const dd = d || .001;
+            const min = player.r + KAR_R + 4;
+            player.x = c.x + (player.x - c.x) / dd * min;
+            player.y = c.y + (player.y - c.y) / dd * min;
+            c.bump = .3;
+            if (c.zei <= 0) { floatText(c.x, c.y - 20, 'Niet nodig!', '#ffb0a6'); c.zei = 1.6; snd.nee(); }
+          }
+        }
+      }
+    }
+    carts = carts.filter((c) => !(c.state === 'af' && c.age > .8));
+    // treintje volgt het spoor
+    for (let i = 0; i < train.length; i++) {
+      const doel = pointAtDist((i + 1) * GAP);
+      const c = train[i];
+      const f = Math.min(1, 10 * dt);
+      c.x += (doel.x - c.x) * f;
+      c.y += (doel.y - c.y) * f;
+      c.ang = doel.ang;
+    }
+
+    // heftrucks
+    for (const f of forklifts) {
+      f.t += f.dir * f.speed * dt;
+      if (f.t < f.a) { f.t = f.a; f.dir = 1; }
+      if (f.t > f.b) { f.t = f.b; f.dir = -1; }
+      if (f.as === 'h') { f.x = f.t; f.y = f.vast; f.ang = f.dir > 0 ? 0 : Math.PI; }
+      else { f.x = f.vast; f.y = f.t; f.ang = f.dir > 0 ? Math.PI / 2 : -Math.PI / 2; }
+      if (player.invuln <= 0 && dist(player.x, player.y, f.x, f.y) < player.r + 18) {
+        player.stun = .7; player.invuln = 2; shake = .35;
+        snd.crash();
+        if (order) order.klok = Math.max(2, order.klok - 6);
+        if (train.length) {
+          const c = train.pop();
+          c.state = 'vrij';
+          const s = vrijeSlot();
+          c.x = s.x; c.y = s.y; c.bump = .4;
+          order.geplukt[c.type]--;
+          hudOrder();
+          floatText(player.x, player.y - 24, '💥 Kar losgeschoten!', '#ffb0a6');
+        } else {
+          floatText(player.x, player.y - 24, '💥 Au!', '#ffb0a6');
+        }
+      }
+    }
+
+    // leveren
+    if (order && orderCompleet()) {
+      const dk = order.dock;
+      if (player.y < 104 && player.x > dk.x1 + 6 && player.x < dk.x2 - 6) deliver();
+    }
+
+    // klok
+    if (order && orderDelay <= 0) {
+      order.klok -= order.rate * dt;
+      if (order.klok <= 10 && Math.ceil(order.klok) !== Math.ceil(prevKlok)) snd.tick();
+      prevKlok = order.klok;
+      if (order.klok <= 0) orderMislukt();
+    }
+    if (orderDelay > 0) {
+      orderDelay -= dt;
+      if (orderDelay <= 0 && scene === 'spel' && lives > 0) { spawnOrder(); }
+    }
+
+    // effecten
+    for (const p of petals) {
+      p.age += dt;
+      p.vy += 260 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.rot += p.vr * dt;
+    }
+    petals = petals.filter((p) => p.age < p.max);
+    for (const fl of floats) fl.age += dt;
+    floats = floats.filter((fl) => fl.age < 1.1);
+    if (shake > 0) shake -= dt;
+  }
+
+  // ── Achtergrond (één keer vooraf getekend) ───
+  const bg = document.createElement('canvas');
+  bg.width = W * 2; bg.height = H * 2;
+  (function tekenBg() {
+    const b = bg.getContext('2d');
+    b.scale(2, 2);
+    // vloer
+    b.fillStyle = '#d8d4ca';
+    b.fillRect(0, 0, W, H);
+    b.strokeStyle = 'rgba(30,45,55,.06)';
+    b.lineWidth = 1;
+    for (let x = 0; x <= W; x += 78) { b.beginPath(); b.moveTo(x, 0); b.lineTo(x, H); b.stroke(); }
+    for (let y = 0; y <= H; y += 78) { b.beginPath(); b.moveTo(0, y); b.lineTo(W, y); b.stroke(); }
+    // halnummer op de vloer
+    b.fillStyle = 'rgba(30,45,55,.06)';
+    b.font = '900 92px ' + getComputedStyle(document.body).fontFamily;
+    b.textAlign = 'center';
+    b.fillText('HAL 3', 480, 355);
+    // rijbaan-markering middenpad
+    b.strokeStyle = 'rgba(214,158,20,.55)';
+    b.lineWidth = 3;
+    b.setLineDash([16, 12]);
+    [428, 532].forEach((x) => { b.beginPath(); b.moveTo(x, 100); b.lineTo(x, 615); b.stroke(); });
+    b.setLineDash([]);
+    // laadpunt onderin
+    b.strokeStyle = 'rgba(214,158,20,.7)';
+    b.lineWidth = 2.5;
+    b.setLineDash([10, 7]);
+    b.strokeRect(430, 566, 100, 52);
+    b.setLineDash([]);
+    b.font = '700 11px ' + getComputedStyle(document.body).fontFamily;
+    b.fillStyle = 'rgba(120,95,15,.75)';
+    b.fillText('⚡ LAADPUNT', 480, 600);
+    // dockzones
+    for (const d of DOCKS) {
+      b.fillStyle = d.kleur + '22';
+      b.fillRect(d.x1, WALL, d.x2 - d.x1, DOCK_Y2 - WALL);
+      b.strokeStyle = d.kleur + 'cc';
+      b.lineWidth = 2;
+      b.setLineDash([9, 6]);
+      b.strokeRect(d.x1 + 3, WALL + 3, d.x2 - d.x1 - 6, DOCK_Y2 - WALL - 4);
+      b.setLineDash([]);
+      // rolluik van de vrachtwagen
+      b.fillStyle = '#5b6a75';
+      b.fillRect(d.x1 + 10, WALL + 2, d.x2 - d.x1 - 20, 20);
+      b.strokeStyle = 'rgba(0,0,0,.25)';
+      b.lineWidth = 1;
+      for (let y = WALL + 6; y < WALL + 21; y += 4) {
+        b.beginPath(); b.moveTo(d.x1 + 10, y); b.lineTo(d.x2 - 10, y); b.stroke();
+      }
+      // letter
+      const cx = (d.x1 + d.x2) / 2;
+      b.beginPath(); b.arc(cx, 56, 13, 0, TAU);
+      b.fillStyle = d.kleur; b.fill();
+      b.fillStyle = '#14212a';
+      b.font = '900 15px ' + getComputedStyle(document.body).fontFamily;
+      b.fillText(d.id, cx, 61);
+      b.font = '800 8.5px ' + getComputedStyle(document.body).fontFamily;
+      b.fillStyle = 'rgba(20,33,42,.85)';
+      b.fillText('DOCK', cx, 78);
+    }
+    // stellingen (racks)
+    for (const r of RACKS) {
+      b.fillStyle = '#5b6a75';
+      b.fillRect(r.x, r.y, r.w, r.h);
+      b.strokeStyle = '#3c4a54';
+      b.lineWidth = 2;
+      b.strokeRect(r.x, r.y, r.w, r.h);
+      const kleuren = Object.values(FLOWERS).map((f) => f.kleur);
+      for (let x = r.x + 8; x < r.x + r.w - 14; x += 19) {
+        b.fillStyle = kleuren[Math.floor(Math.random() * kleuren.length)] + 'bb';
+        b.fillRect(x, r.y + 7, 13, 9);
+        b.fillStyle = 'rgba(255,255,255,.25)';
+        b.fillRect(x, r.y + 21, 13, 8);
+      }
+    }
+    // muren + dock-stubs
+    b.fillStyle = '#33424c';
+    b.fillRect(0, 0, W, WALL);
+    b.fillRect(0, H - WALL, W, WALL);
+    b.fillRect(0, 0, WALL, H);
+    b.fillRect(W - WALL, 0, WALL, H);
+    [[WALL, 70], [290, 370], [590, 670], [890, W - WALL]].forEach(([a, c2]) => {
+      b.fillRect(a, WALL, c2 - a, DOCK_Y2 - WALL);
+    });
+    // hazard-rand onderaan de stubs
+    [[WALL, 70], [290, 370], [590, 670], [890, W - WALL]].forEach(([a, c2]) => {
+      b.save();
+      b.beginPath();
+      b.rect(a, DOCK_Y2 - 5, c2 - a, 5);
+      b.clip();
+      b.fillStyle = '#ffc93c';
+      b.fillRect(a, DOCK_Y2 - 5, c2 - a, 5);
+      b.fillStyle = '#23303a';
+      for (let x = a - 10; x < c2 + 10; x += 12) {
+        b.beginPath();
+        b.moveTo(x, DOCK_Y2); b.lineTo(x + 6, DOCK_Y2 - 5); b.lineTo(x + 12, DOCK_Y2 - 5); b.lineTo(x + 6, DOCK_Y2);
+        b.closePath(); b.fill();
+      }
+      b.restore();
+    });
+  })();
+
+  // ── Tekenen ──────────────────────────────────
+  function resize() {
+    const r = veld.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    cv.width = Math.max(1, Math.round(r.width * dpr));
+    cv.height = Math.max(1, Math.round(r.height * dpr));
+    view.dpr = dpr;
+    view.scale = Math.min(r.width / W, r.height / H);
+    view.offX = (r.width - W * view.scale) / 2;
+    view.offY = (r.height - H * view.scale) / 2;
+  }
+  window.addEventListener('resize', resize);
+
+  function schaduw(x, y, rx, ry) {
+    ctx.beginPath();
+    ctx.ellipse(x, y + 4, rx, ry, 0, 0, TAU);
+    ctx.fillStyle = 'rgba(25,35,42,.18)';
+    ctx.fill();
+  }
+
+  function tekenKar(c) {
+    const f = FLOWERS[c.type];
+    const wiebel = c.bump > 0 ? Math.sin(c.bump * 40) * .08 : 0;
+    let alpha = 1, schaal = 1;
+    if (c.state === 'af') { alpha = 1 - c.age / .8; schaal = 1 - c.age * .4; }
+    schaduw(c.x, c.y + 6, 16, 6);
+    ctx.save();
+    ctx.translate(c.x, c.y);
+    ctx.rotate(c.ang + wiebel);
+    ctx.scale(schaal, schaal);
+    ctx.globalAlpha = alpha;
+    rr(ctx, -15, -11, 30, 22, 4);
+    ctx.fillStyle = '#dde3e8'; ctx.fill();
+    ctx.strokeStyle = '#78868f'; ctx.lineWidth = 1.5; ctx.stroke();
+    [[-12, -13], [7, -13], [-12, 11], [7, 11]].forEach(([wx, wy]) => {
+      ctx.fillStyle = '#3c4a54';
+      ctx.fillRect(wx, wy - 1, 5, 3);
+    });
+    rr(ctx, -11, -7.5, 22, 15, 3);
+    ctx.fillStyle = f.kleur + '66'; ctx.fill();
+    ctx.strokeStyle = f.kleur; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(c.x, c.y);
+    ctx.scale(schaal, schaal);
+    ctx.font = '17px ' + EMOJIFONT;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(f.emoji, 0, 1);
+    ctx.restore();
+  }
+
+  function tekenTug() {
+    const p = player;
+    if (p.invuln > 0 && Math.sin(tijd * 22) > 0.2) return;  // knipperen na botsing
+    schaduw(p.x, p.y + 7, 19, 7);
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.ang);
+    // trekhaak
+    ctx.fillStyle = '#37474f';
+    ctx.fillRect(-23, -3, 7, 6);
+    // wielen
+    ctx.fillStyle = '#26323a';
+    ctx.fillRect(-14, -15, 9, 4); ctx.fillRect(-14, 11, 9, 4);
+    ctx.fillRect(7, -15, 9, 4);   ctx.fillRect(7, 11, 9, 4);
+    // carrosserie
+    rr(ctx, -18, -13, 36, 26, 8);
+    ctx.fillStyle = '#ff5c39'; ctx.fill();
+    ctx.strokeStyle = '#b23c20'; ctx.lineWidth = 2; ctx.stroke();
+    // voorbumper
+    ctx.fillStyle = '#7a2a14';
+    ctx.fillRect(14, -10, 5, 20);
+    // koplampen
+    ctx.fillStyle = '#fff3c4';
+    ctx.beginPath(); ctx.arc(16.5, -6.5, 2.2, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(16.5, 6.5, 2.2, 0, TAU); ctx.fill();
+    // stuurconsole
+    ctx.fillStyle = '#4a2317';
+    rr(ctx, 3, -8, 7, 16, 2); ctx.fill();
+    // Roya: hesje + helm
+    ctx.fillStyle = '#d9f24b';
+    rr(ctx, -13, -7.5, 9, 15, 3); ctx.fill();
+    ctx.beginPath(); ctx.arc(-6, 0, 6.2, 0, TAU);
+    ctx.fillStyle = '#ffc93c'; ctx.fill();
+    ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 1.3; ctx.stroke();
+    ctx.restore();
+  }
+
+  function tekenForklift(f) {
+    schaduw(f.x, f.y + 6, 18, 7);
+    ctx.save();
+    ctx.translate(f.x, f.y);
+    ctx.rotate(f.ang);
+    // vorken
+    ctx.fillStyle = '#8d99a3';
+    ctx.fillRect(15, -8, 13, 3.5);
+    ctx.fillRect(15, 4.5, 13, 3.5);
+    // lijf
+    rr(ctx, -16, -12, 31, 24, 5);
+    ctx.fillStyle = '#ffc93c'; ctx.fill();
+    ctx.strokeStyle = '#8a6d1f'; ctx.lineWidth = 2; ctx.stroke();
+    // cabine
+    ctx.fillStyle = '#2f3b42';
+    rr(ctx, -12, -8, 13, 16, 3); ctx.fill();
+    // zwaailamp
+    const puls = .5 + .5 * Math.sin(tijd * 9);
+    ctx.beginPath(); ctx.arc(-3, 0, 3, 0, TAU);
+    ctx.fillStyle = 'rgba(255,120,20,' + (0.45 + 0.55 * puls) + ')';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function render() {
+    const { scale, offX, offY, dpr } = view;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    let sx = 0, sy = 0;
+    if (shake > 0) { sx = rand(-1, 1) * 9 * shake; sy = rand(-1, 1) * 9 * shake; }
+    ctx.setTransform(scale * dpr, 0, 0, scale * dpr, (offX + sx) * dpr, (offY + sy) * dpr);
+    ctx.drawImage(bg, 0, 0, W, H);
+
+    // koppellijnen van het treintje
+    if (train.length) {
+      ctx.strokeStyle = '#4a5a64';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      let vx = player.x - Math.cos(player.ang) * 20;
+      let vy = player.y - Math.sin(player.ang) * 20;
+      for (const c of train) {
+        ctx.beginPath();
+        ctx.moveTo(vx, vy);
+        ctx.lineTo(c.x, c.y);
+        ctx.stroke();
+        vx = c.x; vy = c.y;
+      }
+    }
+
+    // ring om karren die je nog nodig hebt
+    if (order && orderDelay <= 0) {
+      const puls = 2 + Math.sin(tijd * 4) * 1.6;
+      for (const c of carts) {
+        if (c.state !== 'vrij') continue;
+        if (order.nodig[c.type] == null || order.geplukt[c.type] >= order.nodig[c.type]) continue;
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, 22 + puls, 0, TAU);
+        ctx.strokeStyle = FLOWERS[c.type].kleur + 'aa';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([7, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    for (const c of carts) if (c.state !== 'gehaakt') tekenKar(c);
+    for (const c of train) tekenKar(c);
+    for (const f of forklifts) tekenForklift(f);
+    tekenTug();
+
+    // pijl naar de dock zodra alles compleet is
+    if (order && orderCompleet()) {
+      const d = order.dock;
+      const cx = (d.x1 + d.x2) / 2;
+      const y = 108 + Math.sin(tijd * 5.5) * 6;
+      ctx.beginPath();
+      ctx.moveTo(cx, y - 8);
+      ctx.lineTo(cx - 12, y + 8);
+      ctx.lineTo(cx + 12, y + 8);
+      ctx.closePath();
+      ctx.fillStyle = d.kleur;
+      ctx.strokeStyle = '#14212a';
+      ctx.lineWidth = 2;
+      ctx.fill(); ctx.stroke();
+    }
+
+    // bloemblaadjes
+    for (const p of petals) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = clamp(1 - p.age / p.max, 0, 1);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.size, p.size * .55, 0, 0, TAU);
+      ctx.fillStyle = p.kleur;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // zwevende teksten
+    ctx.textAlign = 'center';
+    for (const fl of floats) {
+      ctx.globalAlpha = clamp(1 - fl.age, 0, 1);
+      ctx.font = '800 13px ' + getComputedStyle(document.body).fontFamily;
+      ctx.fillStyle = fl.kleur;
+      ctx.fillText(fl.txt, fl.x, fl.y - fl.age * 26);
+    }
+    ctx.globalAlpha = 1;
+
+    // joystick
+    if (joy) {
+      const r = veld.getBoundingClientRect();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const jx = joy.ox - r.left, jy = joy.oy - r.top;
+      ctx.beginPath(); ctx.arc(jx, jy, 44, 0, TAU);
+      ctx.fillStyle = 'rgba(255,255,255,.09)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.28)'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(jx + joy.dx, jy + joy.dy, 20, 0, TAU);
+      ctx.fillStyle = 'rgba(255,255,255,.26)'; ctx.fill();
+    }
+  }
+
+  // ── Hoofdlus ─────────────────────────────────
+  let vorige = performance.now();
+  function loop(nu) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.05, (nu - vorige) / 1000);
+    vorige = nu;
+    if (scene === 'spel' && !paused) update(dt);
+    render();
+    hudKlok();
+  }
+
+  // start
+  if (hs > 0) { $('hsStart').hidden = false; $('hsStart').textContent = '🏆 Record: ' + hs; }
+  resize();
+  requestAnimationFrame(loop);
+
+  // debug-haakjes voor tests
+  window.__flora = {
+    get scene() { return scene; },
+    get score() { return score; },
+    get level() { return level; },
+    get lives() { return lives; },
+    get ordersDone() { return ordersDone; },
+    get order() { return order; },
+    get carts() { return carts; },
+    get train() { return train; },
+    get player() { return player; },
+    tp(x, y) { player.x = x; player.y = y; trail.unshift({ x, y }); },
+    zetKlok(v) { if (order) order.klok = v; },
+    start() { startGame(); }
+  };
+  </script>
+  <!-- /ART:BODY -->
+</body>
+</html>

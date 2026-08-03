@@ -27,6 +27,20 @@ te zappen, ontwijk de weerstanden, verzamel bliksems (+2) en verbeter je
 record. Ook installeerbaar als eigen app (paars bliksem-icoon) via
 Safari → Deel → "Zet op beginscherm".
 
+## 🌷 Flora Orderpicker — Roya's veilinggame
+
+Op **https://rojhatmeet-crypto.github.io/Roy070/flora/** staat Flora
+Orderpicker: een spelletje geïnspireerd op het werk van een orderpicker bij
+de bloemenveiling. Rij met je elektrotrekker door de hal, haak de
+bloemenkarren uit de bestelling aan je treintje en lever ze bij de juiste
+dock vóór de veilingklok afloopt. Hoe hoger de klok nog staat, hoe meer
+bonuspunten. Vanaf level 2 rijdt er een heftruck rond — niet tegenaan
+botsen, anders schiet je laatste kar los!
+
+Besturing: slepen met je duim (telefoon) of pijltjes/WASD (toetsenbord).
+Ook installeerbaar als eigen app (tulp-icoon) via Safari → Deel →
+"Zet op beginscherm".
+
 ## ✏️ Nog invullen
 
 De contactknoppen bevatten **placeholder-nummers**. Vervang in `index.html`:
