@@ -16,6 +16,31 @@ Draait op GitHub Pages (gratis, vaste URL, automatisch HTTPS). Elke push
 naar een branch uit `.github/workflows/deploy-pages.yml` wordt na 1 à 2
 minuten automatisch live gezet.
 
+## 📤 De site delen
+
+De site staat gewoon op internet, dus delen is niets meer dan de link
+doorsturen:
+
+**https://rojhatmeet-crypto.github.io/Roy070/**
+
+- **Appen of mailen:** plak de link in WhatsApp, een sms of een mail. De
+  ontvanger heeft niets nodig: geen account, geen app.
+- **QR-code:** `assets/qr-website.png` bevat een QR-code met het logo erin.
+  Laat hem zien op je scherm of print hem; met de camera van de telefoon gaat
+  de site open. Handig op een visitekaartje, de bus of een offerte.
+- **Laten zien op je telefoon:** open de link in Safari of Chrome en kies
+  Delen → "Zet op beginscherm". De site staat dan als app op je scherm.
+
+Iedereen met de link kan de site bekijken; om hem te wijzigen is toegang tot
+deze GitHub-repo nodig.
+
+### Later een eigen domeinnaam
+
+Wil je `www.imelektro.nl` in plaats van het github.io-adres? Koop de
+domeinnaam (ongeveer 10 euro per jaar), zet een bestand `CNAME` met daarin de
+domeinnaam in deze repo en laat de domeinnaam bij je provider naar GitHub
+Pages wijzen. De site zelf hoeft daar niet voor te veranderen.
+
 ## ✏️ Nog invullen (placeholders)
 
 Alle contactgegevens staan nu als placeholder in `index.html`. Zoek op
@@ -63,6 +88,7 @@ door foto's met dezelfde naam (liggend, ongeveer 900 x 675 pixels; `hero.jpg`
 | `index.html` | De complete website (HTML, CSS en JavaScript in één bestand) |
 | `assets/logo.png` | Het I&M Elektro-logo |
 | `assets/foto/` | Foto's van de site + `BRONNEN.md` met de herkomst |
+| `assets/qr-website.png` | QR-code naar de site, met logo in het midden |
 | `icons/` | App-iconen gemaakt van het logo (192, 512, maskable, apple-touch) |
 | `manifest.webmanifest` | Web app manifest (app-modus) |
 | `sw.js` | Service worker (offline/cache) |
