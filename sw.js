@@ -1,8 +1,9 @@
-const CACHE = "im-elektra-v1";
+const CACHE = "im-elektro-v2";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./assets/logo.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png"
