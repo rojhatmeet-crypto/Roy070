@@ -24,7 +24,10 @@ doorsturen:
 **https://rojhatmeet-crypto.github.io/Roy070/**
 
 - **Appen of mailen:** plak de link in WhatsApp, een sms of een mail. De
-  ontvanger heeft niets nodig: geen account, geen app.
+  ontvanger heeft niets nodig: geen account, geen app. WhatsApp laat er
+  automatisch een voorvertoning bij zien met het logo en een foto; die
+  afbeelding staat in `assets/og-afbeelding.jpg` en wordt geregeld via de
+  `og:`-tags bovenin `index.html`.
 - **QR-code:** `assets/qr-website.png` bevat een QR-code met het logo erin.
   Laat hem zien op je scherm of print hem; met de camera van de telefoon gaat
   de site open. Handig op een visitekaartje, de bus of een offerte.
@@ -89,6 +92,7 @@ door foto's met dezelfde naam (liggend, ongeveer 900 x 675 pixels; `hero.jpg`
 | `assets/logo.png` | Het I&M Elektro-logo |
 | `assets/foto/` | Foto's van de site + `BRONNEN.md` met de herkomst |
 | `assets/qr-website.png` | QR-code naar de site, met logo in het midden |
+| `assets/og-afbeelding.jpg` | Voorvertoning bij delen via WhatsApp en social media |
 | `icons/` | App-iconen gemaakt van het logo (192, 512, maskable, apple-touch) |
 | `manifest.webmanifest` | Web app manifest (app-modus) |
 | `sw.js` | Service worker (offline/cache) |
