@@ -1,4 +1,4 @@
-const CACHE = "im-elektro-v3";
+const CACHE = "im-elektro-v4";
 const ASSETS = [
   "./",
   "./index.html",
