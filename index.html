@@ -1,861 +1,613 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>I&amp;M Elektro – Laagspanningsinstallaties, saneren en storingen</title>
-  <meta name="description" content="I&M Elektro is uw elektrotechnisch installateur voor laagspanningsinstallaties, het saneren van verouderde installaties, groepenkasten, storingen, keuringen (NEN 1010 / NEN 3140), verlichting en laadpalen. Voor particulier, VvE, utiliteit en industrie.">
-  <meta name="keywords" content="elektricien, elektrotechnisch installateur, laagspanning, laagspanningsinstallatie, saneren elektra, groepenkast, storing, NEN 1010, NEN 3140, laadpaal, verlichting">
-  <meta property="og:title" content="I&M Elektro – Elektrotechnisch installateur">
-  <meta property="og:description" content="Laagspanningsinstallaties, saneren, groepenkasten, storingen en keuringen. Vakwerk voor woning, VvE en bedrijf.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="icons/icon-512.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I&amp;M Elektro | Elektricien voor laagspanning, saneren en storingen</title>
+<meta name="description" content="I&M Elektro is uw elektricien voor laagspanningsinstallaties, het saneren van oude elektra, groepenkasten, storingen, keuringen, verlichting en laadpalen. Voor woningen, VvE's en bedrijven.">
+<meta property="og:title" content="I&M Elektro | Elektricien voor laagspanning en saneren">
+<meta property="og:description" content="Laagspanningsinstallaties, saneren van oude elektra, groepenkasten, storingen en keuringen.">
+<meta property="og:image" content="assets/foto/hero.jpg">
+<meta property="og:type" content="website">
 
-  <!-- App-modus (standalone) op iPhone / Android -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="I&M Elektro">
-  <meta name="theme-color" content="#013064">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="I&M Elektro">
+<meta name="theme-color" content="#013064">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
 
-  <style>
-    :root {
-      --navy: #013064;
-      --navy-dark: #02224a;
-      --navy-light: #0a4a8f;
-      --yellow: #fdcb1c;
-      --yellow-dark: #e5b400;
-      --ink: #14213d;
-      --text: #2b3a55;
-      --muted: #5f6f8a;
-      --line: #e3e8f0;
-      --bg: #ffffff;
-      --bg-soft: #f4f7fb;
-      --radius: 14px;
-      --shadow: 0 10px 30px rgba(1, 48, 100, .10);
-      --container: 1140px;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      min-height: 100dvh;
-    }
-    img { max-width: 100%; height: auto; display: block; }
-    section, .cta-band, #offerte { scroll-margin-top: 96px; }
-    a { color: var(--navy); }
-    h1, h2, h3, h4 { color: var(--ink); line-height: 1.2; }
-    .container { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 20px; }
-    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+<style>
+:root{
+  --navy:#013064;
+  --navy-d:#011f3f;
+  --geel:#fdcb1c;
+  --tekst:#333;
+  --grijs:#666;
+  --lijn:#dcdcdc;
+  --vlak:#f2f4f7;
+  --max:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Helvetica Neue",Helvetica,Arial,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:var(--tekst);line-height:1.65;font-size:16px;background:#fff;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:#013064}
+h1,h2,h3{color:#111;line-height:1.25;font-weight:700}
+h2{font-size:1.65rem;margin-bottom:14px}
+h3{font-size:1.1rem;margin-bottom:6px}
+p{margin-bottom:14px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 18px}
+.blok{padding:48px 0}
+.blok.grijs{background:var(--vlak)}
+.blok.lijn-boven{border-top:1px solid var(--lijn)}
+section{scroll-margin-top:80px}
 
-    /* ---------- Buttons ---------- */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1rem;
-      text-decoration: none; border: 2px solid transparent; cursor: pointer;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-      font-family: inherit;
-    }
-    .btn:active { transform: translateY(1px); }
-    .btn svg { width: 20px; height: 20px; flex: none; }
-    .btn-yellow { background: var(--yellow); color: var(--navy-dark); box-shadow: 0 6px 18px rgba(253, 203, 28, .35); }
-    .btn-yellow:hover { background: var(--yellow-dark); }
-    .btn-navy { background: var(--navy); color: #fff; }
-    .btn-navy:hover { background: var(--navy-light); }
-    .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
-    .btn-outline:hover { background: rgba(255,255,255,.1); }
-    .btn-outline-navy { background: transparent; color: var(--navy); border-color: var(--navy); }
-    .btn-outline-navy:hover { background: var(--navy); color: #fff; }
+.knop{
+  display:inline-block;padding:13px 22px;font-weight:700;text-decoration:none;
+  border-radius:4px;border:2px solid transparent;font-size:1rem;text-align:center;
+}
+.knop-geel{background:var(--geel);color:#222;border-color:var(--geel)}
+.knop-geel:hover{background:#e9b911;border-color:#e9b911}
+.knop-blauw{background:var(--navy);color:#fff;border-color:var(--navy)}
+.knop-blauw:hover{background:#024a94;border-color:#024a94}
+.knop-wit{background:transparent;color:#fff;border-color:#fff}
+.knop-wit:hover{background:#fff;color:var(--navy)}
 
-    /* ---------- Topbar ---------- */
-    .topbar {
-      background: var(--navy-dark); color: #dbe6f5; font-size: .85rem;
-      padding: calc(env(safe-area-inset-top) + 6px) 0 6px;
-    }
-    .topbar .container { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-    .topbar a { color: #fff; text-decoration: none; font-weight: 600; }
-    .topbar .spoed { display: inline-flex; align-items: center; gap: 8px; }
-    .topbar .spoed .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 4px rgba(253,203,28,.25); }
-    .topbar .right { display: none; gap: 22px; }
+/* balk bovenaan */
+.balk{background:var(--navy);color:#fff;font-size:.86rem;padding:calc(env(safe-area-inset-top) + 7px) 0 7px}
+.balk .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.balk a{color:#fff;text-decoration:none}
+.balk .rechts{display:none;gap:20px}
 
-    /* ---------- Header / nav ---------- */
-    header.site {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(255,255,255,.96); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-    }
-    header.site .container { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand img { height: 46px; width: auto; }
-    .brand .brand-text { display: none; line-height: 1.1; }
-    .brand .brand-text strong { display: block; color: var(--navy); font-size: 1.15rem; letter-spacing: .02em; }
-    .brand .brand-text span { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; }
+/* koptekst */
+.kop{background:#fff;border-bottom:1px solid var(--lijn);position:sticky;top:0;z-index:40}
+.kop .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.logo img{height:44px;width:auto}
+.logo b{display:none;color:var(--navy);font-size:1.05rem}
+.menu{display:none}
+.menu ul{list-style:none;display:flex;gap:4px;align-items:center}
+.menu a{display:block;padding:8px 12px;color:#222;text-decoration:none;font-size:.95rem}
+.menu a:hover{color:var(--navy);text-decoration:underline}
+.menu .tel{font-weight:700;color:var(--navy);white-space:nowrap}
+.burger{width:44px;height:42px;border:1px solid var(--lijn);border-radius:4px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.burger i{display:block;width:20px;height:2px;background:#222;position:relative}
+.burger i:before,.burger i:after{content:"";position:absolute;left:0;width:20px;height:2px;background:#222}
+.burger i:before{top:-6px}.burger i:after{top:6px}
+body.open .burger i{background:transparent}
+body.open .burger i:before{top:0;transform:rotate(45deg)}
+body.open .burger i:after{top:0;transform:rotate(-45deg)}
+.uitklap{display:none;background:#fff;border-bottom:1px solid var(--lijn);position:sticky;top:72px;z-index:39}
+body.open .uitklap{display:block}
+.uitklap ul{list-style:none;padding:6px 18px 16px}
+.uitklap a{display:block;padding:13px 0;border-bottom:1px solid var(--lijn);color:#222;text-decoration:none;font-weight:600}
+.uitklap .knop{display:block;margin-top:14px}
 
-    nav.main { display: none; }
-    nav.main ul { list-style: none; display: flex; gap: 6px; align-items: center; }
-    nav.main a {
-      display: block; padding: 10px 14px; text-decoration: none; color: var(--ink);
-      font-weight: 600; font-size: .95rem; border-radius: 8px;
-    }
-    nav.main a:hover { background: var(--bg-soft); color: var(--navy); }
-    nav.main .btn { padding: 11px 18px; font-size: .95rem; margin-left: 8px; }
+/* hero met foto */
+.hero{position:relative;background:#011f3f}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .over{position:relative;background:linear-gradient(90deg,rgba(1,32,66,.88) 0%,rgba(1,32,66,.80) 55%,rgba(1,32,66,.55) 100%);padding:56px 0 52px}
+.hero h1{color:#fff;font-size:clamp(1.7rem,5.2vw,2.6rem);margin-bottom:14px;max-width:16em}
+.hero p{color:#e6ecf4;max-width:34em;font-size:1.05rem}
+.hero .knoppen{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero .streep{width:60px;height:4px;background:var(--geel);margin-bottom:20px}
 
-    .hamburger {
-      width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 10px;
-      background: #fff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
-    }
-    .hamburger span { position: relative; width: 22px; height: 2px; background: var(--navy); border-radius: 2px; transition: .2s; }
-    .hamburger span::before, .hamburger span::after {
-      content: ""; position: absolute; left: 0; width: 22px; height: 2px; background: var(--navy); border-radius: 2px; transition: .2s;
-    }
-    .hamburger span::before { top: -7px; } .hamburger span::after { top: 7px; }
-    body.menu-open .hamburger span { background: transparent; }
-    body.menu-open .hamburger span::before { transform: translateY(7px) rotate(45deg); }
-    body.menu-open .hamburger span::after { transform: translateY(-7px) rotate(-45deg); }
+/* strook met punten */
+.punten{background:var(--navy);color:#fff}
+.punten ul{list-style:none;display:grid;gap:4px;padding:16px 0}
+.punten li{padding-left:26px;position:relative;font-size:.95rem}
+.punten li:before{content:"";position:absolute;left:1px;top:.6em;width:14px;height:8px;border:2px solid var(--geel);border-top:0;border-right:0;transform:rotate(-45deg)}
 
-    .mobile-menu {
-      display: none; position: fixed; inset: 72px 0 0 0; z-index: 49; background: #fff;
-      padding: 12px 20px calc(env(safe-area-inset-bottom) + 20px); overflow-y: auto;
-    }
-    body.menu-open .mobile-menu { display: block; }
-    body.menu-open { overflow: hidden; }
-    .mobile-menu ul { list-style: none; }
-    .mobile-menu li a {
-      display: block; padding: 16px 4px; font-size: 1.15rem; font-weight: 600; color: var(--ink);
-      text-decoration: none; border-bottom: 1px solid var(--line);
-    }
-    .mobile-menu .menu-cta { display: grid; gap: 10px; margin-top: 20px; }
+/* intro */
+.intro p{font-size:1.05rem;max-width:44em}
 
-    /* ---------- Hero ---------- */
-    .hero {
-      position: relative; overflow: hidden; color: #fff;
-      background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-light) 100%);
-      padding: 56px 0 64px;
-    }
-    .hero::before {
-      content: ""; position: absolute; inset: 0; pointer-events: none;
-      background:
-        radial-gradient(600px 300px at 90% -10%, rgba(253,203,28,.18), transparent 60%),
-        repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 18px);
-    }
-    .hero .container { position: relative; display: grid; gap: 36px; }
-    .hero .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px; font-size: .8rem; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); margin-bottom: 18px;
-    }
-    .hero .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--yellow); }
-    .hero h1 { color: #fff; font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -.01em; margin-bottom: 18px; }
-    .hero h1 em { font-style: normal; color: var(--yellow); }
-    .hero p.lead { color: #d5e0f0; font-size: 1.1rem; max-width: 560px; margin-bottom: 30px; }
-    .hero .cta { display: flex; flex-wrap: wrap; gap: 12px; }
-    .hero .badges { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 30px; color: #c9d7ea; font-size: .9rem; }
-    .hero .badges span { display: inline-flex; align-items: center; gap: 8px; }
-    .hero .badges svg { width: 18px; height: 18px; color: var(--yellow); }
-    .hero .logo-card {
-      background: #fff; border-radius: 20px; padding: 28px; box-shadow: 0 25px 60px rgba(0,0,0,.35);
-      display: flex; align-items: center; justify-content: center; max-width: 380px; margin: 0 auto;
-    }
-    .hero .logo-card img { width: 100%; max-width: 300px; }
+/* diensten met foto's */
+.diensten{display:grid;gap:22px}
+.dienst{border:1px solid var(--lijn);background:#fff}
+.dienst img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.dienst .tekst{padding:16px 18px 20px}
+.dienst p{color:var(--grijs);font-size:.95rem;margin-bottom:0}
+.ookvoor{margin-top:26px;background:#fff;border-left:4px solid var(--geel);padding:14px 18px;font-size:.96rem}
 
-    /* ---------- Stats strip ---------- */
-    .stats { background: var(--yellow); }
-    .stats .container { display: grid; grid-template-columns: repeat(2, 1fr); }
-    .stats div { padding: 18px 8px; text-align: center; color: var(--navy-dark); }
-    .stats strong { display: block; font-size: 1.5rem; font-weight: 800; line-height: 1.1; }
-    .stats small { font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+/* twee kolommen */
+.duo{display:grid;gap:26px}
+.duo .fotos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo .fotos figure{margin:0}
+.duo .fotos img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.duo .fotos figcaption{font-size:.82rem;color:var(--grijs);padding-top:5px}
+ul.vink{list-style:none;margin:0 0 18px}
+ul.vink li{padding:6px 0 6px 26px;position:relative}
+ul.vink li:before{content:"";position:absolute;left:2px;top:1.05em;width:13px;height:7px;border:2px solid var(--navy);border-top:0;border-right:0;transform:rotate(-45deg)}
 
-    /* ---------- Sections ---------- */
-    section { padding: 64px 0; }
-    section.soft { background: var(--bg-soft); }
-    .section-head { max-width: 680px; margin-bottom: 36px; }
-    .section-head .kicker { color: var(--navy-light); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; margin-bottom: 8px; display: block; }
-    .section-head h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 800; margin-bottom: 12px; }
-    .section-head h2::after { content: ""; display: block; width: 56px; height: 4px; background: var(--yellow); border-radius: 2px; margin-top: 14px; }
-    .section-head p { color: var(--muted); font-size: 1.05rem; }
-    .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
-    .section-head.center h2::after { margin-left: auto; margin-right: auto; }
+/* werkwijze */
+.stappen{list-style:none;counter-reset:n;display:grid;gap:18px}
+.stappen li{counter-increment:n;padding-left:52px;position:relative}
+.stappen li:before{
+  content:counter(n);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;
+  background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;
+}
+.stappen p{margin:0;color:var(--grijs);font-size:.95rem}
 
-    /* ---------- Diensten ---------- */
-    .services { display: grid; gap: 16px; grid-template-columns: 1fr; }
-    .service {
-      background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; display: flex; flex-direction: column; gap: 12px;
-    }
-    .service:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: transparent; }
-    .service .icon {
-      width: 54px; height: 54px; border-radius: 12px; background: var(--navy); color: var(--yellow);
-      display: inline-flex; align-items: center; justify-content: center;
-    }
-    .service .icon svg { width: 28px; height: 28px; }
-    .service h3 { font-size: 1.12rem; }
-    .service p { color: var(--muted); font-size: .95rem; }
-    .service ul { list-style: none; margin-top: 4px; }
-    .service li { font-size: .9rem; padding: 4px 0 4px 22px; position: relative; color: var(--text); }
-    .service li::before { content: ""; position: absolute; left: 0; top: 11px; width: 12px; height: 12px; border-radius: 50%; background: var(--yellow); box-shadow: inset 0 0 0 3px #fff, 0 0 0 1px var(--yellow); }
-    .service.featured { background: var(--navy); border-color: var(--navy); color: #dbe6f5; }
-    .service.featured h3 { color: #fff; }
-    .service.featured p, .service.featured li { color: #dbe6f5; }
-    .service.featured .icon { background: var(--yellow); color: var(--navy); }
-    .service.featured li::before { box-shadow: inset 0 0 0 3px var(--navy), 0 0 0 1px var(--yellow); }
+/* over ons */
+.over{display:grid;gap:24px}
+.over img{width:100%;object-fit:cover}
 
-    /* ---------- Saneren / laagspanning uitleg ---------- */
-    .split { display: grid; gap: 32px; align-items: center; }
-    .split .text h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; margin-bottom: 14px; }
-    .split .text p { color: var(--muted); margin-bottom: 14px; }
-    .checklist { list-style: none; margin: 18px 0 26px; display: grid; gap: 10px; }
-    .checklist li { display: flex; gap: 12px; align-items: flex-start; }
-    .checklist svg { flex: none; width: 22px; height: 22px; color: var(--navy); background: rgba(253,203,28,.35); border-radius: 50%; padding: 3px; margin-top: 2px; }
-    .panel {
-      background: var(--navy); color: #fff; border-radius: 20px; padding: 28px; position: relative; overflow: hidden;
-    }
-    .panel::after { content: ""; position: absolute; right: -40px; top: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(253,203,28,.15); }
-    .panel h3 { color: var(--yellow); font-size: 1.05rem; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
-    .panel ol { padding-left: 0; list-style: none; display: grid; gap: 14px; counter-reset: s; position: relative; }
-    .panel ol li { display: flex; gap: 14px; align-items: flex-start; counter-increment: s; }
-    .panel ol li::before {
-      content: counter(s); flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); color: var(--navy-dark);
-      font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-size: .95rem;
-    }
-    .panel ol li strong { display: block; color: #fff; }
-    .panel ol li span { color: #cfdcee; font-size: .92rem; }
+/* sectoren */
+.sect-lijst{list-style:none;display:grid;gap:10px;margin-top:6px}
+.sect-lijst li{padding:12px 14px;background:#fff;border:1px solid var(--lijn)}
+.sect-lijst b{display:block}
+.sect-lijst span{font-size:.9rem;color:var(--grijs)}
 
-    /* ---------- Werkwijze ---------- */
-    .steps { display: grid; gap: 18px; grid-template-columns: 1fr; counter-reset: step; }
-    .step { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 22px; position: relative; counter-increment: step; }
-    .step::before {
-      content: "0" counter(step); font-size: 2.6rem; font-weight: 800; color: rgba(1,48,100,.08); position: absolute; right: 18px; top: 8px; line-height: 1;
-    }
-    .step .num { width: 40px; height: 40px; border-radius: 10px; background: var(--yellow); color: var(--navy-dark); font-weight: 800; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-    .step h3 { font-size: 1.08rem; margin-bottom: 6px; }
-    .step p { color: var(--muted); font-size: .95rem; }
+/* oproep */
+.oproep{background:var(--navy);color:#fff;padding:36px 0}
+.oproep h2{color:#fff;margin-bottom:6px}
+.oproep p{color:#d5e0ee}
+.oproep .knoppen{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 
-    /* ---------- Sectoren ---------- */
-    .sectors { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
-    .sector { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 18px; text-align: center; }
-    .sector svg { width: 36px; height: 36px; color: var(--navy); margin: 0 auto 10px; }
-    .sector h3 { font-size: 1rem; margin-bottom: 4px; }
-    .sector p { font-size: .85rem; color: var(--muted); }
+/* contact */
+.contact{display:grid;gap:28px}
+.gegevens{background:#fff;border:1px solid var(--lijn);padding:20px}
+.gegevens dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin-bottom:18px}
+.gegevens dt{font-weight:700;color:#111}
+.gegevens dd{margin:0}
+.gegevens a{color:var(--navy)}
+.tijden{border-top:1px solid var(--lijn);padding-top:14px;font-size:.95rem}
+.tijden table{width:100%;border-collapse:collapse}
+.tijden td{padding:3px 0}
+.tijden td+td{text-align:right;font-weight:600}
+.tip{margin-top:16px;background:var(--vlak);padding:12px 14px;font-size:.9rem}
 
-    /* ---------- Over ons / USP ---------- */
-    .usps { display: grid; gap: 14px; grid-template-columns: 1fr; }
-    .usp { display: flex; gap: 14px; align-items: flex-start; background: #fff; border-radius: var(--radius); border: 1px solid var(--line); padding: 18px; }
-    .usp .i { flex: none; width: 44px; height: 44px; border-radius: 10px; background: rgba(253,203,28,.25); color: var(--navy); display: inline-flex; align-items: center; justify-content: center; }
-    .usp .i svg { width: 24px; height: 24px; }
-    .usp h3 { font-size: 1rem; margin-bottom: 4px; }
-    .usp p { color: var(--muted); font-size: .92rem; }
+form{background:#fff;border:1px solid var(--lijn);padding:20px}
+label{display:block;font-weight:600;font-size:.92rem;margin-bottom:5px}
+.veld{margin-bottom:14px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #bbb;border-radius:3px;font:inherit;background:#fff;color:#222}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--navy);outline-offset:-1px;border-color:var(--navy)}
+textarea{min-height:110px;resize:vertical}
+.verstuur{display:grid;gap:10px;margin-top:6px}
+.verstuur button{cursor:pointer;font-family:inherit}
+.klein{font-size:.85rem;color:var(--grijs);margin:10px 0 0}
 
-    /* ---------- CTA band ---------- */
-    .cta-band { background: linear-gradient(135deg, var(--navy-dark), var(--navy)); color: #fff; padding: 52px 0; }
-    .cta-band .container { display: grid; gap: 22px; align-items: center; }
-    .cta-band h2 { color: #fff; font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; }
-    .cta-band p { color: #cfdcee; margin-top: 8px; }
-    .cta-band .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+/* voet */
+.voet{background:#011f3f;color:#c3cfdf;padding:36px 0 calc(env(safe-area-inset-bottom) + 92px);font-size:.93rem}
+.voet .kolommen{display:grid;gap:24px}
+.voet h4{color:#fff;font-size:1rem;margin-bottom:8px}
+.voet ul{list-style:none;display:grid;gap:5px}
+.voet a{color:#dbe5f1;text-decoration:none}
+.voet a:hover{text-decoration:underline}
+.voet .vlogo{background:#fff;padding:10px;width:140px;margin-bottom:12px}
+.voet .onder{margin-top:26px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);font-size:.83rem;color:#93a6bf;display:grid;gap:4px}
 
-    /* ---------- Contact / offerte ---------- */
-    .contact-grid { display: grid; gap: 28px; }
-    .contact-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
-    .contact-card h3 { font-size: 1.15rem; margin-bottom: 16px; }
-    .contact-list { list-style: none; display: grid; gap: 14px; }
-    .contact-list li { display: flex; gap: 14px; align-items: flex-start; }
-    .contact-list .i { flex: none; width: 42px; height: 42px; border-radius: 10px; background: var(--navy); color: var(--yellow); display: inline-flex; align-items: center; justify-content: center; }
-    .contact-list .i svg { width: 22px; height: 22px; }
-    .contact-list strong { display: block; color: var(--ink); font-size: .95rem; }
-    .contact-list a, .contact-list span { color: var(--text); text-decoration: none; font-size: .95rem; }
-    .contact-list a:hover { color: var(--navy); text-decoration: underline; }
-    .hours { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .92rem; }
-    .hours table { width: 100%; border-collapse: collapse; }
-    .hours td { padding: 4px 0; color: var(--text); }
-    .hours td:last-child { text-align: right; font-weight: 600; color: var(--ink); }
+/* belbalk mobiel */
+.belbalk{position:fixed;left:0;right:0;bottom:0;z-index:38;display:grid;grid-template-columns:1fr 1fr;padding-bottom:env(safe-area-inset-bottom)}
+.belbalk a{padding:13px;text-align:center;font-weight:700;text-decoration:none;font-size:.97rem}
+.belbalk .b{background:var(--geel);color:#222}
+.belbalk .w{background:#25d366;color:#fff}
 
-    form .row { display: grid; gap: 14px; margin-bottom: 14px; }
-    label { display: block; font-weight: 600; font-size: .9rem; color: var(--ink); margin-bottom: 6px; }
-    input, select, textarea {
-      width: 100%; padding: 13px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font: inherit; color: var(--ink);
-      background: #fff; -webkit-appearance: none; appearance: none;
-    }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(1,48,100,.15); }
-    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23013064' stroke-width='2'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
-    textarea { min-height: 120px; resize: vertical; }
-    .form-actions { display: grid; gap: 10px; margin-top: 8px; }
-    .form-note { font-size: .82rem; color: var(--muted); margin-top: 12px; }
+.appttip{display:none}
+body:not(.appmodus) .appttip{display:block}
 
-    /* ---------- Footer ---------- */
-    footer.site { background: var(--navy-dark); color: #b9c8de; padding: 48px 0 calc(env(safe-area-inset-bottom) + 96px); font-size: .92rem; }
-    footer.site .cols { display: grid; gap: 28px; }
-    footer.site h4 { color: #fff; font-size: 1rem; margin-bottom: 12px; }
-    footer.site ul { list-style: none; display: grid; gap: 8px; }
-    footer.site a { color: #dbe6f5; text-decoration: none; }
-    footer.site a:hover { color: var(--yellow); }
-    footer.site .flogo { background: #fff; border-radius: 12px; padding: 12px; width: 150px; margin-bottom: 14px; }
-    footer.site .bottom { margin-top: 32px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: .82rem; color: #8fa3c0; }
-
-    /* ---------- Mobile sticky call bar ---------- */
-    .callbar {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-      background: var(--line); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom);
-    }
-    .callbar a { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; font-weight: 700; text-decoration: none; font-size: .95rem; }
-    .callbar a svg { width: 20px; height: 20px; }
-    .callbar .call { background: var(--yellow); color: var(--navy-dark); }
-    .callbar .wa { background: #25d366; color: #fff; }
-
-    /* ---------- Install hint (alleen in browser, niet in app-modus) ---------- */
-    .install { display: none; background: #fff; border: 1px dashed var(--navy); border-radius: var(--radius); padding: 20px; margin-top: 28px; font-size: .95rem; }
-    .install strong { color: var(--navy); }
-    body:not(.standalone) .install.ios { display: block; }
-
-    /* =========================================================
-       DESKTOP / TABLET
-       ========================================================= */
-    @media (min-width: 640px) {
-      .services { grid-template-columns: repeat(2, 1fr); }
-      .steps { grid-template-columns: repeat(2, 1fr); }
-      .usps { grid-template-columns: repeat(2, 1fr); }
-      .stats .container { grid-template-columns: repeat(4, 1fr); }
-      form .row.two { grid-template-columns: 1fr 1fr; }
-      .form-actions { grid-template-columns: 1fr 1fr; }
-      footer.site .cols { grid-template-columns: 1fr 1fr; }
-      .brand .brand-text { display: block; }
-    }
-    @media (min-width: 900px) {
-      .topbar .right { display: flex; }
-      nav.main { display: block; }
-      .hamburger, .mobile-menu, .callbar { display: none !important; }
-      footer.site { padding-bottom: 40px; }
-      header.site .container { height: 84px; }
-      .brand img { height: 56px; }
-      .hero { padding: 96px 0 104px; }
-      .hero .container { grid-template-columns: 1.15fr .85fr; align-items: center; gap: 56px; }
-      .hero .logo-card { margin: 0 0 0 auto; }
-      section { padding: 88px 0; }
-      .services { grid-template-columns: repeat(4, 1fr); }
-      .steps { grid-template-columns: repeat(4, 1fr); }
-      .sectors { grid-template-columns: repeat(4, 1fr); }
-      .usps { grid-template-columns: repeat(3, 1fr); }
-      .split { grid-template-columns: 1.1fr .9fr; gap: 56px; }
-      .cta-band .container { grid-template-columns: 1fr auto; }
-      .contact-grid { grid-template-columns: .9fr 1.1fr; gap: 36px; }
-      footer.site .cols { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
-    }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .service:hover { transform: none; } }
-  </style>
+@media (min-width:640px){
+  .diensten{grid-template-columns:1fr 1fr}
+  .stappen{grid-template-columns:1fr 1fr;gap:22px 28px}
+  .sect-lijst{grid-template-columns:1fr 1fr}
+  .voet .kolommen{grid-template-columns:1fr 1fr}
+  .verstuur{grid-template-columns:1fr 1fr}
+  .logo b{display:block}
+  .punten ul{grid-template-columns:1fr 1fr}
+}
+@media (min-width:900px){
+  body{font-size:17px}
+  h2{font-size:2rem}
+  .blok{padding:64px 0}
+  .balk .rechts{display:flex}
+  .menu{display:block}
+  .burger,.uitklap,.belbalk{display:none!important}
+  .hero .over{padding:104px 0 96px}
+  .punten ul{grid-template-columns:repeat(4,1fr);padding:18px 0}
+  .diensten{grid-template-columns:repeat(3,1fr);gap:26px}
+  .duo{grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+  .stappen{grid-template-columns:repeat(4,1fr)}
+  .over{grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center}
+  .contact{grid-template-columns:1fr 1.2fr;gap:36px;align-items:start}
+  .voet .kolommen{grid-template-columns:1.4fr 1fr 1fr 1fr}
+  .voet{padding-bottom:36px}
+  .voet .onder{display:flex;justify-content:space-between}
+  .oproep .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px}
+  .oproep .knoppen{margin-top:0}
+}
+</style>
 </head>
 <body>
 
-  <!-- SVG-iconen (één keer gedefinieerd, hergebruikt via <use>) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-      <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.7a2 2 0 0 1 1.7 2z"/></symbol>
-      <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.3c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.3 8.3 0 1 1 12 20.3z"/></symbol>
-      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
-      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></symbol>
-      <symbol id="i-bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h8l-1 8 11-13h-8l1-7z"/></symbol>
-      <symbol id="i-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h3"/><circle cx="16" cy="16" r="1.2" fill="currentColor"/></symbol>
-      <symbol id="i-sanitize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21 12 12"/><path d="M14 4l6 6-4 4-6-6z"/><path d="M17 7l3-3"/><path d="M8 14l2 2"/></symbol>
-      <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
-      <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 2h6v4H9z"/><path d="m8.5 13 2 2 4.5-4.5"/></symbol>
-      <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M15.1 14.5A6 6 0 1 0 8.9 14.5c.5.5.8 1.1 1 1.8l.1.7h4l.1-.7c.2-.7.5-1.3 1-1.8z"/></symbol>
-      <symbol id="i-ev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="12" height="14" rx="2"/><path d="M6 3h6v4H6z"/><path d="M15 11h2a2 2 0 0 1 2 2v3a2 2 0 0 0 4 0v-5l-3-3"/><path d="m9 11-2 4h4l-2 4"/></symbol>
-      <symbol id="i-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4M5 16v-2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"/></symbol>
-      <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v11h14V10"/><path d="M10 21v-6h4v6"/></symbol>
-      <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M8 6h2M14 6h2M8 10h2M14 10h2M8 14h2M14 14h2M10 22v-4h4v4"/></symbol>
-      <symbol id="i-factory" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21V9l6 4V9l6 4V9l6 4v8z"/><path d="M6 21v-4M12 21v-4M18 21v-4"/><path d="M17 3h3v6"/></symbol>
-      <symbol id="i-vve" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-5h6v5"/><path d="M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></symbol>
-      <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></symbol>
-      <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-      <symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6a7 7 0 0 0-11 5.5A7 7 0 0 0 18 18"/><path d="M4 10h10M4 14h10"/></symbol>
-      <symbol id="i-broom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 3-7.5 7.5"/><path d="M11 10c-3 0-6 2-7 6l-1 5 5-1c4-1 6-4 6-7z"/><path d="M6 17l3-3"/></symbol>
-      <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></symbol>
-      <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-5-6.7"/></symbol>
-    </defs>
-  </svg>
+<div class="balk">
+  <div class="wrap">
+    <span>Storing? Bel ons, ook buiten kantooruren.</span>
+    <div class="rechts">
+      <!-- PLACEHOLDER: echte telefoonnummer -->
+      <a href="tel:+31600000000">06 - 00 00 00 00</a>
+      <!-- PLACEHOLDER: echt e-mailadres -->
+      <a href="mailto:info@imelektro.nl">info@imelektro.nl</a>
+    </div>
+  </div>
+</div>
 
-  <!-- ================= TOPBAR ================= -->
-  <div class="topbar">
-    <div class="container">
-      <span class="spoed"><span class="dot"></span> Storingsdienst bereikbaar &ndash; ook buiten kantooruren</span>
-      <div class="right">
-        <!-- PLACEHOLDER: vervang +31600000000 door het echte telefoonnummer -->
-        <a href="tel:+31600000000">06 - 00 00 00 00</a>
-        <!-- PLACEHOLDER: vervang door het echte e-mailadres -->
-        <a href="mailto:info@imelektro.nl">info@imelektro.nl</a>
+<header class="kop">
+  <div class="wrap">
+    <a class="logo" href="#boven"><img src="assets/logo.png" alt="I&amp;M Elektro" width="640" height="499"><b>I&amp;M Elektro</b></a>
+    <nav class="menu">
+      <ul>
+        <li><a href="#diensten">Diensten</a></li>
+        <li><a href="#saneren">Saneren</a></li>
+        <li><a href="#werkwijze">Werkwijze</a></li>
+        <li><a href="#over-ons">Over ons</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a class="tel" href="tel:+31600000000">06 - 00 00 00 00</a></li>
+      </ul>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="uitklap"><i></i></button>
+  </div>
+</header>
+
+<div class="uitklap" id="uitklap">
+  <ul>
+    <li><a href="#diensten">Diensten</a></li>
+    <li><a href="#saneren">Saneren van oude elektra</a></li>
+    <li><a href="#werkwijze">Werkwijze</a></li>
+    <li><a href="#over-ons">Over ons</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="padding:0 18px 18px">
+    <a class="knop knop-geel" href="#offerte">Offerte aanvragen</a>
+  </div>
+</div>
+
+<main id="boven">
+
+  <div class="hero">
+    <img class="bg" src="assets/foto/hero.jpg" alt="Monteur van I&amp;M Elektro werkt aan een verdeelkast" width="1800" height="1100">
+    <div class="over">
+      <div class="wrap">
+        <div class="streep"></div>
+        <h1>Elektricien voor laagspanning, saneren en storingen</h1>
+        <p>Van een verouderde meterkast vervangen tot een complete installatie in een bedrijfspand. Wij doen het werk zelf, leggen uit wat we doen en leveren netjes op.</p>
+        <div class="knoppen">
+          <a class="knop knop-geel" href="#offerte">Offerte aanvragen</a>
+          <a class="knop knop-wit" href="tel:+31600000000">Bel 06 - 00 00 00 00</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ================= HEADER ================= -->
-  <header class="site">
-    <div class="container">
-      <a class="brand" href="#top" aria-label="I&M Elektro – naar boven">
-        <img src="assets/logo.png" alt="I&M Elektro logo" width="640" height="499">
-        <span class="brand-text"><strong>I&amp;M Elektro</strong><span>Elektrotechnisch installateur</span></span>
-      </a>
-      <nav class="main" aria-label="Hoofdmenu">
+  <div class="punten">
+    <div class="wrap">
+      <ul>
+        <li>Werk volgens NEN 1010</li>
+        <li>Vaste prijs vooraf</li>
+        <li>Meetrapport bij oplevering</li>
+        <li>Storingen met voorrang</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="blok intro">
+    <div class="wrap">
+      <h2>Waar wij voor gebeld worden</h2>
+      <p>I&amp;M Elektro is een elektrotechnisch installatiebedrijf. Het grootste deel van ons werk zit in laagspanningsinstallaties: alles achter de meter, tot 1000 volt. Daarnaast saneren we veel verouderde installaties, want in oudere woningen en panden komen we nog regelmatig stoffen bedrading, te weinig groepen of een kast zonder aardlekschakelaar tegen.</p>
+      <p>Of het nu om één stopcontact gaat of om de complete elektra van een verbouwing: u krijgt vooraf een duidelijke prijs en u weet wanneer we komen.</p>
+    </div>
+  </section>
+
+  <section class="blok grijs" id="diensten">
+    <div class="wrap">
+      <h2>Onze diensten</h2>
+      <div class="diensten">
+
+        <article class="dienst">
+          <img src="assets/foto/leidingwerk.jpg" alt="Bedrading in een muur tijdens de aanleg van een installatie" width="900" height="675" loading="lazy">
+          <div class="tekst">
+            <h3>Laagspanningsinstallaties</h3>
+            <p>Complete installaties aanleggen of uitbreiden: leidingwerk, bedrading, stopcontacten, schakelaars en krachtaansluitingen.</p>
+          </div>
+        </article>
+
+        <article class="dienst">
+          <img src="assets/foto/oude-bedrading.jpg" alt="Oude, door elkaar lopende bedrading die vervangen moet worden" width="900" height="675" loading="lazy">
+          <div class="tekst">
+            <h3>Saneren van oude elektra</h3>
+            <p>Verouderde of onveilige bedrading eruit, een nieuwe installatie erin. Gefaseerd, zodat u zo min mogelijk zonder stroom zit.</p>
+          </div>
+        </article>
+
+        <article class="dienst">
+          <img src="assets/foto/groepenkast.jpg" alt="Groepenkast met automaten en aardlekschakelaars" width="900" height="675" loading="lazy">
+          <div class="tekst">
+            <h3>Groepenkasten</h3>
+            <p>Vervangen of uitbreiden van de groepenkast, met aardlekbeveiliging en ruimte voor later: laadpaal, zonnepanelen, warmtepomp.</p>
+          </div>
+        </article>
+
+        <article class="dienst">
+          <img src="assets/foto/storing.jpg" alt="Monteur verhelpt een storing aan een aansluiting" width="900" height="675" loading="lazy">
+          <div class="tekst">
+            <h3>Storingen</h3>
+            <p>Groep die eruit vliegt, aardlek die blijft schakelen of geen stroom meer. Wij zoeken het op en verhelpen het.</p>
+          </div>
+        </article>
+
+        <article class="dienst">
+          <img src="assets/foto/keuring.jpg" alt="Meetapparatuur en installatieautomaten voor een keuring" width="900" height="675" loading="lazy">
+          <div class="tekst">
+            <h3>Inspectie en keuring</h3>
+            <p>Installatie laten doormeten volgens NEN 1010 of periodiek keuren volgens NEN 3140. U krijgt een rapport met de bevindingen.</p>
+          </div>
+        </article>
+
+        <article class="dienst">
+          <img src="assets/foto/laadpaal.jpg" alt="Laadpaal voor een elektrische auto" width="900" height="675" loading="lazy">
+          <div class="tekst">
+            <h3>Laadpalen en zonnepanelen</h3>
+            <p>Laadpunt aansluiten bij huis of op het bedrijf, omvormer aansluiten en waar nodig verzwaren naar drie fasen.</p>
+          </div>
+        </article>
+
+      </div>
+      <p class="ookvoor">Ook voor <strong>verlichting</strong> (binnen, buiten en noodverlichting), <strong>netwerkbekabeling</strong>, <strong>intercom en camera&rsquo;s</strong> en <strong>periodiek onderhoud</strong>. Staat uw klus er niet bij? Bel gerust, dan kijken we mee.</p>
+    </div>
+  </section>
+
+  <section class="blok" id="saneren">
+    <div class="wrap duo">
+      <div class="fotos">
+        <figure>
+          <img src="assets/foto/oude-bedrading.jpg" alt="Oude installatie met losse, verouderde bedrading" width="900" height="675" loading="lazy">
+          <figcaption>Zo treffen we het soms aan</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/foto/groepenkast.jpg" alt="Nieuwe groepenkast met aardlekschakelaars, netjes afgemonteerd" width="900" height="675" loading="lazy">
+          <figcaption>Zo leveren we het op</figcaption>
+        </figure>
+      </div>
+      <div>
+        <h2>Verouderde installatie saneren</h2>
+        <p>Stoffen of gelaste bedrading, een kast zonder aardlekschakelaar, jarenlang bijgeprikte aansluitingen: dat is niet alleen storingsgevoelig, het is ook een risico. Bij een sanering halen we de oude installatie eruit en leggen we een nieuwe aan die voldoet aan NEN 1010.</p>
+        <ul class="vink">
+          <li>Eerst opname ter plaatse, dan pas een prijs</li>
+          <li>Gefaseerd werken, zodat u niet dagen zonder stroom zit</li>
+          <li>Nieuwe groepenkast met voldoende groepen en aardlek</li>
+          <li>Na afloop doormeten en een meetrapport</li>
+        </ul>
+        <a class="knop knop-blauw" href="#offerte">Opname aanvragen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok grijs" id="werkwijze">
+    <div class="wrap">
+      <h2>Hoe het bij ons gaat</h2>
+      <ol class="stappen">
+        <li><h3>U belt of appt</h3><p>Vertel kort waar het om gaat. Bij een storing proberen we dezelfde dag te komen.</p></li>
+        <li><h3>We komen kijken</h3><p>Bij grotere klussen nemen we de situatie ter plaatse op. Dat kost u niets.</p></li>
+        <li><h3>Offerte met vaste prijs</h3><p>U krijgt op papier wat we doen en wat het kost. Meerwerk alleen in overleg.</p></li>
+        <li><h3>Uitvoeren en opleveren</h3><p>We voeren het werk uit, meten het door en laten de boel schoon achter.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="blok" id="over-ons">
+    <div class="wrap over">
+      <img src="assets/foto/monteur.jpg" alt="Monteur van I&amp;M Elektro aan het werk in een verdeelkast" width="1000" height="750" loading="lazy">
+      <div>
+        <h2>Over I&amp;M Elektro</h2>
+        <p>Wij zijn een klein installatiebedrijf. Dat betekent dat u dezelfde mensen aan de lijn heeft als die bij u op de klus staan. Geen callcenter, geen onderaannemer die u nog nooit gesproken heeft.</p>
+        <p>We werken voor particulieren, VvE&rsquo;s, aannemers en bedrijven. Klein werk doen we net zo goed als een compleet pand: een stopcontact bijzetten hoort er gewoon bij.</p>
+        <ul class="vink">
+          <li>Alles volgens NEN 1010, keuringen volgens NEN 3140</li>
+          <li>Afspraak is afspraak, ook over de prijs</li>
+          <li>We dekken af en ruimen op voordat we weggaan</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok grijs">
+    <div class="wrap duo">
+      <div>
+        <h2>Voor wie we werken</h2>
+        <ul class="sect-lijst">
+          <li><b>Particulieren</b><span>Verbouwing, groepenkast, storing, laadpaal</span></li>
+          <li><b>VvE&rsquo;s en vastgoed</b><span>Algemene ruimtes, noodverlichting, keuringen</span></li>
+          <li><b>Bedrijven en winkels</b><span>Verlichting, krachtstroom, onderhoud</span></li>
+          <li><b>Aannemers</b><span>Complete elektra bij nieuwbouw en renovatie</span></li>
+        </ul>
+      </div>
+      <div>
+        <img src="assets/foto/utiliteit.jpg" alt="Twee monteurs werken aan een verdeelkast bij een bedrijfspand" width="900" height="675" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <div class="oproep">
+    <div class="wrap">
+      <div>
+        <h2>Storing of een klus in te plannen?</h2>
+        <p>Bel of app ons. Meestal heeft u binnen een dag antwoord.</p>
+      </div>
+      <div class="knoppen">
+        <a class="knop knop-geel" href="tel:+31600000000">06 - 00 00 00 00</a>
+        <!-- PLACEHOLDER: echt WhatsApp-nummer (landcode, zonder +) -->
+        <a class="knop knop-wit" href="https://wa.me/31600000000">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="blok" id="contact">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <div class="contact">
+
+        <div class="gegevens">
+          <dl>
+            <dt>Telefoon</dt><dd><a href="tel:+31600000000">06 - 00 00 00 00</a></dd>
+            <dt>WhatsApp</dt><dd><a href="https://wa.me/31600000000">Stuur een bericht</a></dd>
+            <dt>E-mail</dt><dd><a href="mailto:info@imelektro.nl">info@imelektro.nl</a></dd>
+            <dt>Werkgebied</dt><dd>Regio Den Haag en omstreken</dd>
+            <!-- PLACEHOLDER: KvK-nummer invullen -->
+            <dt>KvK</dt><dd>00000000</dd>
+          </dl>
+          <div class="tijden">
+            <table>
+              <tr><td>Maandag t/m vrijdag</td><td>07:30 – 17:30</td></tr>
+              <tr><td>Zaterdag</td><td>Op afspraak</td></tr>
+              <tr><td>Storing</td><td>Ook 's avonds</td></tr>
+            </table>
+          </div>
+          <div class="tip appttip">
+            <strong>Tip:</strong> zet deze site als app op je telefoon. Open hem in Safari of Chrome, kies Delen en dan &ldquo;Zet op beginscherm&rdquo;.
+          </div>
+        </div>
+
+        <form id="formulier" novalidate>
+          <h3 id="offerte" style="margin-bottom:14px">Offerte of afspraak aanvragen</h3>
+          <div class="veld"><label for="naam">Naam *</label><input id="naam" name="naam" type="text" autocomplete="name" required></div>
+          <div class="veld"><label for="tel">Telefoon *</label><input id="tel" name="telefoon" type="tel" inputmode="tel" autocomplete="tel" required></div>
+          <div class="veld"><label for="mail">E-mail</label><input id="mail" name="email" type="email" inputmode="email" autocomplete="email"></div>
+          <div class="veld"><label for="plaats">Plaats</label><input id="plaats" name="plaats" type="text" autocomplete="address-level2"></div>
+          <div class="veld">
+            <label for="soort">Waar gaat het om? *</label>
+            <select id="soort" name="soort" required>
+              <option value="">Kies...</option>
+              <option>Storing</option>
+              <option>Groepenkast</option>
+              <option>Saneren van oude elektra</option>
+              <option>Nieuwe installatie / verbouwing</option>
+              <option>Inspectie of keuring</option>
+              <option>Verlichting</option>
+              <option>Laadpaal of zonnepanelen</option>
+              <option>Iets anders</option>
+            </select>
+          </div>
+          <div class="veld"><label for="bericht">Uw vraag *</label><textarea id="bericht" name="bericht" required placeholder="Bijvoorbeeld: woning uit 1965, meterkast met 4 groepen zonder aardlek, graag een prijs voor vervangen."></textarea></div>
+          <div class="verstuur">
+            <button type="submit" class="knop knop-geel" data-via="mail">Versturen per e-mail</button>
+            <button type="submit" class="knop knop-blauw" data-via="wa">Versturen via WhatsApp</button>
+          </div>
+          <p class="klein">Uw gegevens gebruiken we alleen om op uw aanvraag te reageren.</p>
+          <p class="klein" id="status" role="status" aria-live="polite"></p>
+        </form>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="voet">
+  <div class="wrap">
+    <div class="kolommen">
+      <div>
+        <div class="vlogo"><img src="assets/logo.png" alt="I&amp;M Elektro" width="640" height="499" loading="lazy"></div>
+        <p>Elektrotechnisch installatiebedrijf voor laagspanning, saneren, groepenkasten, storingen en keuringen.</p>
+      </div>
+      <div>
+        <h4>Diensten</h4>
         <ul>
-          <li><a href="#diensten">Diensten</a></li>
-          <li><a href="#saneren">Saneren</a></li>
+          <li><a href="#diensten">Laagspanningsinstallaties</a></li>
+          <li><a href="#saneren">Saneren van oude elektra</a></li>
+          <li><a href="#diensten">Groepenkasten</a></li>
+          <li><a href="#diensten">Storingen</a></li>
+          <li><a href="#diensten">Inspectie en keuring</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Bedrijf</h4>
+        <ul>
           <li><a href="#werkwijze">Werkwijze</a></li>
           <li><a href="#over-ons">Over ons</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a class="btn btn-yellow" href="#offerte">Offerte aanvragen</a></li>
+          <li><a href="#offerte">Offerte aanvragen</a></li>
         </ul>
-      </nav>
-      <button class="hamburger" id="menuBtn" aria-label="Menu openen" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+31600000000">06 - 00 00 00 00</a></li>
+          <li><a href="mailto:info@imelektro.nl">info@imelektro.nl</a></li>
+          <li>Regio Den Haag e.o.</li>
+        </ul>
+      </div>
     </div>
-  </header>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <ul>
-      <li><a href="#diensten">Diensten</a></li>
-      <li><a href="#saneren">Saneren &amp; laagspanning</a></li>
-      <li><a href="#werkwijze">Werkwijze</a></li>
-      <li><a href="#sectoren">Sectoren</a></li>
-      <li><a href="#over-ons">Over ons</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="menu-cta">
-      <a class="btn btn-yellow" href="#offerte">Offerte aanvragen</a>
-      <a class="btn btn-navy" href="tel:+31600000000"><svg><use href="#i-phone"/></svg> Direct bellen</a>
+    <div class="onder">
+      <span>&copy; <span id="jaar">2026</span> I&amp;M Elektro</span>
+      <span>Werk volgens NEN 1010 en NEN 3140</span>
     </div>
   </div>
+</footer>
 
-  <main id="top">
+<div class="belbalk">
+  <a class="b" href="tel:+31600000000">Bellen</a>
+  <a class="w" href="https://wa.me/31600000000">WhatsApp</a>
+</div>
 
-    <!-- ================= HERO ================= -->
-    <section class="hero" style="padding-top:0;padding-bottom:0">
-      <div class="container" style="padding-top:56px;padding-bottom:64px">
-        <div>
-          <span class="eyebrow">Elektrotechnisch installateur</span>
-          <h1>Vakwerk in <em>laagspanning</em>, saneren en storingen</h1>
-          <p class="lead">I&amp;M Elektro verzorgt complete elektrotechnische installaties: van het saneren van verouderde bedrading en groepenkasten tot nieuwe laagspanningsinstallaties, keuringen en storingsdienst. Voor woningen, VvE&rsquo;s, utiliteit en industrie.</p>
-          <div class="cta">
-            <a class="btn btn-yellow" href="#offerte">Vrijblijvende offerte</a>
-            <a class="btn btn-outline" href="tel:+31600000000"><svg><use href="#i-phone"/></svg> Bel direct</a>
-          </div>
-          <div class="badges">
-            <span><svg><use href="#i-check"/></svg> Volgens NEN 1010</span>
-            <span><svg><use href="#i-check"/></svg> Keuringsrapport bij oplevering</span>
-            <span><svg><use href="#i-check"/></svg> Vaste prijsafspraken</span>
-          </div>
-        </div>
-        <div class="logo-card">
-          <img src="assets/logo.png" alt="I&M Elektro" width="640" height="499">
-        </div>
-      </div>
-    </section>
+<script>
+(function(){
+  // PLACEHOLDERS: hier de echte gegevens invullen
+  var EMAIL = "info@imelektro.nl";
+  var WHATSAPP = "31600000000"; // landcode + nummer, zonder + of spaties
 
-    <!-- ================= STATS ================= -->
-    <div class="stats">
-      <div class="container">
-        <div><strong>NEN 1010</strong><small>Installatienorm</small></div>
-        <div><strong>NEN 3140</strong><small>Keuring &amp; inspectie</small></div>
-        <div><strong>24/7</strong><small>Storingsdienst</small></div>
-        <div><strong>100%</strong><small>Vakkundig &amp; netjes</small></div>
-      </div>
-    </div>
+  var body = document.body;
+  var burger = document.getElementById("burger");
+  burger.addEventListener("click", function(){
+    var open = body.classList.toggle("open");
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.getElementById("uitklap").addEventListener("click", function(e){
+    if (e.target.tagName === "A") { body.classList.remove("open"); burger.setAttribute("aria-expanded","false"); }
+  });
 
-    <!-- ================= DIENSTEN ================= -->
-    <section id="diensten">
-      <div class="container">
-        <div class="section-head">
-          <span class="kicker">Onze diensten</span>
-          <h2>Alles op het gebied van elektrotechniek</h2>
-          <p>Van een enkele storing tot een complete laagspanningsinstallatie. Wij werken netjes, veilig en volgens de geldende normen.</p>
-        </div>
-        <div class="services">
+  var form = document.getElementById("formulier");
+  var status = document.getElementById("status");
+  var via = "mail";
+  Array.prototype.forEach.call(form.querySelectorAll("button[type=submit]"), function(b){
+    b.addEventListener("click", function(){ via = b.getAttribute("data-via"); });
+  });
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    status.textContent = "";
+    if (!form.checkValidity()) { form.reportValidity(); status.textContent = "Vul de velden met een * in."; return; }
+    var d = new FormData(form);
+    var tekst = [
+      "Aanvraag via de website",
+      "",
+      "Naam: " + d.get("naam"),
+      "Telefoon: " + d.get("telefoon"),
+      "E-mail: " + (d.get("email") || "-"),
+      "Plaats: " + (d.get("plaats") || "-"),
+      "Onderwerp: " + d.get("soort"),
+      "",
+      d.get("bericht")
+    ].join("\n");
+    if (via === "wa") {
+      window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(tekst), "_blank", "noopener");
+      status.textContent = "WhatsApp is geopend met uw bericht. Daar nog op verzenden drukken.";
+    } else {
+      window.location.href = "mailto:" + EMAIL +
+        "?subject=" + encodeURIComponent("Aanvraag: " + d.get("soort") + " - " + d.get("naam")) +
+        "&body=" + encodeURIComponent(tekst);
+      status.textContent = "Uw e-mailprogramma is geopend. Daar nog op verzenden drukken.";
+    }
+  });
 
-          <article class="service featured">
-            <div class="icon"><svg><use href="#i-bolt"/></svg></div>
-            <h3>Laagspanningsinstallaties</h3>
-            <p>Ontwerp, aanleg en uitbreiding van complete elektrotechnische installaties tot 1000 V.</p>
-            <ul>
-              <li>Nieuwbouw en renovatie</li>
-              <li>Kracht- en lichtinstallaties</li>
-              <li>3-fasen aansluitingen</li>
-              <li>Kabelgoten en leidingwerk</li>
-            </ul>
-          </article>
+  document.getElementById("jaar").textContent = new Date().getFullYear();
 
-          <article class="service">
-            <div class="icon"><svg><use href="#i-sanitize"/></svg></div>
-            <h3>Saneren van installaties</h3>
-            <p>Verouderde of onveilige elektra vakkundig verwijderen en vervangen door een veilige, moderne installatie.</p>
-            <ul>
-              <li>Vervangen oude bedrading en stoffen leidingen</li>
-              <li>Verwijderen illegale of ondeugdelijke aansluitingen</li>
-              <li>Op niveau brengen naar NEN 1010</li>
-            </ul>
-          </article>
-
-          <article class="service">
-            <div class="icon"><svg><use href="#i-panel"/></svg></div>
-            <h3>Groepen- &amp; verdeelkasten</h3>
-            <p>Nieuwe groepenkast of verdeelinrichting, of uitbreiding van uw bestaande kast.</p>
-            <ul>
-              <li>Aardlekbeveiliging per groep</li>
-              <li>Uitbreiden met extra groepen</li>
-              <li>Overspanningsbeveiliging</li>
-            </ul>
-          </article>
-
-          <article class="service">
-            <div class="icon"><svg><use href="#i-alert"/></svg></div>
-            <h3>Storingen &amp; onderhoud</h3>
-            <p>Storing opsporen en direct verhelpen. Ook periodiek onderhoud aan uw installatie.</p>
-            <ul>
-              <li>Kortsluiting en uitvallende groepen</li>
-              <li>Aardlek die blijft uitschakelen</li>
-              <li>Spoedservice mogelijk</li>
-            </ul>
-          </article>
-
-          <article class="service">
-            <div class="icon"><svg><use href="#i-clipboard"/></svg></div>
-            <h3>Inspectie &amp; keuring</h3>
-            <p>Onafhankelijke controle van uw installatie met een duidelijk rapport.</p>
-            <ul>
-              <li>NEN 1010 opleveringsinspectie</li>
-              <li>NEN 3140 periodieke keuring</li>
-              <li>Aankoopkeuring woning</li>
-            </ul>
-          </article>
-
-          <article class="service">
-            <div class="icon"><svg><use href="#i-bulb"/></svg></div>
-            <h3>Verlichting</h3>
-            <p>Energiezuinige verlichting binnen en buiten, inclusief noodverlichting.</p>
-            <ul>
-              <li>LED-verlichting en dimmers</li>
-              <li>Noodverlichting en vluchtwegaanduiding</li>
-              <li>Terrein- en buitenverlichting</li>
-            </ul>
-          </article>
-
-          <article class="service">
-            <div class="icon"><svg><use href="#i-ev"/></svg></div>
-            <h3>Laadpalen &amp; zonnepanelen</h3>
-            <p>Aansluiten van laadpunten en omvormers, inclusief eventuele verzwaring van de aansluiting.</p>
-            <ul>
-              <li>Laadpaal thuis of op de zaak</li>
-              <li>Aansluiten omvormer zonnepanelen</li>
-              <li>Verzwaren naar 3-fasen</li>
-            </ul>
-          </article>
-
-          <article class="service">
-            <div class="icon"><svg><use href="#i-network"/></svg></div>
-            <h3>Data &amp; domotica</h3>
-            <p>Bekabeling en slimme systemen voor woning en kantoor.</p>
-            <ul>
-              <li>Netwerkbekabeling (UTP) en patchkasten</li>
-              <li>Intercom, camera&rsquo;s en toegang</li>
-              <li>Slimme schakelaars en verlichting</li>
-            </ul>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= SANEREN / LAAGSPANNING ================= -->
-    <section id="saneren" class="soft">
-      <div class="container split">
-        <div class="text">
-          <span class="kicker" style="color:var(--navy-light);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;display:block;margin-bottom:8px">Specialisme</span>
-          <h2>Verouderde installatie? Wij saneren en vernieuwen.</h2>
-          <p>Oude bedrading, stoffen leidingen, een groepenkast zonder aardlekschakelaar of jarenlang bijgeplaatste aansluitingen: het is niet alleen storingsgevoelig, maar ook een brandrisico. Wij halen de oude installatie er netjes uit en leggen een nieuwe, veilige laagspanningsinstallatie aan die voldoet aan NEN 1010.</p>
-          <ul class="checklist">
-            <li><svg><use href="#i-check"/></svg><span><strong>Inventarisatie ter plaatse</strong> &ndash; we brengen de huidige installatie en risico&rsquo;s in kaart.</span></li>
-            <li><svg><use href="#i-check"/></svg><span><strong>Gefaseerd werken</strong> &ndash; zo blijft uw woning of bedrijf zo veel mogelijk in gebruik.</span></li>
-            <li><svg><use href="#i-check"/></svg><span><strong>Nieuwe groepenkast</strong> &ndash; met aardlekbeveiliging en ruimte voor de toekomst (laadpaal, warmtepomp, zonnepanelen).</span></li>
-            <li><svg><use href="#i-check"/></svg><span><strong>Meting en rapport</strong> &ndash; na afloop meten we de installatie door en ontvangt u een keuringsrapport.</span></li>
-          </ul>
-          <a class="btn btn-navy" href="#offerte">Plan een vrijblijvende opname</a>
-        </div>
-        <div class="panel">
-          <h3>Zo pakken wij een sanering aan</h3>
-          <ol>
-            <li><div><strong>Opname &amp; advies</strong><span>Wij bekijken de installatie en adviseren wat wél en niet vervangen moet worden.</span></div></li>
-            <li><div><strong>Duidelijke offerte</strong><span>Vaste prijs, geen verrassingen achteraf.</span></div></li>
-            <li><div><strong>Uitvoering</strong><span>Oude installatie verwijderen, nieuw leidingwerk, bedrading en groepenkast.</span></div></li>
-            <li><div><strong>Oplevering</strong><span>Doormeten, testen en keuringsrapport. Alles schoon achtergelaten.</span></div></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= WERKWIJZE ================= -->
-    <section id="werkwijze">
-      <div class="container">
-        <div class="section-head center">
-          <span class="kicker">Werkwijze</span>
-          <h2>In vier stappen geregeld</h2>
-          <p>Geen gedoe. U weet vooraf wat we doen, wat het kost en wanneer het klaar is.</p>
-        </div>
-        <div class="steps">
-          <div class="step"><div class="num">1</div><h3>Contact</h3><p>Bel, app of vul het formulier in. We reageren snel, ook bij storingen.</p></div>
-          <div class="step"><div class="num">2</div><h3>Opname &amp; offerte</h3><p>We komen langs, bekijken de situatie en sturen een heldere offerte met vaste prijs.</p></div>
-          <div class="step"><div class="num">3</div><h3>Uitvoering</h3><p>Onze monteurs voeren het werk netjes en veilig uit, volgens planning en normen.</p></div>
-          <div class="step"><div class="num">4</div><h3>Oplevering</h3><p>We meten alles door, leveren op met rapport en laten de werkplek schoon achter.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= SECTOREN ================= -->
-    <section id="sectoren" class="soft">
-      <div class="container">
-        <div class="section-head center">
-          <span class="kicker">Voor wie</span>
-          <h2>Particulier én zakelijk</h2>
-        </div>
-        <div class="sectors">
-          <div class="sector"><svg><use href="#i-home"/></svg><h3>Woningen</h3><p>Verbouwing, groepenkast, storing, laadpaal</p></div>
-          <div class="sector"><svg><use href="#i-vve"/></svg><h3>VvE &amp; vastgoed</h3><p>Algemene ruimtes, noodverlichting, keuringen</p></div>
-          <div class="sector"><svg><use href="#i-building"/></svg><h3>Utiliteit</h3><p>Kantoren, winkels, horeca, scholen</p></div>
-          <div class="sector"><svg><use href="#i-factory"/></svg><h3>Industrie</h3><p>Krachtinstallaties, verdeelkasten, onderhoud</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= OVER ONS ================= -->
-    <section id="over-ons">
-      <div class="container">
-        <div class="section-head">
-          <span class="kicker">Over I&amp;M Elektro</span>
-          <h2>Vakmensen die doen wat ze beloven</h2>
-          <p>I&amp;M Elektro is een elektrotechnisch installatiebedrijf met korte lijnen: u heeft direct contact met de mensen die het werk uitvoeren. Geen tussenpersonen, wel duidelijke afspraken en vakwerk waar u jaren op kunt vertrouwen.</p>
-        </div>
-        <div class="usps">
-          <div class="usp"><div class="i"><svg><use href="#i-shield"/></svg></div><div><h3>Veilig en volgens de norm</h3><p>Al ons werk voldoet aan NEN 1010. Keuringen voeren we uit volgens NEN 3140.</p></div></div>
-          <div class="usp"><div class="i"><svg><use href="#i-euro"/></svg></div><div><h3>Vaste prijs vooraf</h3><p>U weet vooraf waar u aan toe bent. Meerwerk alleen in overleg.</p></div></div>
-          <div class="usp"><div class="i"><svg><use href="#i-clock"/></svg></div><div><h3>Snel ter plaatse</h3><p>Storingen pakken we met voorrang op, ook in de avond en het weekend.</p></div></div>
-          <div class="usp"><div class="i"><svg><use href="#i-broom"/></svg></div><div><h3>Nette afwerking</h3><p>We werken schoon, dekken af en laten alles opgeruimd achter.</p></div></div>
-          <div class="usp"><div class="i"><svg><use href="#i-file"/></svg></div><div><h3>Rapport bij oplevering</h3><p>Meetrapport en keuringsrapport, handig voor verzekering of verkoop.</p></div></div>
-          <div class="usp"><div class="i"><svg><use href="#i-users"/></svg></div><div><h3>Eén aanspreekpunt</h3><p>Van offerte tot oplevering heeft u met dezelfde persoon te maken.</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= CTA BAND ================= -->
-    <div class="cta-band">
-      <div class="container">
-        <div>
-          <h2>Storing? Of een klus plannen?</h2>
-          <p>Bel ons direct of stuur een WhatsApp-bericht. We reageren snel.</p>
-        </div>
-        <div class="actions">
-          <a class="btn btn-yellow" href="tel:+31600000000"><svg><use href="#i-phone"/></svg> 06 - 00 00 00 00</a>
-          <!-- PLACEHOLDER: vervang 31600000000 door het echte WhatsApp-nummer (landcode, zonder +) -->
-          <a class="btn btn-outline" href="https://wa.me/31600000000?text=Hallo%20I%26M%20Elektro%2C%20ik%20heb%20een%20vraag%20over%3A%20"><svg><use href="#i-wa"/></svg> WhatsApp</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= CONTACT / OFFERTE ================= -->
-    <section id="contact" class="soft">
-      <div class="container">
-        <div class="section-head">
-          <span class="kicker">Contact</span>
-          <h2>Offerte of afspraak aanvragen</h2>
-          <p>Vul het formulier in of neem direct contact op. Binnen één werkdag reactie.</p>
-        </div>
-        <div class="contact-grid">
-
-          <div class="contact-card">
-            <h3>Contactgegevens</h3>
-            <ul class="contact-list">
-              <li><div class="i"><svg><use href="#i-phone"/></svg></div><div><strong>Telefoon</strong><a href="tel:+31600000000">06 - 00 00 00 00</a></div></li>
-              <li><div class="i"><svg><use href="#i-wa"/></svg></div><div><strong>WhatsApp</strong><a href="https://wa.me/31600000000">Stuur een bericht</a></div></li>
-              <li><div class="i"><svg><use href="#i-mail"/></svg></div><div><strong>E-mail</strong><a href="mailto:info@imelektro.nl">info@imelektro.nl</a></div></li>
-              <li><div class="i"><svg><use href="#i-pin"/></svg></div><div><strong>Werkgebied</strong><span>Regio Den Haag en omstreken</span></div></li>
-            </ul>
-            <div class="hours">
-              <strong style="color:var(--ink)">Openingstijden</strong>
-              <table>
-                <tr><td>Maandag t/m vrijdag</td><td>07:30 – 17:30</td></tr>
-                <tr><td>Zaterdag</td><td>Op afspraak</td></tr>
-                <tr><td>Storingsdienst</td><td>24/7</td></tr>
-              </table>
-            </div>
-            <div class="install ios">
-              <strong>Tip:</strong> zet I&amp;M Elektro op je beginscherm. Open deze site in Safari, tik op <strong>Delen</strong> en kies <strong>&ldquo;Zet op beginscherm&rdquo;</strong>.
-            </div>
-          </div>
-
-          <div class="contact-card" id="offerte">
-            <h3>Offerte aanvragen</h3>
-            <form id="quoteForm" novalidate>
-              <div class="row two">
-                <div><label for="f-naam">Naam *</label><input id="f-naam" name="naam" type="text" autocomplete="name" required></div>
-                <div><label for="f-tel">Telefoon *</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" inputmode="tel" required></div>
-              </div>
-              <div class="row two">
-                <div><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" inputmode="email"></div>
-                <div><label for="f-plaats">Plaats</label><input id="f-plaats" name="plaats" type="text" autocomplete="address-level2"></div>
-              </div>
-              <div class="row">
-                <div>
-                  <label for="f-type">Waar gaat het om? *</label>
-                  <select id="f-type" name="type" required>
-                    <option value="">Maak een keuze</option>
-                    <option>Laagspanningsinstallatie (nieuw / uitbreiding)</option>
-                    <option>Saneren / vervangen oude installatie</option>
-                    <option>Groepenkast of verdeelkast</option>
-                    <option>Storing</option>
-                    <option>Inspectie / keuring (NEN 1010 / NEN 3140)</option>
-                    <option>Verlichting</option>
-                    <option>Laadpaal / zonnepanelen</option>
-                    <option>Data / domotica</option>
-                    <option>Anders</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row">
-                <div><label for="f-msg">Omschrijving *</label><textarea id="f-msg" name="bericht" required placeholder="Beschrijf kort de situatie, bijv. type woning/pand, wat er moet gebeuren en wanneer."></textarea></div>
-              </div>
-              <div class="form-actions">
-                <button type="submit" class="btn btn-yellow" data-via="mail"><svg><use href="#i-mail"/></svg> Verstuur per e-mail</button>
-                <button type="submit" class="btn btn-navy" data-via="wa"><svg><use href="#i-wa"/></svg> Verstuur via WhatsApp</button>
-              </div>
-              <p class="form-note">Uw gegevens gebruiken we alleen om contact met u op te nemen over uw aanvraag.</p>
-              <p class="form-note" id="formStatus" role="status" aria-live="polite"></p>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="site">
-    <div class="container">
-      <div class="cols">
-        <div>
-          <div class="flogo"><img src="assets/logo.png" alt="I&M Elektro" width="640" height="499"></div>
-          <p>Elektrotechnisch installateur voor laagspanningsinstallaties, saneren, groepenkasten, storingen en keuringen.</p>
-        </div>
-        <div>
-          <h4>Diensten</h4>
-          <ul>
-            <li><a href="#diensten">Laagspanningsinstallaties</a></li>
-            <li><a href="#saneren">Saneren van installaties</a></li>
-            <li><a href="#diensten">Groepen- &amp; verdeelkasten</a></li>
-            <li><a href="#diensten">Storingen &amp; onderhoud</a></li>
-            <li><a href="#diensten">Inspectie &amp; keuring</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Bedrijf</h4>
-          <ul>
-            <li><a href="#werkwijze">Werkwijze</a></li>
-            <li><a href="#sectoren">Sectoren</a></li>
-            <li><a href="#over-ons">Over ons</a></li>
-            <li><a href="#offerte">Offerte aanvragen</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="tel:+31600000000">06 - 00 00 00 00</a></li>
-            <li><a href="mailto:info@imelektro.nl">info@imelektro.nl</a></li>
-            <li>Regio Den Haag e.o.</li>
-            <!-- PLACEHOLDER: vul KvK- en btw-nummer in -->
-            <li>KvK: 00000000</li>
-          </ul>
-        </div>
-      </div>
-      <div class="bottom">
-        <span>&copy; <span id="year">2026</span> I&amp;M Elektro. Alle rechten voorbehouden.</span>
-        <span>Werkzaamheden volgens NEN 1010 &amp; NEN 3140</span>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Mobiele bel-balk -->
-  <div class="callbar">
-    <a class="call" href="tel:+31600000000"><svg><use href="#i-phone"/></svg> Bellen</a>
-    <a class="wa" href="https://wa.me/31600000000"><svg><use href="#i-wa"/></svg> WhatsApp</a>
-  </div>
-
-  <script>
-    (function () {
-      // PLACEHOLDERS: vul hier de echte contactgegevens in
-      var CONTACT_EMAIL = "info@imelektro.nl";
-      var WHATSAPP_NUMBER = "31600000000"; // landcode + nummer, zonder + of spaties
-
-      // Mobiel menu
-      var body = document.body;
-      var btn = document.getElementById("menuBtn");
-      var menu = document.getElementById("mobileMenu");
-      function closeMenu() { body.classList.remove("menu-open"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-label", "Menu openen"); }
-      btn.addEventListener("click", function () {
-        var open = body.classList.toggle("menu-open");
-        btn.setAttribute("aria-expanded", open ? "true" : "false");
-        btn.setAttribute("aria-label", open ? "Menu sluiten" : "Menu openen");
-      });
-      menu.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", closeMenu); });
-      window.addEventListener("resize", function () { if (window.innerWidth >= 900) closeMenu(); });
-
-      // Offerteformulier: bouwt een bericht en opent e-mail of WhatsApp (werkt zonder server)
-      var form = document.getElementById("quoteForm");
-      var status = document.getElementById("formStatus");
-      var via = "mail";
-      form.querySelectorAll("button[type=submit]").forEach(function (b) {
-        b.addEventListener("click", function () { via = b.getAttribute("data-via"); });
-      });
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        status.textContent = "";
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          status.textContent = "Vul de verplichte velden (*) in.";
-          return;
-        }
-        var d = new FormData(form);
-        var lines = [
-          "Offerteaanvraag via website",
-          "",
-          "Naam: " + d.get("naam"),
-          "Telefoon: " + d.get("telefoon"),
-          "E-mail: " + (d.get("email") || "-"),
-          "Plaats: " + (d.get("plaats") || "-"),
-          "Onderwerp: " + d.get("type"),
-          "",
-          "Omschrijving:",
-          d.get("bericht")
-        ];
-        var text = lines.join("\n");
-        if (via === "wa") {
-          window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text), "_blank", "noopener");
-          status.textContent = "WhatsApp wordt geopend met uw bericht. Druk daar op verzenden.";
-        } else {
-          var subject = "Offerteaanvraag: " + d.get("type") + " - " + d.get("naam");
-          window.location.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text);
-          status.textContent = "Uw e-mailprogramma wordt geopend met het bericht. Druk daar op verzenden.";
-        }
-      });
-
-      document.getElementById("year").textContent = new Date().getFullYear();
-
-      // App-modus (beginscherm) detecteren
-      var standalone = window.navigator.standalone === true ||
-        window.matchMedia("(display-mode: standalone)").matches ||
-        window.matchMedia("(display-mode: fullscreen)").matches;
-      if (standalone) body.classList.add("standalone");
-
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("sw.js").catch(function () {});
-      }
-    })();
-  </script>
+  if (window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches) {
+    body.classList.add("appmodus");
+  }
+  if ("serviceWorker" in navigator) { navigator.serviceWorker.register("sw.js").catch(function(){}); }
+})();
+</script>
 </body>
 </html>

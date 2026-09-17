@@ -46,12 +46,23 @@ bij jullie binnen.
 2. Tik op **Delen** → **"Zet op beginscherm"** (iPhone) of het menu →
    **"Toevoegen aan startscherm"** (Android)
 
+## 📷 Foto's
+
+De foto's staan in `assets/foto/` en komen van Pexels (gratis, ook voor
+commercieel gebruik, geen bronvermelding verplicht). De herkomst per foto staat
+in `assets/foto/BRONNEN.md`.
+
+Hebben jullie eigen foto's van echte klussen? Vervang de bestanden dan gewoon
+door foto's met dezelfde naam (liggend, ongeveer 900 x 675 pixels; `hero.jpg`
+1800 x 1100). Eigen foto's werken altijd beter dan stockfoto's.
+
 ## Bestanden
 
 | Bestand | Doel |
 |---|---|
 | `index.html` | De complete website (HTML, CSS en JavaScript in één bestand) |
 | `assets/logo.png` | Het I&M Elektro-logo |
+| `assets/foto/` | Foto's van de site + `BRONNEN.md` met de herkomst |
 | `icons/` | App-iconen gemaakt van het logo (192, 512, maskable, apple-touch) |
 | `manifest.webmanifest` | Web app manifest (app-modus) |
 | `sw.js` | Service worker (offline/cache) |
