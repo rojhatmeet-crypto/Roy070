@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - claude/iphone-app-mode-site-yifpud
+      - claude/elektra-laagspanning-website-ku0axk
 
 permissions:
   contents: write

@@ -1,13 +1,12 @@
 {
-  "name": "I&M Elektra",
-  "short_name": "I&M Elektra",
-  "description": "I&M Elektra — uw elektricien voor storingen, groepenkasten, verlichting en meer.",
+  "name": "I&M Elektro",
+  "short_name": "I&M Elektro",
+  "description": "I&M Elektro — elektrotechnisch installateur voor laagspanningsinstallaties, saneren, groepenkasten, storingen en keuringen.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0a1a33",
-  "theme_color": "#0a1a33",
+  "background_color": "#ffffff",
+  "theme_color": "#013064",
   "icons": [
     {
       "src": "./icons/icon-192.png",

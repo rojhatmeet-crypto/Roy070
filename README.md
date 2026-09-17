@@ -1,54 +1,62 @@
-# I&M Elektra — website + iPhone app mode (PWA)
+# I&M Elektro — website
 
-De website van **I&M Elektra**, gebouwd als PWA zodat hij op een iPhone als
-**app** draait: fullscreen, zonder Safari-balken, met eigen icoon op het
-beginscherm.
+Bedrijfswebsite van **I&M Elektro**, elektrotechnisch installateur
+(laagspanningsinstallaties, saneren, groepenkasten, storingen, keuringen,
+verlichting, laadpalen, data/domotica).
+
+De site is **responsive**: één `index.html` die zich aanpast aan telefoon,
+tablet en pc. Op de telefoon is hij bovendien te installeren als app
+(fullscreen, eigen icoon op het beginscherm).
 
 ## 🌐 Live site
 
 **https://rojhatmeet-crypto.github.io/Roy070/**
 
-De site draait op GitHub Pages (gratis, vaste URL, automatisch HTTPS).
+Draait op GitHub Pages (gratis, vaste URL, automatisch HTTPS). Elke push
+naar een branch uit `.github/workflows/deploy-pages.yml` wordt na 1 à 2
+minuten automatisch live gezet.
 
-## 📲 Zo installeer je de app op iPhone
+## ✏️ Nog invullen (placeholders)
 
-1. Open de site in **Safari** op je iPhone
-2. Tik op de **Deel-knop** (vierkantje met pijl omhoog)
-3. Kies **"Zet op beginscherm"**
-4. Tik op **"Voeg toe"**
+Alle contactgegevens staan nu als placeholder in `index.html`. Zoek op
+`PLACEHOLDER` en vervang:
 
-De site opent daarna fullscreen als app.
+| Placeholder | Vervangen door |
+|---|---|
+| `tel:+31600000000` en `06 - 00 00 00 00` | echt telefoonnummer |
+| `https://wa.me/31600000000` | echt WhatsApp-nummer (landcode, zonder `+`) |
+| `info@imelektro.nl` | echt e-mailadres |
+| `KvK: 00000000` | KvK-nummer |
+| `Regio Den Haag en omstreken` | werkgebied / adres |
+| openingstijden in het contactblok | echte tijden |
 
-## 🎮 Volt — het spelletje
+Onderaan `index.html` staan in het script ook `CONTACT_EMAIL` en
+`WHATSAPP_NUMBER`: die gebruikt het offerteformulier.
 
-Op **https://rojhatmeet-crypto.github.io/Roy070/game/** staat Volt: een
-arcade-spelletje waarin je als vonkje door een stroomcircuit vliegt. Tik om
-te zappen, ontwijk de weerstanden, verzamel bliksems (+2) en verbeter je
-record. Ook installeerbaar als eigen app (paars bliksem-icoon) via
-Safari → Deel → "Zet op beginscherm".
+## 📋 Offerteformulier
 
-## ✏️ Nog invullen
+Het formulier werkt zonder server: de bezoeker kiest **"Verstuur per
+e-mail"** (opent het mailprogramma met een ingevuld bericht) of **"Verstuur
+via WhatsApp"** (opent WhatsApp met het bericht). Zo komt de aanvraag direct
+bij jullie binnen.
 
-De contactknoppen bevatten **placeholder-nummers**. Vervang in `index.html`:
+## 📲 Als app op de telefoon
 
-- `tel:+31600000000` → echt telefoonnummer
-- `https://wa.me/31600000000` → echt WhatsApp-nummer (met landcode, zonder +)
+1. Open de site in **Safari** (iPhone) of **Chrome** (Android)
+2. Tik op **Delen** → **"Zet op beginscherm"** (iPhone) of het menu →
+   **"Toevoegen aan startscherm"** (Android)
 
 ## Bestanden
 
 | Bestand | Doel |
 |---|---|
-| `index.html` | De I&M Elektra website + alle iPhone app-mode tags |
-| `manifest.webmanifest` | Web app manifest (`display: standalone`) |
+| `index.html` | De complete website (HTML, CSS en JavaScript in één bestand) |
+| `assets/logo.png` | Het I&M Elektro-logo |
+| `icons/` | App-iconen gemaakt van het logo (192, 512, maskable, apple-touch) |
+| `manifest.webmanifest` | Web app manifest (app-modus) |
 | `sw.js` | Service worker (offline/cache) |
-| `icons/` | Bliksem-logo als app-icoon (incl. 180×180 apple-touch-icon) |
+| `game/` | Volt, een klein arcade-spelletje (staat los van de bedrijfssite) |
 | `.github/workflows/deploy-pages.yml` | Zet elke push automatisch live op GitHub Pages |
 
-Let op: alle paden zijn **relatief** (dus `icons/...` in plaats van
-`/icons/...`), omdat de site op GitHub Pages onder het subpad `/Roy070/`
-draait.
-
-## 🔄 Site aanpassen
-
-Push je wijzigingen naar deze repo — de workflow zet ze automatisch live op
-de `gh-pages` branch. Na 1 à 2 minuten staat de nieuwe versie online.
+Alle paden zijn **relatief** (`icons/...`, niet `/icons/...`), omdat de site
+op GitHub Pages onder het subpad `/Roy070/` draait.
