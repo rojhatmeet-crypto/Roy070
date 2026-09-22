@@ -29,6 +29,28 @@ Pages-site. Is `/rks-infra/` daarna verdwenen, start dan in GitHub onder
 *Actions* de workflow *Deploy RKS Infra naar GitHub Pages* opnieuw
 (*Run workflow*).
 
+## 🎬 Promotievideo
+
+Twee versies van dezelfde video van 28 seconden, in de huisstijl van de site:
+
+| Bestand | Formaat | Voor |
+|---|---|---|
+| `marketing/rks-infra-video-staand.mp4` | 1080 × 1920, staand | WhatsApp-status, Instagram Reels en Stories, TikTok |
+| `marketing/rks-infra-video-liggend.mp4` | 1920 × 1080, liggend | LinkedIn, YouTube, Facebook, presentaties |
+
+Opbouw: opening met de ploeg en de kop *Vakmensen voor de infra.*, dan de
+vraag aan aannemers, acht werksoorten met foto, de lijst van alle twaalf
+disciplines, drie beloftes en een eindbeeld met logo.
+
+De video heeft geen muziek, want de meeste mensen kijken sociale media zonder
+geluid. Alle tekst staat in beeld. Muziek toevoegen kan in Instagram, TikTok of
+CapCut met hun eigen muziekbibliotheek. Die muziek mag je daar gewoon gebruiken.
+
+Live links:
+
+- https://rojhatmeet-crypto.github.io/Roy070/rks-infra/marketing/rks-infra-video-staand.mp4
+- https://rojhatmeet-crypto.github.io/Roy070/rks-infra/marketing/rks-infra-video-liggend.mp4
+
 ## Bekijken
 
 Open `index.html` via een lokale webserver, bijvoorbeeld:
@@ -94,6 +116,7 @@ rks-infra/
     ├── fonts/                # Archivo en IBM Plex Mono, zelf gehost
     ├── icons/                # app-iconen (PNG)
     └── img/                  # logo's (SVG) en foto's (WebP, 2 formaten)
+marketing/                    # promotievideo, staand en liggend (MP4)
 ```
 
 ## Logo
