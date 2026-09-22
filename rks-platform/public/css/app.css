@@ -235,7 +235,7 @@ legend { font-weight: 720; font-size: 16px; font-stretch: 106%; padding: 0; marg
 .kpi--hero .kpi__value { font-size: 40px; font-weight: 800; line-height: 1.05; }
 .kpi--warn .kpi__value { color: var(--warn); }
 .kpi--crit .kpi__value { color: var(--crit); }
-@media (max-width: 1100px) { .kpis, .kpis--hero { grid-template-columns: repeat(3, minmax(0, 1fr)); } .kpis--hero .kpi--hero { grid-column: 1 / -1; } }
+@media (max-width: 1100px) { .kpis, .kpis--hero { grid-template-columns: repeat(3, minmax(0, 1fr)); } .kpis--hero .kpi--hero { grid-column: 1 / -1; } .kpis--hero > .kpi:last-child { grid-column: span 2; } }
 @media (max-width: 640px) { .kpis, .kpis--hero, .kpis--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .chart { width: 100%; height: auto; display: block; }

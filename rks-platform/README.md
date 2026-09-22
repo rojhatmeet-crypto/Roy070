@@ -88,7 +88,7 @@ cd rks-platform
 npm install
 npm run seed      # demodata: fictieve klanten, 12 vakmensen, 8 weken uren
 npm start         # http://localhost:3000
-npm test          # 24 tests: rekenregels, btw, rechten, de hele keten
+npm test          # 25 tests: rekenregels, btw, rechten, de hele keten
 ```
 
 Demo-accounts, alleen na `npm run seed`, met wachtwoord `demo-wachtwoord-2026`:
@@ -98,6 +98,23 @@ Demo-accounts, alleen na `npm run seed`, met wachtwoord `demo-wachtwoord-2026`:
 | RKS beheer | beheer@rks.demo |
 | Vakman | mehmet@rks.demo |
 | Opdrachtgever | uitvoerder@vandijk.demo |
+
+## Browserdemo zonder server
+
+`npm run demo:build` maakt `demo/dist/rks-platform-demo.html`: het hele platform in één
+bestand dat in de browser draait. Het gebruikt dezelfde routes, schermen en rekenregels
+als de server, met SQLite in het geheugen van de browser (sql.js). Bovenaan wissel je
+tussen vakman, uitvoerder en RKS. Berichten via WhatsApp of mail worden niet verstuurd;
+je ziet de tekst en kunt de link zelf openen. Wat je doet, blijft in die browser.
+
+Handig om te laten zien en te testen. Voor echt gebruik is de server nodig, want de
+gegevens moeten centraal staan en veilig bewaard worden.
+
+| Bestand | Rol |
+|---|---|
+| `demo/main.js` | Vangt klikken en formulieren af en stuurt ze naar de app |
+| `demo/shim/` | Browserversies van Express, `node:sqlite`, `node:crypto` en `node:fs` |
+| `demo/build.mjs` | Bundelt alles met esbuild tot één HTML-bestand |
 
 ## Online zetten (Render)
 
@@ -139,7 +156,7 @@ Dit is een werkende eerste versie. De volgende stappen liggen voor de hand:
 | Database | SQLite via `node:sqlite`, bedragen in centen, uren in minuten |
 | Beveiliging | Wachtwoorden met scrypt, sessiecookies (HttpOnly, SameSite), CSRF-tokens, strikte CSP. Rollen worden per verzoek gecontroleerd en elke query filtert op de eigen zzp'er of klant |
 | Goedkeuringslinks | Willekeurig token van 192 bits, 14 dagen geldig, na afkeuren ongeldig |
-| Tests | `node:test`: 14 domeintests en 10 HTTP-integratietests |
+| Tests | `node:test`: 14 domeintests en 11 HTTP-integratietests |
 
 ```
 rks-platform/

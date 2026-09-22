@@ -39,8 +39,9 @@ export function createApp(db = openDb()) {
     const flash = parseCookies(req.headers.cookie).rks_flash;
     if (flash) cookie(res, 'rks_flash', '', { maxAge: 0 });
     res.flash = (msg) => cookie(res, 'rks_flash', msg, { maxAge: 60 });
+    // Het volledige pad: binnen een gekoppelde router is req.path relatief (/facturen i.p.v. /beheer/facturen).
     res.page = (title, body, opts = {}) => res.send(String(layout({
-      title, body, user: req.user, csrf: req.csrf, path: req.path, flash: flash || '', ...opts,
+      title, body, user: req.user, csrf: req.csrf, path: req.originalUrl.split('?')[0], flash: flash || '', ...opts,
     })));
     next();
   });

@@ -4,14 +4,21 @@
   "private": true,
   "description": "RKS Infra platform: urenregistratie, goedkeuring, self-billing en facturatie voor zzp-vakmensen in de infra.",
   "type": "module",
-  "engines": { "node": ">=22.13" },
+  "engines": {
+    "node": ">=22.13"
+  },
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning src/server.js",
     "dev": "node --disable-warning=ExperimentalWarning --watch src/server.js",
     "seed": "node --disable-warning=ExperimentalWarning scripts/seed.js",
-    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
+    "demo:build": "node demo/build.mjs"
   },
   "dependencies": {
     "express": "5.2.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "sql.js": "1.14.2"
   }
 }

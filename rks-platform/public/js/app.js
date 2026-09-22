@@ -13,10 +13,11 @@
     catch { const input = btn.parentElement.querySelector('input'); if (input) { input.select(); } btn.textContent = 'Geselecteerd'; }
     setTimeout(() => { btn.textContent = label; }, 1800);
   });
-  $$('[data-select]').forEach((el) => el.addEventListener('focus', () => el.select()));
 
   // Printen
-  $$('[data-print]').forEach((b) => b.addEventListener('click', () => window.print()));
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-print]')) window.print();
+  });
 
   // Bevestiging bij verwijderen
   document.addEventListener('click', (e) => {
@@ -33,31 +34,39 @@
   };
   const fmtHours = (min) => (min / 60).toLocaleString('nl-NL', { maximumFractionDigits: 2 });
 
-  // Live totaal in het urenformulier
-  $$('[data-hours-form]').forEach((form) => {
-    const out = form.querySelector('[data-hours-total]');
-    const update = () => {
-      const total = $$('.hours-row__input', form).reduce((a, i) => a + toMinutes(i.value), 0);
-      out.textContent = `${fmtHours(total)} uur`;
-    };
-    form.addEventListener('input', update);
-  });
+  // Alles wat per pagina aan elementen gekoppeld wordt. De browserdemo roept dit na elke paginawissel opnieuw aan.
+  function enhance(root = document) {
+    $$('[data-select]', root).forEach((el) => el.addEventListener('focus', () => el.select()));
 
-  // Live marge in het opdrachtformulier
-  $$('[data-margin-form]').forEach((form) => {
-    const inkoop = form.querySelector('[data-inkoop]');
-    const verkoop = form.querySelector('[data-verkoop]');
-    const out = form.querySelector('[data-margin-out]');
-    const euro = (v) => v.toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
-    const parse = (v) => { let s = String(v || '').replace(/[€\s]/g, ''); if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); const n = Number(s); return s && Number.isFinite(n) ? n : null; };
-    const update = () => {
-      const a = parse(inkoop.value), b = parse(verkoop.value);
-      if (a === null || b === null) { out.textContent = ''; return; }
-      const m = b - a;
-      out.textContent = `Marge ${euro(m)} per uur${b ? `, ${(m / b * 100).toLocaleString('nl-NL', { maximumFractionDigits: 1 })}% van de verkoopprijs` : ''}. Bij 40 uur per week: ${euro(m * 40)}.`;
-      out.classList.toggle('is-neg', m < 0);
-    };
-    form.addEventListener('input', update);
-    update();
-  });
+    // Live totaal in het urenformulier
+    $$('[data-hours-form]', root).forEach((form) => {
+      const out = form.querySelector('[data-hours-total]');
+      const update = () => {
+        const total = $$('.hours-row__input', form).reduce((a, i) => a + toMinutes(i.value), 0);
+        out.textContent = `${fmtHours(total)} uur`;
+      };
+      form.addEventListener('input', update);
+    });
+
+    // Live marge in het opdrachtformulier
+    $$('[data-margin-form]', root).forEach((form) => {
+      const inkoop = form.querySelector('[data-inkoop]');
+      const verkoop = form.querySelector('[data-verkoop]');
+      const out = form.querySelector('[data-margin-out]');
+      const euro = (v) => v.toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+      const parse = (v) => { let s = String(v || '').replace(/[€\s]/g, ''); if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); const n = Number(s); return s && Number.isFinite(n) ? n : null; };
+      const update = () => {
+        const a = parse(inkoop.value), b = parse(verkoop.value);
+        if (a === null || b === null) { out.textContent = ''; return; }
+        const m = b - a;
+        out.textContent = `Marge ${euro(m)} per uur${b ? `, ${(m / b * 100).toLocaleString('nl-NL', { maximumFractionDigits: 1 })}% van de verkoopprijs` : ''}. Bij 40 uur per week: ${euro(m * 40)}.`;
+        out.classList.toggle('is-neg', m < 0);
+      };
+      form.addEventListener('input', update);
+      update();
+    });
+  }
+
+  window.RKS = { enhance };
+  enhance();
 })();

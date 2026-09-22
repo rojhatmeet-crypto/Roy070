@@ -192,3 +192,12 @@ test('inkooplijst toont de naam van de vakman, ook zonder bedrijfsnaam', async (
   const csv = await admin.req('/beheer/facturen/export.csv?soort=inkoop&filter=wacht');
   assert.match(csv.text, /Tom Jansen/);
 });
+
+test('menu markeert de pagina waar je bent', async () => {
+  const admin = client();
+  await admin.login('beheer@rks.demo');
+  const current = async (path) => ((await admin.req(path)).text.match(/<nav class="app-nav"[\s\S]*?<\/nav>/)[0].match(/aria-current="page">([^<]+)/) || [])[1];
+  assert.equal(await current('/beheer'), 'Dashboard');
+  assert.equal(await current('/beheer/facturen?soort=inkoop'), 'Facturen');
+  assert.equal(await current('/beheer/zzpers'), 'Zzp&#39;ers');
+});

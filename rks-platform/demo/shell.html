@@ -1,0 +1,57 @@
+<title>RKS Platform Demo</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+/*CSS*/
+</style>
+<div id="demo-bar" class="demo-bar" hidden>
+  <div class="demo-bar__inner">
+    <span class="demo-tag">Demo</span>
+    <div class="demo-roles" role="group" aria-label="Bekijk het platform als">
+      <button type="button" data-role="zzp" aria-pressed="false">Vakman</button>
+      <button type="button" data-role="klant" aria-pressed="false">Uitvoerder</button>
+      <button type="button" data-role="admin" aria-pressed="false">RKS</button>
+    </div>
+    <span class="demo-who" data-demo-who></span>
+    <div class="demo-tools">
+      <button type="button" data-demo-back disabled>Terug</button>
+      <button type="button" data-demo-guide>Uitleg</button>
+      <button type="button" data-demo-reset>Opnieuw beginnen</button>
+    </div>
+  </div>
+</div>
+<section id="demo-guide" class="demo-guide" aria-labelledby="demo-guide-title">
+  <div class="demo-guide__inner">
+    <div class="demo-guide__head">
+      <h2 id="demo-guide-title">Test de hele keten in twee minuten</h2>
+      <button type="button" class="link small" data-guide-close>Verbergen</button>
+    </div>
+    <ol class="demo-steps">
+      <li>
+        <p><strong>Vakman.</strong> Je bent Mehmet, rioleur. Open deze week, vul je uren in en tik op <em>Indienen ter goedkeuring</em>.</p>
+        <button type="button" class="btn btn--sm" data-role="zzp">Bekijk als vakman</button>
+      </li>
+      <li>
+        <p><strong>Uitvoerder.</strong> Tik bij Mehmet op <em>Stuur via WhatsApp</em> en open de link. Of wissel naar de uitvoerder. Keur de uren goed.</p>
+        <button type="button" class="btn btn--sm" data-role="klant">Bekijk als uitvoerder</button>
+      </li>
+      <li>
+        <p><strong>RKS.</strong> Onder <em>Facturen</em> staan de inkoop- en verkoopfactuur al klaar. Maak de verkoopfactuur definitief en kijk op het dashboard.</p>
+        <button type="button" class="btn btn--sm" data-role="admin">Bekijk als RKS</button>
+      </li>
+    </ol>
+    <p class="muted small">Alle bedrijven en personen zijn verzonnen. Wat je doet, blijft alleen in deze browser. Met <em>Opnieuw beginnen</em> zet je alles terug.</p>
+  </div>
+</section>
+<div id="app">
+  <div class="demo-loading"><p>Demo laden…</p></div>
+</div>
+<div id="demo-modal" class="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title" hidden>
+  <div class="demo-modal__box">
+    <h2 id="demo-modal-title" data-modal-title></h2>
+    <div class="stack" data-modal-body></div>
+    <div class="demo-modal__actions" data-modal-actions></div>
+  </div>
+</div>
+<script>
+/*JS*/
+</script>
