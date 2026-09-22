@@ -7,6 +7,28 @@ funderingsmachines zoeken, en op vakmensen die werk zoeken.
 Gewone HTML, CSS en JavaScript. Geen framework en geen build-stap: de map kan
 zo op elke webhost (of GitHub Pages) worden gezet.
 
+## Live en delen
+
+**https://rojhatmeet-crypto.github.io/Roy070/rks-infra/**
+
+Delen via WhatsApp (opent WhatsApp met een kant-en-klaar bericht):
+
+```
+https://wa.me/?text=Bekijk%20de%20website%20van%20RKS%20Infra%3A%20https%3A%2F%2Frojhatmeet-crypto.github.io%2FRoy070%2Frks-infra%2F
+```
+
+Bij het delen toont WhatsApp een voorvertoning met logo en foto
+(`assets/img/og-image.jpg`).
+
+**Publiceren.** Elke push naar deze branch met wijzigingen in `rks-infra/`
+zet de map via `.github/workflows/deploy-rks-infra.yml` op GitHub Pages, in de
+submap `rks-infra/`. Andere sites op GitHub Pages blijven staan.
+
+Let op: de andere deploy-workflow vervangt bij elke run de hele GitHub
+Pages-site. Is `/rks-infra/` daarna verdwenen, start dan in GitHub onder
+*Actions* de workflow *Deploy RKS Infra naar GitHub Pages* opnieuw
+(*Run workflow*).
+
 ## Bekijken
 
 Open `index.html` via een lokale webserver, bijvoorbeeld:

@@ -1,0 +1,32 @@
+name: Deploy RKS Infra naar GitHub Pages
+
+# Publiceert alleen de map rks-infra/ naar gh-pages/rks-infra/.
+# Andere sites op gh-pages blijven staan (keep_files).
+
+on:
+  push:
+    branches:
+      - claude/bouwbedrijf-website-43qsl8
+    paths:
+      - "rks-infra/**"
+      - ".github/workflows/deploy-rks-infra.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-rks-infra
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./rks-infra
+          destination_dir: rks-infra
+          keep_files: true

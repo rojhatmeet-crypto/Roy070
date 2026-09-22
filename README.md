@@ -34,8 +34,10 @@ In de map [`rks-infra/`](rks-infra/) staat de website van **RKS Infra**
 [`rks-infra/README.md`](rks-infra/README.md) voor uitleg, de plaatshouders die
 nog ingevuld moeten worden en de fotobronnen.
 
-Zodra deze map op de branch staat die naar GitHub Pages wordt gedeployed, is de
-site bereikbaar op **https://rojhatmeet-crypto.github.io/Roy070/rks-infra/**.
+Live: **https://rojhatmeet-crypto.github.io/Roy070/rks-infra/**
+
+De workflow `deploy-rks-infra.yml` zet alleen deze map op GitHub Pages en laat
+de rest van de site staan.
 
 ## ✏️ Nog invullen
 
