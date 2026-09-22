@@ -27,6 +27,16 @@ te zappen, ontwijk de weerstanden, verzamel bliksems (+2) en verbeter je
 record. Ook installeerbaar als eigen app (paars bliksem-icoon) via
 Safari → Deel → "Zet op beginscherm".
 
+## 🏗️ RKS Infra — website
+
+In de map [`rks-infra/`](rks-infra/) staat de website van **RKS Infra**
+(personeel voor grond-, weg- en waterbouw). Zie
+[`rks-infra/README.md`](rks-infra/README.md) voor uitleg, de plaatshouders die
+nog ingevuld moeten worden en de fotobronnen.
+
+Zodra deze map op de branch staat die naar GitHub Pages wordt gedeployed, is de
+site bereikbaar op **https://rojhatmeet-crypto.github.io/Roy070/rks-infra/**.
+
 ## ✏️ Nog invullen
 
 De contactknoppen bevatten **placeholder-nummers**. Vervang in `index.html`:
