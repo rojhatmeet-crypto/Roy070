@@ -1,0 +1,25 @@
+# Render Blueprint voor het RKS Infra platform (map rks-platform).
+# In Render: New > Blueprint > kies deze repository. Zie rks-platform/README.md.
+services:
+  - type: web
+    name: rks-platform
+    runtime: node
+    rootDir: rks-platform
+    plan: starter
+    region: frankfurt
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/rks.db
+      - key: SETUP_CODE
+        generateValue: true
+    disk:
+      name: rks-data
+      mountPath: /data
+      sizeGB: 1

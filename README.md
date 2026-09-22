@@ -39,6 +39,16 @@ Live: **https://rojhatmeet-crypto.github.io/Roy070/rks-infra/**
 De workflow `deploy-rks-infra.yml` zet alleen deze map op GitHub Pages en laat
 de rest van de site staan.
 
+## 🧾 RKS Infra — platform
+
+In [`rks-platform/`](rks-platform/) staat de software achter RKS Infra:
+urenregistratie voor zzp'ers, goedkeuring door de uitvoerder via een link,
+automatische inkoop- en verkoopfacturen (self-billing, btw verlegd) en een
+dashboard met marge per uur. Zie [`rks-platform/README.md`](rks-platform/README.md).
+
+Dit is een server met een database, dus het draait niet op GitHub Pages. Het
+bestand `render.yaml` zet het met één klik op [Render](https://render.com).
+
 ## ✏️ Nog invullen
 
 De contactknoppen bevatten **placeholder-nummers**. Vervang in `index.html`:
