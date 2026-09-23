@@ -44,9 +44,9 @@ export function register(r, db) {
     const projects = id ? db.all('SELECT * FROM projecten WHERE klant_id = ? ORDER BY actief DESC, naam', id) : [];
     const users = id ? db.all('SELECT * FROM users WHERE klant_id = ? ORDER BY naam', id) : [];
     res.page(id ? v.naam : 'Nieuwe klant', html`
-      ${pageHead({ eyebrow: 'Klant', title: id ? v.naam : 'Nieuwe klant' })}
+      ${pageHead({ back: { href: '/beheer/klanten', label: 'Klanten' }, title: id ? v.naam : 'Nieuwe klant' })}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
-      ${invite ? html`<div class="panel panel--good"><h2>Uitnodiging klaar</h2><p>Met deze link maakt de opdrachtgever een account aan om uren goed te keuren en facturen te zien. 7 dagen geldig.</p>
+      ${invite ? html`<div class="panel panel--good"><p><strong>Uitnodiging klaar.</strong> Stuur deze link naar ${invite.naam}. Hij is 7 dagen geldig.</p>
         ${shareButtons({ url: invite.url, text: `Beste ${invite.naam}, via deze link maakt u uw account aan in het portaal van RKS Infra:`, email: invite.email, subject: 'Uw account bij RKS Infra' })}</div>` : ''}
       <div class="grid-2 grid-2--wide">
         <form method="post" action="${id ? `/beheer/klanten/${id}` : '/beheer/klanten/nieuw'}" class="card form-grid">
@@ -76,7 +76,7 @@ export function register(r, db) {
               <button class="btn" type="submit">Project toevoegen</button></form>
           </div>
           <div class="card"><h2>Accounts van de klant</h2>
-            ${users.length ? html`<ul class="list">${users.map((u) => html`<li><span>${u.naam}<span class="muted small"> ${u.email}</span></span>${u.password_hash ? html`<span class="badge badge--good">Actief</span>` : html`<span class="badge badge--warn">Uitgenodigd</span>`}</li>`)}</ul>` : html`<p class="muted">Uitvoerders kunnen ook zonder account goedkeuren via de link. Een account is handig voor wie vaak goedkeurt of facturen wil inzien.</p>`}
+            ${users.length ? html`<ul class="list">${users.map((u) => html`<li><span>${u.naam}<span class="muted small"> ${u.email}</span></span>${u.password_hash ? html`<span class="badge badge--good">Actief</span>` : html`<span class="badge badge--warn">Uitgenodigd</span>`}</li>`)}</ul>` : html`<p class="muted">Geen accounts. Goedkeuren kan ook via de link, zonder account.</p>`}
             <form method="post" action="/beheer/klanten/${id}/uitnodigen" class="stack">${csrfField(req.csrf)}
               <div class="row-2">${field({ label: 'Naam', name: 'naam', value: '', required: true })}${field({ label: 'E-mail', name: 'email', type: 'email', value: '', required: true })}</div>
               <button class="btn" type="submit">Uitnodigen</button></form>
@@ -142,7 +142,7 @@ export function register(r, db) {
 
   // ---------- project bewerken ----------
   const projectPage = (req, res, p, error = '') => res.page(p.naam, html`
-    ${pageHead({ eyebrow: p.klant_naam, title: p.naam })}
+    ${pageHead({ back: { href: `/beheer/klanten/${p.klant_id}`, label: p.klant_naam }, title: p.naam })}
     ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
     <form method="post" class="card form-grid narrow">${csrfField(req.csrf)}
       ${field({ label: 'Projectnaam', name: 'naam', value: p.naam, required: true })}

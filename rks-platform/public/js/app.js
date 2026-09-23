@@ -9,8 +9,19 @@
     if (!btn) return;
     const text = btn.dataset.copy;
     const label = btn.textContent;
-    try { await navigator.clipboard.writeText(text); btn.textContent = 'Gekopieerd'; }
-    catch { const input = btn.parentElement.querySelector('input'); if (input) { input.select(); } btn.textContent = 'Geselecteerd'; }
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch {
+      const area = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
+      area.style.cssText = 'position:fixed;opacity:0';
+      document.body.append(area);
+      area.select();
+      try { ok = document.execCommand('copy'); } catch { ok = false; }
+      area.remove();
+    }
+    btn.textContent = ok ? 'Gekopieerd' : 'Kopiëren lukt niet';
     setTimeout(() => { btn.textContent = label; }, 1800);
   });
 

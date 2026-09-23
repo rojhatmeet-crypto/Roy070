@@ -31,7 +31,7 @@ export function register(r, db) {
         FROM plaatsingen p JOIN zzpers z ON z.id = p.zzp_id JOIN projecten pr ON pr.id = p.project_id JOIN klanten k ON k.id = pr.klant_id
        ORDER BY p.actief DESC, k.naam, z.naam`);
     res.page('Opdrachten', html`
-      ${pageHead({ title: 'Opdrachten', sub: 'Welke vakman werkt op welk project, tegen welk tarief.', actions: html`<a class="btn btn--primary" href="/beheer/plaatsingen/nieuw">Nieuwe opdracht</a>` })}
+      ${pageHead({ title: 'Opdrachten', actions: html`<a class="btn btn--primary" href="/beheer/plaatsingen/nieuw">Nieuwe opdracht</a>` })}
       ${rows.length ? html`<div class="table-wrap"><table class="table">
         <thead><tr><th>Vakman</th><th>Klant en project</th><th class="num">Inkoop</th><th class="num">Verkoop</th><th class="num">Marge per uur</th><th>Contract</th></tr></thead>
         <tbody>${rows.map((p) => html`<tr class="${p.actief ? '' : 'is-muted'}">
@@ -50,7 +50,7 @@ export function register(r, db) {
     const sheets = id ? db.all(`SELECT u.id, u.week, u.status, (SELECT COALESCE(SUM(minuten), 0) FROM uren WHERE urenstaat_id = u.id) AS minuten
                                  FROM urenstaten u WHERE u.plaatsing_id = ? ORDER BY u.week DESC LIMIT 10`, id) : [];
     res.page(id ? 'Opdracht bewerken' : 'Nieuwe opdracht', html`
-      ${pageHead({ title: id ? 'Opdracht bewerken' : 'Nieuwe opdracht', actions: id ? html`<a class="btn" href="/beheer/plaatsingen/${id}/uren/${currentWeek()}">Uren invullen namens vakman</a>` : '' })}
+      ${pageHead({ back: { href: '/beheer/plaatsingen', label: 'Opdrachten' }, title: id ? 'Opdracht' : 'Nieuwe opdracht', actions: id ? html`<a class="btn" href="/beheer/plaatsingen/${id}/uren/${currentWeek()}">Uren invullen</a>` : '' })}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
       <form method="post" class="card form-grid" data-margin-form>
         ${csrfField(req.csrf)}
@@ -60,7 +60,7 @@ export function register(r, db) {
           ${field({ label: 'Functie', name: 'functie', value: v.functie, required: true, placeholder: 'Bijvoorbeeld: Rioleur' })}
           <div class="field"><label for="f-opdracht">Opdracht <span class="optional">optioneel</span></label>
             <textarea id="f-opdracht" name="opdracht" rows="3" placeholder="Beschrijf het resultaat of de werkzaamheden die de zelfstandige uitvoert.">${v.opdracht}</textarea>
-            <p class="hint">Een afgebakende opdracht past beter bij zelfstandig ondernemerschap dan "meewerken in de ploeg".</p></div>
+            <p class="hint">Beschrijf een afgebakend resultaat, niet "meewerken in de ploeg".</p></div>
         </fieldset>
         <fieldset><legend>Tarieven per uur</legend>
           <div class="row-2">
@@ -68,7 +68,7 @@ export function register(r, db) {
             ${moneyField({ label: 'Verkoop: klant betaalt', name: 'verkoop', value: v.verkoop_cents, required: true, 'data-verkoop': true })}
           </div>
           <p class="margin-preview" data-margin-out aria-live="polite">${v.inkoop_cents !== null && v.verkoop_cents !== null ? `Marge ${euro(v.verkoop_cents - v.inkoop_cents)} per uur` : ''}</p>
-          ${select({ label: 'Btw op de factuur van de vakman aan RKS', name: 'inkoop_btw', value: v.inkoop_btw, options: BTW_IN, hint: 'Een vakman met KOR factureert altijd zonder btw, dat regelt het systeem zelf.' })}
+          ${select({ label: 'Btw op de factuur van de vakman aan RKS', name: 'inkoop_btw', value: v.inkoop_btw, options: BTW_IN, })}
         </fieldset>
         <fieldset><legend>Looptijd en contract</legend>
           <div class="row-2">
@@ -85,7 +85,7 @@ export function register(r, db) {
             ${field({ label: 'E-mail', name: 'goedkeurder_email', type: 'email', value: v.goedkeurder_email })}
           </div>
         </fieldset>
-        <label class="check"><input type="checkbox" name="actief" value="1"${v.actief ? raw(' checked') : ''}> Opdracht loopt (vakman kan uren invullen)</label>
+        <label class="check"><input type="checkbox" name="actief" value="1"${v.actief ? raw(' checked') : ''}> Opdracht loopt</label>
         <div class="form-actions"><button class="btn btn--primary" type="submit">Opslaan</button><a class="btn" href="/beheer/plaatsingen">Annuleren</a></div>
       </form>
       ${sheets.length ? html`<h2 class="section-title">Laatste weken</h2><div class="table-wrap"><table class="table table--compact"><tbody>

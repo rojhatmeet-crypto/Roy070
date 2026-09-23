@@ -1,5 +1,5 @@
 import { html, raw } from '../../views/html.js';
-import { pageHead, hoursTable, hoursForm, sheetBadge, shareButtons, rateSummary, csrfField, emptyState } from '../../views/components.js';
+import { pageHead, hoursTable, hoursForm, sheetBadge, shareButtons, rateSummary, csrfField, emptyState, weekNav } from '../../views/components.js';
 import * as ts from '../../domain/timesheets.js';
 import { hours, weekLabel, shiftWeek, isValidWeek, fmtDate, toInt, weekNumber, clean, euro } from '../../util.js';
 import { parseHoursForm, baseUrl, approvalText, attempt } from '../shared.js';
@@ -23,7 +23,7 @@ export function register(r, db) {
        ORDER BY u.week DESC, CASE u.status WHEN 'ingediend' THEN 0 WHEN 'afgekeurd' THEN 1 ELSE 2 END, z.naam LIMIT 300`, ...params);
     const qs = (o) => new URLSearchParams({ status, ...(week ? { week } : {}), ...o }).toString();
     res.page('Uren', html`
-      ${pageHead({ title: 'Uren', sub: week ? weekLabel(week) : 'Alle weken' })}
+      ${pageHead({ title: 'Uren', sub: week ? weekLabel(week) : '' })}
       <div class="toolbar">
         <div class="tabs">${STATUS_FILTERS.map(([k, l]) => html`<a href="/beheer/uren?${qs({ status: k })}"${k === status ? raw(' aria-current="page"') : ''}>${l}</a>`)}</div>
         <div class="tabs">
@@ -48,7 +48,7 @@ export function register(r, db) {
     const invoices = db.all(`SELECT DISTINCT f.id, f.soort, f.nummer, f.status FROM facturen f JOIN factuurregels r ON r.factuur_id = f.id WHERE r.urenstaat_id = ?`, s.id);
     const link = s.approval_token ? `${baseUrl(req)}/goedkeuren/${s.approval_token}` : '';
     res.page(`Uren ${s.zzp_naam}`, html`
-      ${pageHead({ eyebrow: weekLabel(s.week), title: s.zzp_naam, sub: `${s.functie} · ${s.klant_naam} · ${s.project_naam}`, actions: sheetBadge(s.status) })}
+      ${pageHead({ back: { href: '/beheer/uren', label: 'Uren' }, title: `${s.zzp_naam}, week ${weekNumber(s.week)}`, sub: `${s.klant_naam} · ${s.project_naam}`, actions: sheetBadge(s.status) })}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
       <div class="grid-2 grid-2--wide">
         <div class="card">${hoursTable(entries)}
@@ -56,18 +56,18 @@ export function register(r, db) {
         </div>
         <div class="stack">
           <div class="card"><h2>Bedragen</h2>${rateSummary(s.minuten, inkoop, verkoop)}
-            ${s.status === 'goedgekeurd' ? html`<p class="muted small">Tarieven vastgelegd bij goedkeuring.</p>` : html`<p class="muted small">Op basis van de huidige tarieven van de opdracht.</p>`}
+            ${s.status === 'goedgekeurd' ? html`<p class="muted small">Tarieven vastgelegd bij goedkeuring.</p>` : ''}
           </div>
           ${s.status === 'ingediend' ? html`
           <div class="card">
-            <h2>Goedkeuringslink</h2>
-            <p class="muted">Voor ${s.goedkeurder_naam || 'de uitvoerder'}${s.goedkeurder_telefoon ? `, ${s.goedkeurder_telefoon}` : ''}. Geldig tot ${fmtDate(s.approval_expires)}.</p>
+            <h2>Link voor de uitvoerder</h2>
+            <p class="muted">${s.goedkeurder_naam || 'Uitvoerder'}${s.goedkeurder_telefoon ? `, ${s.goedkeurder_telefoon}` : ''}. Geldig tot ${fmtDate(s.approval_expires)}.</p>
             ${shareButtons({ url: link, text: approvalText(s), phone: s.goedkeurder_telefoon, email: s.goedkeurder_email, subject: `Uren ${s.zzp_naam} week ${weekNumber(s.week)}` })}
             <form method="post" action="/beheer/uren/${s.id}" class="inline-form">${csrfField(req.csrf)}<button class="link" name="actie" value="nieuwe_link">Nieuwe link maken</button></form>
           </div>
           <div class="card">
             <h2>Goedkeuren namens opdrachtgever</h2>
-            <p class="muted small">Alleen als de opdrachtgever schriftelijk heeft goedgekeurd, bijvoorbeeld per mail of een getekende urenbrief. Dit wordt vastgelegd in het logboek.</p>
+            <p class="muted small">Alleen met schriftelijke goedkeuring, bijvoorbeeld per mail.</p>
             <form method="post" action="/beheer/uren/${s.id}" class="stack">${csrfField(req.csrf)}
               <div class="field"><label for="f-naam">Goedgekeurd door</label><input id="f-naam" name="naam" required value="${s.goedkeurder_naam}"></div>
               <div class="field"><label for="f-bewijs">Hoe is goedgekeurd?</label><input id="f-bewijs" name="bewijs" required placeholder="Bijvoorbeeld: e-mail van 22 september"></div>
@@ -112,10 +112,10 @@ export function register(r, db) {
     const entries = ts.entries(db, existing ? existing.id : -1, week);
     const base = `/beheer/plaatsingen/${p.id}/uren`;
     res.page('Uren invullen', html`
-      ${pageHead({ eyebrow: `Namens ${p.zzp_naam}`, title: p.project_naam, sub: `${p.klant_naam} · ${euro(p.inkoop_cents)} inkoop, ${euro(p.verkoop_cents)} verkoop` })}
-      <nav class="week-nav"><a class="btn btn--sm" href="${base}/${shiftWeek(week, -1)}">Vorige week</a><strong>${weekLabel(week)}</strong><a class="btn btn--sm" href="${base}/${shiftWeek(week, 1)}">Volgende week</a></nav>
+      ${pageHead({ back: { href: `/beheer/plaatsingen/${p.id}`, label: 'Opdracht' }, title: `Uren van ${p.zzp_naam}`, sub: `${p.klant_naam} · ${p.project_naam}` })}
+      ${weekNav(`${base}/`, week)}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
-      <div class="card">${hoursForm({ action: `${base}/${week}`, csrf: req.csrf, entries, editable: true })}</div>`);
+      <div class="card narrow">${hoursForm({ action: `${base}/${week}`, csrf: req.csrf, entries, editable: true })}</div>`);
   };
 
   r.get('/plaatsingen/:id/uren/:week', (req, res) => {

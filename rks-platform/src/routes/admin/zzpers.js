@@ -58,9 +58,9 @@ export function register(r, db) {
     const opdrachten = id ? db.all(`SELECT p.id, p.functie, p.inkoop_cents, p.verkoop_cents, p.actief, pr.naam AS project, k.naam AS klant FROM plaatsingen p
       JOIN projecten pr ON pr.id = p.project_id JOIN klanten k ON k.id = pr.klant_id WHERE p.zzp_id = ? ORDER BY p.actief DESC, p.id DESC`, id) : [];
     res.page(id ? v.naam : 'Nieuwe zzp\'er', html`
-      ${pageHead({ eyebrow: 'Zzp\'er', title: id ? v.naam : 'Nieuwe zzp\'er', actions: id ? html`<a class="btn" href="/beheer/plaatsingen/nieuw?zzp=${id}">Opdracht toevoegen</a>` : '' })}
+      ${pageHead({ back: { href: '/beheer/zzpers', label: 'Zzp\'ers' }, title: id ? v.naam : 'Nieuwe zzp\'er', actions: id ? html`<a class="btn" href="/beheer/plaatsingen/nieuw?zzp=${id}">Opdracht toevoegen</a>` : '' })}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
-      ${invite ? html`<div class="panel panel--good"><h2>Uitnodiging klaar</h2><p>Stuur deze link naar ${v.naam}. Hiermee kiest hij of zij een wachtwoord. De link is 7 dagen geldig.</p>
+      ${invite ? html`<div class="panel panel--good"><p><strong>Uitnodiging klaar.</strong> Stuur deze link naar ${v.naam}. Hij is 7 dagen geldig.</p>
         ${shareButtons({ url: invite, text: `Hoi ${v.naam.split(' ')[0]}, via deze link maak je je account aan voor het urenportaal van RKS Infra:`, phone: v.telefoon, email: v.email, subject: 'Je account bij RKS Infra' })}</div>` : ''}
       <div class="grid-2 grid-2--wide">
         <form method="post" action="${id ? `/beheer/zzpers/${id}` : '/beheer/zzpers/nieuw'}" class="card form-grid">
@@ -77,7 +77,7 @@ export function register(r, db) {
             ${field({ label: 'IBAN', name: 'iban', value: v.iban })}
             ${select({ label: 'Btw', name: 'btw_regime', value: v.btw_regime, options: [['normaal', 'Btw-plichtig'], ['kor', 'Kleineondernemersregeling (geen btw)']] })}
             <div class="row-2">
-              ${field({ label: 'Akkoord self-billing sinds', name: 'selfbilling_akkoord_op', type: 'date', value: v.selfbilling_akkoord_op || '', hint: 'Alleen invullen met schriftelijk akkoord. Dan maakt RKS de facturen namens de vakman op.' })}
+              ${field({ label: 'Akkoord self-billing sinds', name: 'selfbilling_akkoord_op', type: 'date', value: v.selfbilling_akkoord_op || '', hint: 'Alleen met schriftelijk akkoord.' })}
               ${field({ label: 'Betaaltermijn (dagen)', name: 'betaaltermijn_dagen', type: 'number', value: v.betaaltermijn_dagen, min: 0, max: 90, required: true })}
             </div>
           </fieldset>
@@ -96,7 +96,7 @@ export function register(r, db) {
           </div>
           <div class="card"><h2>Account</h2>
             ${user ? html`<p>${user.email} · ${user.password_hash ? html`<span class="badge badge--good">Actief</span>` : html`<span class="badge badge--warn">Uitgenodigd</span>`}</p>
-              ${user.laatst_ingelogd ? html`<p class="muted small">Laatst ingelogd ${fmtDate(user.laatst_ingelogd.slice(0, 10))}</p>` : ''}` : html`<p class="muted">Nog geen account. Met een account vult ${v.naam} zelf uren in.</p>`}
+              ${user.laatst_ingelogd ? html`<p class="muted small">Laatst ingelogd ${fmtDate(user.laatst_ingelogd.slice(0, 10))}</p>` : ''}` : html`<p class="muted">Nog geen account.</p>`}
             <form method="post" action="/beheer/zzpers/${id}/uitnodigen">${csrfField(req.csrf)}<button class="btn" type="submit"${v.email ? '' : raw(' disabled')}>${user ? 'Nieuwe inloglink maken' : 'Account aanmaken en uitnodigen'}</button></form>
             ${v.email ? '' : html`<p class="hint">Vul eerst een e-mailadres in.</p>`}
           </div>

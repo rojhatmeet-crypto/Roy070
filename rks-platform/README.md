@@ -18,7 +18,7 @@ van vakman, uitvoerder en RKS, opgenomen met de demodata.
 
 **Voor de vakman (zzp'er), op de telefoon**
 - Ziet zijn opdrachten met zijn eigen tarief. De verkoopprijs en de marge ziet hij nooit.
-- Vult per week zijn uren in, per kwartier, met een korte omschrijving per dag.
+- Vult per week zijn uren in, per kwartier.
 - Dient in en stuurt met één knop de goedkeuringslink via WhatsApp naar de uitvoerder.
 - Ziet zijn facturen aan RKS en of ze betaald zijn, plus zijn certificaten met vervaldatum.
 
@@ -29,8 +29,8 @@ van vakman, uitvoerder en RKS, opgenomen met de demodata.
 - Ziet nooit inkooptarieven of marges.
 
 **Voor RKS (beheer)**
-- Dashboard per week met actieve zzp'ers, goedgekeurde uren, omzet, zzp-kosten, brutomarge en gemiddelde marge per uur. Daarnaast openstaande en te late facturen, bedragen te betalen aan zzp'ers, marge per klant en per vakman, en een grafiek over acht weken.
-- Signalen: VCA en andere certificaten die verlopen, uren die te lang op goedkeuring wachten, opdrachten zonder getekende overeenkomst, zzp'ers zonder akkoord voor self-billing, en facturen over de vervaldatum.
+- Overzicht per week: goedgekeurde uren, omzet, brutomarge en marge per uur, een grafiek over acht weken, en de marge per klant en per vakman.
+- Actie nodig: te late facturen, verlopen of bijna verlopen certificaten, uren die op goedkeuring wachten, opdrachten zonder getekend contract, conceptfacturen en inkoopfacturen die op de zzp'er wachten.
 - Opdrachten met eigen inkoop- en verkooptarief per zzp'er en project. De marge zie je live tijdens het invullen.
 - Facturen: concepten definitief maken met nummering zonder gaten, versturen via link, WhatsApp of e-mail, betalingen vastleggen, en export als CSV en UBL voor de boekhouding.
 - Zzp'ers en klanten beheren, accounts uitnodigen met een link, en een logboek van wie wat heeft goedgekeurd of gewijzigd.

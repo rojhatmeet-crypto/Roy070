@@ -100,4 +100,27 @@ export function alerts(db) {
   return out.sort((a, b) => order[a.ernst] - order[b.ernst]);
 }
 
+// Wat RKS moet doen, per soort samengevat. Alleen soorten met een aantal.
+export function todo(db) {
+  const vandaag = today();
+  const binnen30 = addDays(vandaag, 30);
+  const count = (sql, ...params) => db.get(sql, ...params).n;
+  const r = receivables(db);
+  const items = [
+    { ernst: 'crit', tekst: 'Facturen te laat betaald', aantal: r.teLaatAantal, link: '/beheer/facturen?soort=verkoop&filter=telaat' },
+    { ernst: 'crit', tekst: 'Certificaten verlopen', link: '/beheer/zzpers',
+      aantal: count(`SELECT COUNT(*) AS n FROM certificaten c JOIN zzpers z ON z.id = c.zzp_id WHERE z.actief = 1 AND c.geldig_tot < ?`, vandaag) },
+    { ernst: 'warn', tekst: 'Uren wachten op goedkeuring', link: '/beheer/uren?status=ingediend',
+      aantal: count(`SELECT COUNT(*) AS n FROM urenstaten WHERE status = 'ingediend'`) },
+    { ernst: 'warn', tekst: 'Certificaten verlopen binnen 30 dagen', link: '/beheer/zzpers',
+      aantal: count(`SELECT COUNT(*) AS n FROM certificaten c JOIN zzpers z ON z.id = c.zzp_id WHERE z.actief = 1 AND c.geldig_tot >= ? AND c.geldig_tot <= ?`, vandaag, binnen30) },
+    { ernst: 'warn', tekst: 'Opdrachten zonder getekend contract', link: '/beheer/plaatsingen',
+      aantal: count(`SELECT COUNT(*) AS n FROM plaatsingen WHERE actief = 1 AND contract_getekend_op IS NULL`) },
+    { ernst: 'info', tekst: 'Conceptfacturen klaar om te versturen', aantal: r.conceptAantal, link: '/beheer/facturen?soort=verkoop&filter=concept' },
+    { ernst: 'info', tekst: 'Wachten op factuur van zzp\'er', link: '/beheer/facturen?soort=inkoop&filter=wacht',
+      aantal: count(`SELECT COUNT(*) AS n FROM facturen WHERE soort = 'inkoop' AND status = 'wacht_op_factuur'`) },
+  ];
+  return items.filter((i) => i.aantal > 0);
+}
+
 export const currentWeek = () => isoWeekOf(today());

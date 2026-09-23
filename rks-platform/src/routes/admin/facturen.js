@@ -38,18 +38,18 @@ export function register(r, db) {
       ${pageHead({ title: 'Facturen', actions: html`<a class="btn" href="/beheer/facturen/export.csv?soort=${soort}&filter=${filter}">Exporteer CSV</a>` })}
       <div class="toolbar">
         <div class="tabs tabs--primary">
-          <a href="/beheer/facturen?soort=verkoop"${soort === 'verkoop' ? raw(' aria-current="page"') : ''}>Verkoop aan klanten</a>
-          <a href="/beheer/facturen?soort=inkoop"${soort === 'inkoop' ? raw(' aria-current="page"') : ''}>Inkoop van zzp'ers</a>
+          <a href="/beheer/facturen?soort=verkoop"${soort === 'verkoop' ? raw(' aria-current="page"') : ''}>Verkoop</a>
+          <a href="/beheer/facturen?soort=inkoop"${soort === 'inkoop' ? raw(' aria-current="page"') : ''}>Inkoop</a>
         </div>
         <div class="tabs">${FILTERS[soort].map(([k, l]) => html`<a href="/beheer/facturen?soort=${soort}&filter=${k}"${k === filter ? raw(' aria-current="page"') : ''}>${l}</a>`)}</div>
       </div>
       ${concepts.length ? html`<form class="panel panel--info bulk" method="post" action="/beheer/facturen/definitief-alle">${csrfField(req.csrf)}
-        <p><strong>${concepts.length} conceptfacturen</strong> met goedgekeurde uren. Maak ze definitief om nummers toe te kennen.</p>
-        <button class="btn btn--primary" type="submit">Alle concepten definitief maken</button></form>` : ''}
+        <p><strong>${concepts.length} conceptfacturen</strong> klaar om te versturen.</p>
+        <button class="btn btn--primary" type="submit">Alles definitief maken</button></form>` : ''}
       ${rows.length ? html`<div class="table-wrap"><table class="table">
         <thead><tr><th>Factuur</th><th>${soort === 'verkoop' ? 'Klant' : 'Vakman'}</th><th>Week</th><th>Vervaldatum</th><th class="num">Bedrag</th><th>Status</th></tr></thead>
         <tbody>${rows.map((f) => html`<tr>
-          <td><a href="/beheer/facturen/${f.id}">${f.nummer || f.extern_nummer || (f.status === 'concept' ? 'Concept' : 'Nog geen nummer')}</a>${f.selfbilling ? html`<p class="muted small">Self-billing</p>` : ''}</td>
+          <td><a href="/beheer/facturen/${f.id}">${f.nummer || f.extern_nummer || (f.status === 'concept' ? 'Concept' : 'Nog geen nummer')}</a></td>
           <td>${f.relatie}</td><td>Week ${weekNumber(f.week)}</td><td>${f.vervaldatum ? fmtDate(f.vervaldatum) : '–'}</td>
           <td class="num">${euro(f.totaal_cents)}</td><td>${invoiceBadge(f)}</td></tr>`)}</tbody>
         <tfoot><tr><td colspan="4">Totaal ${rows.length} facturen</td><td class="num">${euro(total)}</td><td></td></tr></tfoot>
@@ -88,9 +88,9 @@ export function register(r, db) {
     let actions;
     if (f.status === 'concept') {
       actions = missing.length ? html`<p class="panel panel--warn">Nog niet compleet: ${missing.join(', ')}.</p>`
-        : form('definitief', 'Definitief maken', html`<p class="muted small">Je kunt nog uren toevoegen zolang de factuur concept is. Na definitief krijgt de factuur een nummer.</p>`);
+        : form('definitief', 'Definitief maken', html`<p class="muted small">De factuur krijgt dan een nummer.</p>`);
     } else if (f.status === 'wacht_op_factuur') {
-      actions = form('extern', 'Factuur ontvangen', html`<p class="muted small">${zzp.naam} heeft geen self-billing akkoord. Leg het nummer vast van de factuur die je van ${zzp.naam} ontving.</p>
+      actions = form('extern', 'Factuur ontvangen', html`<p class="muted small">${zzp.naam} stuurt zelf een factuur. Vul het nummer in als die binnen is.</p>
         <div class="field"><label for="f-extern">Factuurnummer van ${zzp.naam}</label><input id="f-extern" name="extern_nummer" required></div>`);
     } else if (['definitief', 'verzonden'].includes(f.status)) {
       actions = html`
@@ -101,17 +101,16 @@ export function register(r, db) {
       actions = html`<p class="panel panel--good">Betaald op ${fmtDate(f.betaald_op)}.</p>`;
     }
     res.page('Factuur', html`
-      ${pageHead({ eyebrow: f.soort === 'verkoop' ? 'Verkoopfactuur' : 'Inkoopfactuur', title: f.nummer || f.extern_nummer || 'Concept', actions: invoiceBadge(f) })}
+      ${pageHead({ back: { href: `/beheer/facturen?soort=${f.soort}`, label: f.soort === 'verkoop' ? 'Verkoopfacturen' : 'Inkoopfacturen' }, title: f.nummer || f.extern_nummer || 'Concept', actions: invoiceBadge(f) })}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
       <div class="invoice-layout">
         <div>${invoiceDoc(f)}</div>
         <aside class="stack no-print">
           <div class="card stack">${actions}</div>
           <div class="card stack"><h3>Downloaden</h3>
-            <button class="btn" type="button" data-print>Printen of opslaan als pdf</button>
+            <button class="btn" type="button" data-print>Printen</button>
             <a class="btn" href="/beheer/facturen/${id}/ubl">UBL voor de boekhouding</a>
           </div>
-          <p><a href="/beheer/facturen?soort=${f.soort}">Terug naar facturen</a></p>
         </aside>
       </div>`);
   };

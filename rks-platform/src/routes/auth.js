@@ -17,15 +17,14 @@ export default function authRoutes(db) {
   const loginPage = (res, { email = '', error = '', terug = '' } = {}) => res.page('Inloggen', html`
     <div class="auth">
       <h1>Inloggen</h1>
-      <p class="muted">Voor vakmensen, opdrachtgevers en RKS.</p>
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
       <form method="post" action="/login" class="stack">
         <input type="hidden" name="terug" value="${terug}">
         <div class="field"><label for="f-email">E-mailadres</label><input id="f-email" name="email" type="email" autocomplete="username" required value="${email}"></div>
         <div class="field"><label for="f-pw">Wachtwoord</label><input id="f-pw" name="wachtwoord" type="password" autocomplete="current-password" required></div>
-        <button class="btn btn--primary btn--lg" type="submit">Inloggen</button>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Inloggen</button>
       </form>
-      <p class="hint">Wachtwoord vergeten? Vraag RKS om een nieuwe uitnodigingslink.</p>
+      <p class="hint">Wachtwoord vergeten? Neem contact op met RKS.</p>
     </div>`, { bare: true });
 
   r.get('/login', (req, res) => {
@@ -65,7 +64,7 @@ export default function authRoutes(db) {
       <form method="post" class="stack">
         <div class="field"><label for="f-pw">Nieuw wachtwoord</label><input id="f-pw" name="wachtwoord" type="password" autocomplete="new-password" minlength="10" required><p class="hint">Minimaal 10 tekens.</p></div>
         <div class="field"><label for="f-pw2">Herhaal wachtwoord</label><input id="f-pw2" name="herhaal" type="password" autocomplete="new-password" required></div>
-        <button class="btn btn--primary btn--lg" type="submit">Account activeren</button>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Account activeren</button>
       </form>
     </div>`, { bare: true });
 
@@ -100,7 +99,7 @@ export default function authRoutes(db) {
         <div class="field"><label for="f-naam">Je naam</label><input id="f-naam" name="naam" required></div>
         <div class="field"><label for="f-email">E-mailadres</label><input id="f-email" name="email" type="email" required></div>
         <div class="field"><label for="f-pw">Wachtwoord</label><input id="f-pw" name="wachtwoord" type="password" minlength="10" required></div>
-        <button class="btn btn--primary btn--lg" type="submit">Beheerder aanmaken</button>
+        <button class="btn btn--primary btn--lg btn--block" type="submit">Beheerder aanmaken</button>
       </form>
     </div>`, { bare: true });
 

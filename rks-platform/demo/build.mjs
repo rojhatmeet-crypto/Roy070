@@ -50,14 +50,7 @@ const js = await build({
 const bundle = js.outputFiles[0].text;
 if (/<\/script/i.test(bundle)) throw new Error('De bundel bevat </script>');
 
-const fonts = {
-  '../fonts/archivo-latin.woff2': dataUri('public/fonts/archivo-latin.woff2', 'font/woff2'),
-  '../fonts/archivo-latin-ext.woff2': dataUri('public/fonts/archivo-latin-ext.woff2', 'font/woff2'),
-  '../fonts/ibm-plex-mono-500-latin.woff2': dataUri('public/fonts/ibm-plex-mono-500-latin.woff2', 'font/woff2'),
-};
 let css = read('public/css/app.css').toString();
-for (const [from, to] of Object.entries(fonts)) css = css.split(`url("${from}")`).join(`url("${to}")`);
-if (css.includes('../fonts/')) throw new Error('Niet alle lettertypes zijn ingesloten');
 css += `\n${read('demo/demo.css')}`;
 
 const page = read('demo/shell.html').toString().split('/*CSS*/').join(css).split('/*JS*/').join(bundle);

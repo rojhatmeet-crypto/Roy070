@@ -2,7 +2,7 @@
 // en een factuur bekijken.
 import { Router } from 'express';
 import { html } from '../views/html.js';
-import { hoursTable, approvalForm, sheetBadge } from '../views/components.js';
+import { hoursTable, approvalForm } from '../views/components.js';
 import { invoiceDoc } from '../views/invoice.js';
 import * as ts from '../domain/timesheets.js';
 import { loadInvoice } from '../domain/invoices.js';
@@ -23,29 +23,30 @@ export default function publicRoutes(db) {
     const expired = sheet.approval_expires && sheet.approval_expires < today();
     let action;
     if (sheet.status === 'goedgekeurd') {
-      action = html`<div class="result result--good"><h2>Goedgekeurd</h2><p>Goedgekeurd door ${sheet.goedgekeurd_door} op ${fmtDate(sheet.goedgekeurd_op.slice(0, 10))}. De uren zijn vergrendeld. Bedankt!</p></div>`;
+      action = html`<div class="result result--good"><h2>Goedgekeurd</h2><p>Goedgekeurd door ${sheet.goedgekeurd_door} op ${fmtDate(sheet.goedgekeurd_op.slice(0, 10))}. Bedankt.</p></div>`;
     } else if (sheet.status !== 'ingediend') {
       action = html`<div class="result"><p>Deze uren wachten niet meer op goedkeuring.</p></div>`;
     } else if (expired) {
-      action = html`<div class="result result--warn"><p>Deze link is verlopen. Vraag de vakman of RKS om een nieuwe link.</p></div>`;
+      action = html`<div class="result result--warn"><p>Deze link is verlopen. Vraag om een nieuwe link.</p></div>`;
     } else {
       action = html`${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
         ${approvalForm({ action: `/goedkeuren/${encodeURIComponent(req.params.token)}`, csrf: req.csrf, defaultName: sheet.goedkeurder_naam })}`;
     }
     res.page('Uren goedkeuren', html`
       <div class="approve-page">
-        <p class="eyebrow">Uren goedkeuren</p>
-        <h1>${sheet.zzp_naam}</h1>
-        <dl class="facts">
-          <div><dt>Project</dt><dd>${sheet.project_naam}${sheet.projectnummer ? ` (${sheet.projectnummer})` : ''}</dd></div>
-          <div><dt>Opdrachtgever</dt><dd>${sheet.klant_naam}</dd></div>
-          <div><dt>Periode</dt><dd>${weekLabel(sheet.week)}</dd></div>
-          <div><dt>Status</dt><dd>${sheetBadge(sheet.status)}</dd></div>
-        </dl>
-        <div class="big-total"><span>Totaal</span><strong>${hours(sheet.minuten)} uur</strong></div>
-        ${hoursTable(entries)}
-        ${action}
-        <p class="hint">Deze pagina is alleen bereikbaar via de persoonlijke link. Na goedkeuring kan niemand de uren meer wijzigen.</p>
+        <div>
+          <h1>Uren goedkeuren</h1>
+          <p class="page-head__sub">${sheet.zzp_naam} · ${weekLabel(sheet.week)}</p>
+        </div>
+        <div class="card stack">
+          <dl class="facts">
+            <div><dt>Project</dt><dd>${sheet.project_naam}${sheet.projectnummer ? ` (${sheet.projectnummer})` : ''}</dd></div>
+            <div><dt>Opdrachtgever</dt><dd>${sheet.klant_naam}</dd></div>
+          </dl>
+          <div class="big-total"><span>Totaal</span><strong>${hours(sheet.minuten)} uur</strong></div>
+          ${hoursTable(entries)}
+        </div>
+        <div class="card">${action}</div>
       </div>`, { bare: true });
   };
 
@@ -64,7 +65,7 @@ export default function publicRoutes(db) {
     return attempt(() => {
       if (req.body.actie === 'afkeuren') {
         ts.reject(db, sheet.id, naam, reden, 'goedkeuringslink');
-        return res.page('Uren afgekeurd', html`<div class="approve-page"><div class="result result--warn"><h1>Uren afgekeurd</h1><p>${sheet.zzp_naam} krijgt je opmerking te zien en kan de uren aanpassen en opnieuw indienen.</p><p class="quote">${reden}</p></div></div>`, { bare: true });
+        return res.page('Uren afgekeurd', html`<div class="approve-page"><div class="result result--warn"><h1>Uren afgekeurd</h1><p>${sheet.zzp_naam} ziet je opmerking en kan de uren aanpassen.</p><p class="quote">${reden}</p></div></div>`, { bare: true });
       }
       ts.approve(db, sheet.id, naam, 'goedkeuringslink');
       res.redirect(303, `/goedkeuren/${encodeURIComponent(req.params.token)}`);
@@ -82,8 +83,8 @@ export default function publicRoutes(db) {
     if (!inv) return res.status(404).page('Factuur niet gevonden', html`<div class="auth"><h1>Factuur niet gevonden</h1><p>Deze link is ongeldig.</p></div>`, { bare: true });
     res.page(`Factuur ${inv.nummer || inv.extern_nummer}`, html`
       <div class="doc-actions no-print">
-        <button class="btn" type="button" data-print>Printen of opslaan als pdf</button>
-        <a class="btn" href="/factuur/${encodeURIComponent(req.params.token)}/ubl">Download UBL (boekhouding)</a>
+        <button class="btn" type="button" data-print>Printen</button>
+        <a class="btn" href="/factuur/${encodeURIComponent(req.params.token)}/ubl">UBL downloaden</a>
       </div>
       ${invoiceDoc(inv)}`, { bare: true });
   });

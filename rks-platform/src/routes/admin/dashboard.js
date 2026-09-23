@@ -1,7 +1,7 @@
 import { html, raw } from '../../views/html.js';
-import { pageHead, kpi, emptyState } from '../../views/components.js';
+import { pageHead, kpi, emptyState, weekNav } from '../../views/components.js';
 import * as dash from '../../domain/dashboard.js';
-import { euro, euro0, hours, weekLabel, shiftWeek, isValidWeek, weekNumber, fmtDate } from '../../util.js';
+import { euro, euro0, hours, weekLabel, shiftWeek, isValidWeek, weekNumber } from '../../util.js';
 
 // Staafgrafiek brutomarge per week. De gekozen week in het accent, de rest grijs.
 function marginChart(series, selected) {
@@ -38,64 +38,50 @@ export function dashboardRoute(db) {
   return (req, res) => {
     const latest = db.get(`SELECT MAX(week) AS w FROM urenstaten WHERE status = 'goedgekeurd'`).w;
     const week = isValidWeek(req.query.week) ? req.query.week : (latest || dash.currentWeek());
+    const per = req.query.per === 'zzp' ? 'zzp' : 'klant';
     const s = dash.periodStats(db, [week]);
     const prev = dash.periodStats(db, [shiftWeek(week, -1)]);
-    const last4 = dash.periodStats(db, [0, 1, 2, 3].map((i) => shiftWeek(week, -i)));
-    const rec = dash.receivables(db);
-    const pending = db.get(`SELECT COUNT(*) AS n FROM urenstaten WHERE status = 'ingediend'`).n;
     const series = dash.weeklySeries(db, week, 8);
-    const perKlant = dash.breakdown(db, [week], 'klant');
-    const perZzp = dash.breakdown(db, [week], 'zzp');
-    const alerts = dash.alerts(db);
-    const delta = (a, b) => (b ? `${a >= b ? '+' : ''}${Math.round(((a - b) / Math.abs(b)) * 100)}% t.o.v. vorige week` : '');
+    const rows = dash.breakdown(db, [week], per);
+    const todo = dash.todo(db);
+    const delta = prev.marge ? Math.round(((s.marge - prev.marge) / Math.abs(prev.marge)) * 100) : null;
+    const tab = (key, label) => html`<a href="/beheer?week=${week}&per=${key}"${per === key ? raw(' aria-current="page"') : ''}>${label}</a>`;
 
-    res.page('Dashboard', html`
-      ${pageHead({ eyebrow: 'Dashboard', title: weekLabel(week), actions: html`<nav class="week-nav week-nav--compact" aria-label="Week kiezen">
-        <a class="btn btn--sm" href="/beheer?week=${shiftWeek(week, -1)}">Vorige</a>
-        <a class="btn btn--sm" href="/beheer?week=${dash.currentWeek()}">Deze week</a>
-        <a class="btn btn--sm" href="/beheer?week=${shiftWeek(week, 1)}">Volgende</a></nav>` })}
+    res.page('Overzicht', html`
+      ${pageHead({ title: 'Overzicht', actions: weekNav('/beheer?week=', week) })}
 
-      <section class="kpis kpis--hero" aria-label="Kerncijfers van de week">
-        <div class="kpi kpi--hero"><span class="kpi__label">Brutomarge</span><span class="kpi__value">${euro0(s.marge)}</span><span class="kpi__note">${delta(s.marge, prev.marge)}</span></div>
-        ${kpi({ label: 'Actieve zzp\'ers', value: s.zzpers })}
-        ${kpi({ label: 'Goedgekeurde uren', value: hours(s.minuten) })}
+      <section class="kpis" aria-label="Kerncijfers van de week">
+        ${kpi({ label: 'Goedgekeurde uren', value: hours(s.minuten), note: `${s.zzpers} ${s.zzpers === 1 ? 'vakman' : 'vakmensen'}` })}
         ${kpi({ label: 'Omzet', value: euro0(s.omzet) })}
-        ${kpi({ label: 'Zzp-kosten', value: euro0(s.kosten) })}
-        ${kpi({ label: 'Gemiddelde marge', value: `${euro(s.margePerUur)} /u`, note: s.omzet ? `${Math.round((s.marge / s.omzet) * 1000) / 10}% van de omzet` : '' })}
-      </section>
-
-      <section class="kpis kpis--4" aria-label="Openstaand">
-        ${kpi({ label: 'Openstaande facturen', value: euro0(rec.debiteuren), note: rec.teLaatAantal ? `${euro0(rec.teLaat)} over de vervaldatum` : `${rec.debiteurenAantal} facturen`, tone: rec.teLaatAantal ? 'crit' : '' })}
-        ${kpi({ label: 'Te betalen aan zzp\'ers', value: euro0(rec.crediteuren), note: `${rec.crediteurenAantal} facturen` })}
-        ${kpi({ label: 'Wacht op goedkeuring', value: pending, note: 'urenstaten', tone: pending ? 'warn' : '' })}
-        ${kpi({ label: 'Concepten klaar', value: rec.conceptAantal, note: euro0(rec.conceptBedrag) })}
+        ${kpi({ label: 'Brutomarge', value: euro0(s.marge), note: delta === null ? '' : `${delta >= 0 ? '+' : ''}${delta}% t.o.v. vorige week` })}
+        ${kpi({ label: 'Marge per uur', value: euro(s.margePerUur), note: s.omzet ? `${Math.round((s.marge / s.omzet) * 1000) / 10}% van de omzet` : '' })}
       </section>
 
       <div class="grid-2 grid-2--wide">
         <section class="card">
-          <div class="card__head"><h2>Brutomarge per week</h2><span class="muted small">Laatste 4 weken: ${euro0(last4.marge)} · ${hours(last4.minuten)} uur</span></div>
+          <div class="card__head"><h2>Brutomarge per week</h2></div>
           ${marginChart(series, week)}
-          <details class="table-toggle"><summary>Toon als tabel</summary>
+          <details class="table-toggle"><summary>Als tabel</summary>
             <table class="table table--compact"><thead><tr><th>Week</th><th class="num">Uren</th><th class="num">Omzet</th><th class="num">Marge</th><th class="num">Per uur</th></tr></thead>
             <tbody>${series.map((x) => html`<tr><td>${weekNumber(x.week)}</td><td class="num">${hours(x.minuten)}</td><td class="num">${euro0(x.omzet)}</td><td class="num">${euro0(x.marge)}</td><td class="num">${euro(x.margePerUur)}</td></tr>`)}</tbody></table>
           </details>
         </section>
         <section class="card">
-          <div class="card__head"><h2>Aandacht nodig</h2><span class="muted small">${alerts.length} signalen</span></div>
-          ${alerts.length ? html`<ul class="alerts">${alerts.slice(0, 8).map((a) => html`<li class="alert alert--${a.ernst}">
-            <span class="alert__icon" aria-hidden="true"></span><a href="${a.link}">${a.tekst}${a.datum ? ` ${fmtDate(a.datum)}` : ''}</a></li>`)}</ul>
-            ${alerts.length > 8 ? html`<p class="muted small">En nog ${alerts.length - 8} andere.</p>` : ''}` : html`<p class="muted">Alles op orde.</p>`}
+          <div class="card__head"><h2>Actie nodig</h2></div>
+          ${todo.length ? html`<ul class="todo">${todo.map((t) => html`<li><a href="${t.link}">
+            <span class="todo__dot todo__dot--${t.ernst}" aria-hidden="true"></span><span class="todo__text">${t.tekst}</span><span class="todo__count">${t.aantal}</span></a></li>`)}</ul>`
+            : html`<p class="muted">Niets te doen.</p>`}
         </section>
       </div>
 
-      <div class="grid-2">
-        <section class="card"><h2>Per klant</h2>${perKlant.length ? breakdownTable(perKlant, 'Klant', '/beheer/klanten/') : emptyState('Geen goedgekeurde uren in deze week.')}</section>
-        <section class="card"><h2>Per vakman</h2>${perZzp.length ? breakdownTable(perZzp, 'Vakman', '/beheer/zzpers/') : emptyState('Geen goedgekeurde uren in deze week.')}</section>
-      </div>`);
+      <section class="card">
+        <div class="card__head"><h2>${weekLabel(week)}</h2><div class="tabs">${tab('klant', 'Per klant')}${tab('zzp', 'Per vakman')}</div></div>
+        ${rows.length ? breakdownTable(rows, per === 'zzp' ? 'Vakman' : 'Klant', per === 'zzp' ? '/beheer/zzpers/' : '/beheer/klanten/') : emptyState('Geen goedgekeurde uren in deze week.')}
+      </section>`);
   };
 }
 
-const breakdownTable = (rows, label, link) => html`<div class="table-wrap"><table class="table table--compact">
+const breakdownTable = (rows, label, link) => html`<div class="table-wrap"><table class="table">
   <thead><tr><th>${label}</th><th class="num">Uren</th><th class="num">Omzet</th><th class="num">Marge</th><th class="num">Per uur</th></tr></thead>
   <tbody>${rows.map((r) => html`<tr><td><a href="${link}${r.id}">${r.naam}</a></td><td class="num">${hours(r.minuten)}</td><td class="num">${euro0(r.omzet)}</td><td class="num">${euro0(r.marge)}</td><td class="num">${euro(r.margePerUur)}</td></tr>`)}</tbody>
 </table></div>`;

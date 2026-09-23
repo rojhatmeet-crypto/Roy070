@@ -14,7 +14,7 @@ export function register(r, db) {
     const s = db.settings();
     const admins = db.all(`SELECT * FROM users WHERE rol = 'admin' ORDER BY naam`);
     res.page('Instellingen', html`
-      ${pageHead({ title: 'Instellingen', sub: 'Deze gegevens staan op elke verkoopfactuur en op de self-billing facturen als afnemer.' })}
+      ${pageHead({ title: 'Instellingen', sub: 'Deze gegevens staan op je facturen.' })}
       ${error ? html`<p class="error-box" role="alert">${error}</p>` : ''}
       ${invite ? html`<div class="panel panel--good"><h2>Uitnodiging klaar</h2>${shareButtons({ url: invite.url, text: `Hoi ${invite.naam}, via deze link maak je je beheerdersaccount aan voor het RKS-platform:`, email: invite.email, subject: 'Beheerdersaccount RKS Infra' })}</div>` : ''}
       <div class="grid-2 grid-2--wide">
@@ -69,7 +69,7 @@ export function register(r, db) {
   r.get('/logboek', (req, res) => {
     const rows = db.all('SELECT * FROM audit_log ORDER BY id DESC LIMIT 300');
     res.page('Logboek', html`
-      ${pageHead({ title: 'Logboek', sub: 'De laatste 300 acties.' })}
+      ${pageHead({ back: { href: '/beheer/instellingen', label: 'Instellingen' }, title: 'Logboek' })}
       <div class="table-wrap"><table class="table table--compact">
         <thead><tr><th>Moment</th><th>Wie</th><th>Actie</th><th>Details</th></tr></thead>
         <tbody>${rows.map((a) => html`<tr><td class="nowrap">${a.at.replace('T', ' ').slice(0, 16)}</td><td>${a.wie}</td><td>${a.actie} <span class="muted small">${a.entiteit} ${a.entiteit_id || ''}</span></td><td>${a.details}</td></tr>`)}</tbody>
